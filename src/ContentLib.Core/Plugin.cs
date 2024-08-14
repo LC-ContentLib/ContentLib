@@ -9,7 +9,7 @@ namespace ContentLib.Core;
 [BepInPlugin(LCMPluginInfo.PLUGIN_GUID, LCMPluginInfo.PLUGIN_NAME, LCMPluginInfo.PLUGIN_VERSION)]
 public class Plugin : BaseUnityPlugin
 {
-      internal static ManualLogSource Log = null!;
+    internal static ManualLogSource Log = null!;
 
     private void Awake()
     {
