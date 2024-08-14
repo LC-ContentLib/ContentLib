@@ -1,2 +1,3 @@
-# LC-ContentLib
-A (WIP) Lethal Company API for Custom Content Addition.
+# ContentLib - A Content API for Lethal Company
+
+WIP
