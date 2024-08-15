@@ -1,6 +1,5 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
-using ContentLib.Core;
 
 namespace ContentLib.EnemyAPI;
 

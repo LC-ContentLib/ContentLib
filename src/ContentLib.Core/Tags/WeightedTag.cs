@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace ContentLib.Core;
+namespace ContentLib.Core.Tags;
 
 /// <summary>
 /// A string tag with a weight.

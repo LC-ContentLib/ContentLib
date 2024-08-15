@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ContentLib.Core;
 using ContentLib.Core.Exceptions;
+using ContentLib.Core.Tags;
 using UnityEngine;
 
 namespace ContentLib.EnemyAPI;

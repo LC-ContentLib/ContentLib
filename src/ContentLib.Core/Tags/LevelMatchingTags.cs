@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace ContentLib.Core;
+namespace ContentLib.Core.Tags;
 
 /// <summary>
 /// A list of properties for matching.
