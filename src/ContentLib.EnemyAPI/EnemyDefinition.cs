@@ -9,7 +9,8 @@ namespace ContentLib.EnemyAPI;
 /// <summary>
 /// Base class for custom content that can be registered.
 /// </summary>
-public abstract class EnemyDefinition : ContentDefinition
+[CreateAssetMenu(fileName = "EnemyDefinition", menuName = "ContentLib/EnemyAPI/EnemyDefinition", order = 0)]
+public class EnemyDefinition : ContentDefinition
 {
     /// <summary>
     /// The Vanilla EnemyType ScriptableObject.
