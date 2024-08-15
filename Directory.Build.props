@@ -1,5 +1,7 @@
 <Project>
 
+  <Import Project="$(SolutionDir)\build\Thunderstore.pubxml" />
+
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>ContentLib</Authors>
