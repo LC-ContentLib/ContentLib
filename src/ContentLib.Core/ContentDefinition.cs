@@ -42,6 +42,9 @@ public abstract class ContentDefinition : ScriptableObject
     /// <summary>
     /// Warn according to <see cref="WarningSeverity"/>.
     /// </summary>
+    /// <param name="message">The error or warning message.</param>
+    /// <param name="throwDelegate">A delegate that throws an exception with a message.</param>
+    /// <exception cref="InvalidOperationException"></exception>
     protected void WarnBySeverity(string message, Action<string> throwDelegate)
     {
         switch (WarningSeverity)
