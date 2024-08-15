@@ -38,4 +38,27 @@ public abstract class ContentDefinition : ScriptableObject
 
         Mod = mod._realModDefinition; 
     }
+
+    /// <summary>
+    /// Warn according to <see cref="WarningSeverity"/>.
+    /// </summary>
+    protected void WarnBySeverity(string message, Action<string> throwDelegate)
+    {
+        switch (WarningSeverity)
+        {
+            case WarningSeverityLevel.WarningsAsExceptions:
+                throwDelegate($"WarningsAsExceptions: {message}");
+                break;
+
+            case WarningSeverityLevel.WarningsAsWarnings:
+                Plugin.Log.LogWarning(message);
+                break;
+
+            case WarningSeverityLevel.IgnoreWarnings:
+                return;
+            
+            default:
+                throw new InvalidOperationException($"{nameof(WarningSeverity)} isn't set to a valid value! Value: {WarningSeverity}");
+        }
+    }
 }

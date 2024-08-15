@@ -50,8 +50,8 @@ public class EnemyDefinition : ContentDefinition
     {
         base.Register(mod);
 
-        CheckEnemyTypeForErrors();
-        CheckEnemyPrefabForErrors();
+        ValidateEnemyType();
+        ValidateEnemyPrefab();
 
         if (s_lateForRegister)
             throw new ContentRegisteredTooLateException($"EnemyDefinition '{name}' was registered too late!");
@@ -63,7 +63,7 @@ public class EnemyDefinition : ContentDefinition
         IsRegistered = true;
     }
 
-    private void CheckEnemyTypeForErrors() 
+    private void ValidateEnemyType() 
     {
         if (EnemyType == null)
             throw new NullReferenceException($"{nameof(EnemyType)} is null!");
@@ -73,57 +73,103 @@ public class EnemyDefinition : ContentDefinition
 
         ValidateLayerAndTag(EnemyType.enemyPrefab, "Enemies", "Enemy", nameof(EnemyType.enemyPrefab));
         
-        if (String.IsNullOrEmpty(EnemyType.enemyName))
+        if (string.IsNullOrEmpty(EnemyType.enemyName))
             throw new NullReferenceException($"{nameof(EnemyType)}{nameof(EnemyType.enemyName)} is null or empty!");
     }
 
-    private void CheckEnemyPrefabForErrors() // potentially doesn't always throw but important to atleast warn/error?
+    private void ValidateEnemyPrefab()
     {
+        string enemyPrefabPath = $"{nameof(EnemyType)}.{nameof(EnemyType.enemyPrefab)}";
+
+        // The enemy spawning explodes without an EnemyAI component.
         EnemyAI enemyAI = EnemyType.enemyPrefab.GetComponent<EnemyAI>();
         if (enemyAI == null)
-            throw new NullReferenceException($"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(enemyAI)} is null!");
+            throw new NullReferenceException($"{enemyPrefabPath}.{nameof(enemyAI)} is null!");
 
+        // Needed for the enemy to reference important base values.
         if (enemyAI.enemyType == null)
-            throw new NullReferenceException($"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(enemyAI)}{nameof(enemyAI.enemyType)} is null!"); // Needed for the enemy to reference important base values.
-        
+            throw new NullReferenceException($"{enemyPrefabPath}.{nameof(enemyAI)}.{nameof(enemyAI.enemyType)} is null!");
+
+        // Needed for the enemy to move around the world.
         if (enemyAI.agent == null)
-            throw new NullReferenceException($"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(enemyAI)}{nameof(enemyAI.agent)} is null!"); // Needed for the enemy to move around the world.
+            throw new NullReferenceException($"{enemyPrefabPath}.{nameof(enemyAI)}.{nameof(enemyAI.agent)} is null!");
 
+        // Needed to animate the enemy.
         if (enemyAI.creatureAnimator == null)
-            throw new NullReferenceException($"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(enemyAI)}{nameof(enemyAI.creatureAnimator)} is null!"); // Needed to animate the enemy.
+            throw new NullReferenceException($"{enemyPrefabPath}.{nameof(enemyAI)}.{nameof(enemyAI.creatureAnimator)} is null!");
 
-        if (enemyAI.enemyBehaviourStates == null || enemyAI.enemyBehaviourStates.Length == 0)
-            throw new NullReferenceException($"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(enemyAI)}{nameof(enemyAI.enemyBehaviourStates)} is null!"); // Needed so that the game knows what states you're switching when using SwitchBehaviour.
+        // Needed so that the game knows what states you're switching when using SwitchBehaviour.
+        // Not an issue if not using the game's Behaviour system, so should this be checked?
+        // if (enemyAI.enemyBehaviourStates == null || enemyAI.enemyBehaviourStates.Length == 0)
+        //     WarnBySeverity($"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(enemyAI)}{nameof(enemyAI.enemyBehaviourStates)} is null!",
+        //     (message) => throw new NullReferenceException(message));
 
-        ScanNodeProperties scanNodeProperties = EnemyType.enemyPrefab.GetComponentInChildren<ScanNodeProperties>();
-        if (scanNodeProperties == null)
-            throw new NullReferenceException($"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(scanNodeProperties)} is null!"); // Needed so enemies can be scanned.
+        // Needed so enemies can be scanned.
+        ScanNodeProperties[] scanNodeProperties = EnemyType.enemyPrefab.GetComponentsInChildren<ScanNodeProperties>();
+        if (scanNodeProperties.Length == 0)
+            WarnBySeverity($"{nameof(EnemyType.enemyPrefab)} '{EnemyType.enemyPrefab.name}' doesn't have any {nameof(ScanNodeProperties)} components! It can't be scanned.",
+            (message) => throw new NullReferenceException(message));
+        else
+        {
+            // Needed so it can be scanned and not scanned when holding (needs tag to be untagged).
+            foreach (var scanNode in scanNodeProperties)
+            {
+                ValidateLayerAndTag(scanNode.gameObject, "ScanNode", "Untagged",
+                    $"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(scanNodeProperties)}");
+            }
+        }
 
-        ValidateLayerAndTag(scanNodeProperties.gameObject, "ScanNode", "Untagged", $"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(scanNodeProperties)}"); // Needed so it can be scanned and not scanned when holding (needs tag to be untagged).
+        // Need a better way for checking for a map dot than an object with a specific name.
+        // Transform mapDot = EnemyType.enemyPrefab.transform.Find("MapDot");
+        // if (mapDot == null)
+        //     throw new NullReferenceException($"{nameof(EnemyType)} '{EnemyType.enemyPrefab.name}' doesn't have a 'MapDot' GameObject!"); // Needed to display on the radars in-game.
 
-        Transform mapDot = EnemyType.enemyPrefab.transform.Find("MapDot");
-        if (mapDot == null)
-            throw new NullReferenceException($"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(EnemyType.enemyPrefab.transform)} MapDot is null!"); // Needed to display on the radars ingame.
-
-        ValidateLayerAndTag(mapDot.gameObject, "MapRadar", "DoNotSet", $"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(EnemyType.enemyPrefab.transform)} MapDot"); // Needed if the MapDot does exist.
+        // ValidateLayerAndTag(mapDot.gameObject, "MapRadar", "DoNotSet", $"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(EnemyType.enemyPrefab.transform)} MapDot"); // Needed if the MapDot does exist.
         
-        EnemyAICollisionDetect enemyAICollisionDetect = EnemyType.enemyPrefab.GetComponentInChildren<EnemyAICollisionDetect>();
-        if (enemyAICollisionDetect == null)
-            throw new NullReferenceException($"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(enemyAICollisionDetect)} is null!"); // Needed for collision with enemies, players and doors.
-        
-        ValidateLayerAndTag(enemyAICollisionDetect.gameObject, "Enemies", "Enemy", $"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(enemyAICollisionDetect)}"); // Not 100% sure on if this is needed but likely is.
+        // Needed for collision with enemies, players and doors.
+        EnemyAICollisionDetect[] collisionDetectComponents = EnemyType.enemyPrefab.GetComponentsInChildren<EnemyAICollisionDetect>();
+        if (collisionDetectComponents.Length == 0)
+        {
+            WarnBySeverity(
+                $"Enemy '{EnemyType.enemyName}' doesn't reference any EnemyAI Collision Detect Scripts!",
+                (message) => throw new NullReferenceException(message));
+        }
+        foreach (EnemyAICollisionDetect collisionDetect in collisionDetectComponents)
+        {
+            if (collisionDetect.mainScript == null)
+            {
+                WarnBySeverity(
+                    $"An Enemy AI Collision Detect Script on GameObject '{collisionDetect.gameObject.name}' of enemy '{EnemyType.enemyName}' does not reference a 'Main Script', and could cause Null Reference Exceptions.",
+                    (message) => throw new NullReferenceException(message));
+            }
+            ValidateLayerAndTag(collisionDetect.gameObject, "Enemies", "Enemy",
+                $"Enemy '{EnemyType.enemyName}' has invalid layer or tag on a GameObject with an {nameof(EnemyAICollisionDetect)} Script!");
 
-        if (enemyAICollisionDetect.gameObject.GetComponent<Rigidbody>() == null)
-            throw new NullReferenceException($"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(enemyAICollisionDetect)}{nameof(Rigidbody)} is null!"); // Needed for opening doors and stuff.
+            // Needed for opening doors and stuff.
+            if (collisionDetect.gameObject.GetComponent<Rigidbody>() == null)
+            {
+                WarnBySeverity(
+                    $"An Enemy AI Collision Detect Script on GameObject '{collisionDetect.gameObject.name}' of enemy '{EnemyType.enemyName}' does not have a {nameof(Rigidbody)} Component attached, which prevents the enemy from opening doors!",
+                    (message) => throw new MissingComponentException(message));
+            }
+        }
+
     
-        // Considered adding a check for a box collider in the root gameobject/prefab, would be needed so that other enemies can see your enemy in the case of inheriting IVisibleThreat interface.
+        // Considered adding a check for a box collider in the root GameObject/prefab, would be needed so that other enemies can see your enemy in the case of inheriting IVisibleThreat interface.
     }
 
-    private void ValidateLayerAndTag(GameObject gameObject, string requiredLayer, string requiredTag, string errorMessagePrefix)
+    private void ValidateLayerAndTag(
+        GameObject gameObject,
+        string requiredLayer,
+        string requiredTag,
+        string errorMessagePrefix
+    )
     {
         if (gameObject.layer != LayerMask.NameToLayer(requiredLayer) || gameObject.tag != requiredTag)
         {
-            throw new NullReferenceException($"{errorMessagePrefix} is not set on the correct layer ('{requiredLayer}') or tag ('{requiredTag}')!");
+            WarnBySeverity(
+                $"{errorMessagePrefix} is not set on the correct layer ('{requiredLayer}') or tag ('{requiredTag}')!",
+                (message) => throw new Exception(message));
         }
     }
 }
