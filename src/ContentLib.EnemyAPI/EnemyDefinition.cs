@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ContentLib.Core;
 using ContentLib.Core.Exceptions;
+using UnityEngine;
 
 namespace ContentLib.EnemyAPI;
 
@@ -13,7 +14,7 @@ public abstract class EnemyDefinition : ContentDefinition
     /// <summary>
     /// The Vanilla EnemyType ScriptableObject.
     /// </summary>
-    public EnemyType EnemyType { get; set; } = null!;
+    [field: SerializeField] public EnemyType EnemyType { get; set; } = null!;
 
     internal static List<EnemyDefinition> s_registeredEnemies = [];
     internal static bool s_lateForRegister = false;
