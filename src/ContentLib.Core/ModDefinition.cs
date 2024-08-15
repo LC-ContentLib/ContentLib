@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ContentLib.Core.Exceptions;
 using UnityEngine;
 
 namespace ContentLib.Core;
@@ -51,6 +52,7 @@ public class ModDefinition : ScriptableObject
     {
         if (string.IsNullOrEmpty(authorName))
             throw new ArgumentException("String must not be null or empty!", nameof(authorName));
+
         if (string.IsNullOrEmpty(modName))
             throw new ArgumentException("String must not be null or empty!", nameof(modName));
 
@@ -69,9 +71,17 @@ public class ModDefinition : ScriptableObject
     {
         // if ScriptableObject was made through CreateInstance,
         // run Awake manually after the properties are initialized.
-        // I don't know if this actually happens for loading from AssetBundles too, needs to be tested!!
+        // Unity should serialize this object's fields before calling Awake.
         if (AuthorName == null)
             return;
+
+        // These were already checked for creating a ModDefinition programmatically,
+        // these checks here are for loading a ModDefinition from an AssetBundle.
+        if (string.IsNullOrEmpty(AuthorName))
+            throw new InvalidModDefinitionLoadedException($"{nameof(AuthorName)}");
+
+        if (string.IsNullOrEmpty(ModName))
+            throw new InvalidModDefinitionLoadedException($"{nameof(ModName)}");
 
         // If this is a duplicate, merge Content to existing mod's Content and reference that.
         if (s_allMods.TryGetValue((AuthorName, ModName), out ModDefinition existingMod))
