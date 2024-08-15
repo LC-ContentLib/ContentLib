@@ -15,5 +15,9 @@ public class Plugin : BaseUnityPlugin
     {
         Log = Logger;
         Log.LogInfo($"Plugin {LCMPluginInfo.PLUGIN_NAME} is loaded!");
+
+        // TODO: Test behavior with loading an "identical" ModDefinition from an AssetBundle
+        ModDefinition.Create("Author", "Test");
+        ModDefinition.Create("Author", "Test");
     }
 }
