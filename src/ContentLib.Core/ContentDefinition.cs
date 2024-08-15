@@ -12,7 +12,7 @@ public abstract class ContentDefinition : ScriptableObject
     /// The owner of this content.
     /// </summary>
     /// <remarks>
-    /// Not null if the content has been registered.
+    /// This member is not null when <see cref="IsRegistered"/> of this instance is <see langword="true"/>.
     /// </remarks>
     public ModDefinition? Mod { get; private set; }
 
@@ -24,6 +24,10 @@ public abstract class ContentDefinition : ScriptableObject
     /// <summary>
     /// Validates and registers this content.
     /// </summary>
+    /// <remarks>
+    /// If this method completes without throwing, <see cref="IsRegistered"/> of this instance
+    /// is set to <see langword="true"/>.
+    /// </remarks>
     public virtual void Register(ModDefinition mod)
     {
         if (mod == null)
