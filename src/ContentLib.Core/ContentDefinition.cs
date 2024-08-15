@@ -8,6 +8,9 @@ namespace ContentLib.Core;
 /// </summary>
 public abstract class ContentDefinition : ScriptableObject
 {
+    /// <inheritdoc cref="WarningSeverityLevel"/>
+    [field: SerializeField] public WarningSeverityLevel WarningSeverity { get; set; } = WarningSeverityLevel.WarningsAsExceptions;
+
     /// <summary>
     /// The owner of this content.
     /// </summary>
