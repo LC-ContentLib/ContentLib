@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(SolutionDir)/src/ContentLib.Core/ContentLib.Core.csproj"/>
+    <ProjectReference Include="$(ContentLibCore)"/>
   </ItemGroup>
 
 </Project>

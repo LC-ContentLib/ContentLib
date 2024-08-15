@@ -24,4 +24,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <ContentLibCore>$(SolutionDir)/src/ContentLib.Core/ContentLib.Core.csproj</ContentLibCore>
+  </PropertyGroup>
+
 </Project>
