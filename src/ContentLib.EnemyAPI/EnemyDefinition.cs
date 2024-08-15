@@ -17,6 +17,26 @@ public class EnemyDefinition : ContentDefinition
     /// </summary>
     [field: SerializeField] public EnemyType EnemyType { get; set; } = null!;
 
+    /// <summary>
+    /// Tags for matching and getting a weight for injecting this enemy to inside enemies spawn pool.
+    /// </summary>
+    /// <remarks>
+    /// If no tags match, the enemy won't be injected into this spawn pool.
+    /// </remarks>
+    [field: SerializeField] public List<LevelMatchingTags> InsideLevelMatchingTags = [];
+
+    /// <summary>
+    /// Tags for matching and getting a weight for injecting this enemy to outside enemies spawn pool.
+    /// </summary>
+    /// <inheritdoc cref="InsideLevelMatchingTags"/>
+    [field: SerializeField] public List<LevelMatchingTags> OutsideLevelMatchingTags = [];
+
+    /// <summary>
+    /// Tags for matching and getting a weight for injecting this enemy to daytime enemies spawn pool.
+    /// </summary>
+    /// <inheritdoc cref="InsideLevelMatchingTags"/>
+    [field: SerializeField] public List<LevelMatchingTags> DaytimeLevelMatchingTags = [];
+
     internal static List<EnemyDefinition> s_registeredEnemies = [];
     internal static bool s_lateForRegister = false;
 
