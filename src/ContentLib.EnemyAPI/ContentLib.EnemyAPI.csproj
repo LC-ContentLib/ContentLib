@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <AssemblyName>com.github.lc-contentlib.enemyapi</AssemblyName>
+    <Description>The EnemyAPI Module of ContentLib.</Description>
+    <Product>ContentLib.EnemyAPI</Product>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)/src/ContentLib.Core/ContentLib.Core.csproj"/>
+  </ItemGroup>
+
+</Project>
