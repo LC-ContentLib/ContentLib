@@ -107,8 +107,10 @@ public class EnemyDefinition : ContentDefinition
         // Needed so enemies can be scanned.
         ScanNodeProperties[] scanNodeProperties = EnemyType.enemyPrefab.GetComponentsInChildren<ScanNodeProperties>();
         if (scanNodeProperties.Length == 0)
+        {
             WarnBySeverity($"{nameof(EnemyType.enemyPrefab)} '{EnemyType.enemyPrefab.name}' doesn't have any {nameof(ScanNodeProperties)} components! It can't be scanned.",
-            (message) => throw new NullReferenceException(message));
+                (message) => throw new NullReferenceException(message));
+        }
         else
         {
             // Needed so it can be scanned and not scanned when holding (needs tag to be untagged).
