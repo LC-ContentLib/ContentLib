@@ -2,6 +2,26 @@
 
   <Import Project="$(SolutionDir)\build\InfoProps.targets" />
 
+  <!-- Load 'global' ContentLib.props.user file if it exists -->
+  <Import Project="$(SolutionDir)\ContentLib.props.user" Condition="Exists('$(SolutionDir)\ContentLib.props.user')" />
+
+  <Target Name="CopyToUserPluginsDir" AfterTargets="PostBuildEvent" Condition="$(UserPluginsDir) != ''">
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(UserPluginsDir)ContentLib/" />
+  </Target>
+
+  <Target Name="WarnAboutMissingUserFile" AfterTargets="PostBuildEvent" Condition="$(UserPluginsDir) == '' And $(CI) != 'true'">
+    <Message Importance="High" Text="UserPluginsDir from ContentLib.props.user isn't defined! It's highly recommended to copy the ContentLib.props.user.template file and remove the '.template' extension and fill it with valid values." />
+  </Target>
+
+  <!-- Copy MMHOOK assemblies to repo for GitHub actions -->
+  <Target Name="CopyMMHOOKAssemblies" AfterTargets="PreBuildEvent" Condition="$(UserPluginsDir) != ''">
+    <ItemGroup>
+      <MMHOOKAssembliesFromPlugins Include="$(UserPluginsDir)MMHOOK/**/MMHOOK_Assembly-CSharp.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(MMHOOKAssembliesFromPlugins)" DestinationFolder="$(SolutionDir)/lib" SkipUnchangedFiles="true" />
+  </Target>
+
+  <!-- References -->
   <ItemGroup>
     <PackageReference 
       Include="BepInEx.Analyzers" 
@@ -20,6 +40,10 @@
       Include="UnityEngine.Modules" 
       IncludeAssets="compile"
       Version="2023.2.4"
+    />
+    <Reference
+      Include="$(SolutionDir)/lib/MMHOOK_Assembly-CSharp.dll"
+      Private="false"
     />
   </ItemGroup>
 
