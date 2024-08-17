@@ -46,7 +46,7 @@ public class RegisterCallbacks<T> where T : ContentDefinition
     private readonly Dictionary<(ModDefinition modDefinition, string contentDefinitionName, bool isBefore), List<Action<T>>> _callbacks = [];
 
     /// <summary>
-    /// Subscribe to a callback immediately before a ContentDefinition is registered.
+    /// Subscribe to a callback immediately before a ContentDefinition is validated and registered.
     /// </summary>
     /// <param name="authorName">The name of the author whose mod owns this ContentDefinition.</param>
     /// <param name="modName">The name of the mod that owns this ContentDefinition.</param>
@@ -80,7 +80,7 @@ public class RegisterCallbacks<T> where T : ContentDefinition
 #pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
     /// <summary>
-    /// Subscribe to a callback immediately after a ContentDefinition has been registered.
+    /// Subscribe to a callback immediately after a ContentDefinition has been validated and registered.
     /// </summary>
     /// <inheritdoc cref="AddOnBeforeRegister(string, string, string, Action{T})"/>
     public void AddOnAfterRegister(
