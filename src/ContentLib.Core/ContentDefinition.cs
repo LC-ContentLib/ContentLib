@@ -35,7 +35,7 @@ public abstract class ContentDefinition : ScriptableObject
     {
         // We don't need to assign Mod to modDefinition.GetRealInstance because the
         // *Definition that inherits this class already passed us the real instance.
-        Mod = modDefinition ?? throw new ArgumentNullException(nameof(modDefinition));
+        Mod = modDefinition;
     }
 
     /// <summary>
