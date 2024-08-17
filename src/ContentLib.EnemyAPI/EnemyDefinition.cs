@@ -39,6 +39,10 @@ public class EnemyDefinition : ContentDefinition
     /// <inheritdoc cref="InsideLevelMatchingTags"/>
     [field: SerializeField] public List<LevelMatchingTags> DaytimeLevelMatchingTags = [];
 
+    /// <inheritdoc cref="RegisterCallbacks{T}"/>
+    public static RegisterCallbacks<EnemyDefinition> Callbacks { get; } = new(ref s_registerCallbackInvoker!);
+    private static RegisterCallbacks<EnemyDefinition>.CallbackInvoker s_registerCallbackInvoker;
+
     internal static List<EnemyDefinition> s_registeredEnemies = [];
     internal static bool s_lateForRegister = false;
 
@@ -46,9 +50,12 @@ public class EnemyDefinition : ContentDefinition
     /// <exception cref="NullReferenceException"></exception>
     /// <exception cref="ContentRegisteredTooLateException"></exception>
     /// <exception cref="ContentAlreadyRegisteredException"></exception>
-    public override void Register(ModDefinition mod)
+    public override void Register(ModDefinition modDefinition)
     {
-        base.Register(mod);
+        ModDefinition realMod = modDefinition.GetRealInstance();
+        s_registerCallbackInvoker.Invoke(realMod, name, isBefore: true, this);
+
+        base.Register(realMod);
 
         ValidateEnemyType();
         ValidateEnemyPrefab();
@@ -61,6 +68,7 @@ public class EnemyDefinition : ContentDefinition
 
         s_registeredEnemies.Add(this);
         IsRegistered = true;
+        s_registerCallbackInvoker.Invoke(realMod, name, isBefore: false, this);
     }
 
     private void ValidateEnemyType() 

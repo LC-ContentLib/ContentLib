@@ -31,12 +31,11 @@ public abstract class ContentDefinition : ScriptableObject
     /// If this method completes without throwing, <see cref="IsRegistered"/> of this instance
     /// is set to <see langword="true"/>.
     /// </remarks>
-    public virtual void Register(ModDefinition mod)
+    public virtual void Register(ModDefinition modDefinition)
     {
-        if (mod == null)
-            throw new ArgumentNullException(nameof(mod));
-
-        Mod = mod._realModDefinition; 
+        // We don't need to assign Mod to modDefinition.GetRealInstance because the
+        // *Definition that inherits this class already passed us the real instance.
+        Mod = modDefinition ?? throw new ArgumentNullException(nameof(modDefinition));
     }
 
     /// <summary>
