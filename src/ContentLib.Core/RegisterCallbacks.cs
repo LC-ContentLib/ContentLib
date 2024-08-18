@@ -9,7 +9,8 @@ namespace ContentLib.Core;
 public class RegisterCallbacks<T> where T : ContentDefinition
 {
     // We can disable this warning because of <inheritdoc/>
-    #pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
+#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
+
     /// <summary>
     /// Delegate method to feed into the constructor <see cref="RegisterCallbacks(ref CallbackInvoker)"/>
     /// that when called, will try to invoke a callback event for the specified ContentDefinition.
@@ -19,7 +20,8 @@ public class RegisterCallbacks<T> where T : ContentDefinition
     /// <param name="isBefore">Is this event before the ContentDefinition has been registered or after?</param>
     /// <param name="contentDefinition">The ContentDefinition instance. Will be fed to whoever subscribed to this callback.</param>
     public delegate void CallbackInvoker(ModDefinition modDefinition, string contentDefinitionName, bool isBefore, T contentDefinition);
-    #pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
+
+#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
     /// <summary>
     /// Constructor for setting up an eventInvoker for the callback events.
@@ -77,6 +79,7 @@ public class RegisterCallbacks<T> where T : ContentDefinition
         ModDefinition realMod = modDefinition.GetRealInstance();
         SubscribeTo(realMod, contentDefinitionName, eventHandler, isBefore: true);
     }
+
 #pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
     /// <summary>
