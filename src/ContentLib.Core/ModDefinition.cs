@@ -19,25 +19,18 @@ namespace ContentLib.Core;
 [CreateAssetMenu(fileName = "ModDefinition", menuName = "ContentLib/Core/ModDefinition", order = 0)]
 public class ModDefinition : ScriptableObject
 {
-    internal class ModDefinitionIdentity(ModDefinition mod)
-    {
-        internal readonly ModDefinition _realModDefinition = mod;
-        internal string AuthorName => _realModDefinition._authorName;
-        internal string ModName => _realModDefinition._modName;
-    }
-
     [SerializeField] private string _authorName = null!;
     [SerializeField] private string _modName = null!;
 
     /// <summary>
     /// The author of this mod.
     /// </summary>
-    public string AuthorName => _modDefinitionIdentity.AuthorName;
+    public string AuthorName => _realModDefinition._authorName;
 
     /// <summary>
     /// The name of this mod.
     /// </summary>
-    public string ModName => _modDefinitionIdentity.ModName;
+    public string ModName => _realModDefinition._modName;
 
     /// <summary>
     /// The content this mod contains.
@@ -47,9 +40,9 @@ public class ModDefinition : ScriptableObject
     /// <summary>
     /// A Dictionary containing all <see cref="ModDefinition"/> instances.
     /// </summary>
-    public static IReadOnlyDictionary<(string AuthorName, string ModName), ModDefinition> AllMods => s_allMods;
-    private static readonly Dictionary<(string AuthorName, string ModName), ModDefinition> s_allMods = [];
-    internal ModDefinitionIdentity _modDefinitionIdentity = null!;
+    public static IReadOnlyDictionary<(string authorName, string modName), ModDefinition> AllMods => s_allMods;
+    private static readonly Dictionary<(string authorName, string modName), ModDefinition> s_allMods = [];
+    private ModDefinition _realModDefinition = null!;
 
     /// <summary>
     /// Creates or gets an existing an instance of a <see cref="ModDefinition"/> ScriptableObject.
@@ -86,11 +79,11 @@ public class ModDefinition : ScriptableObject
     /// re-assign its instance.
     /// </remarks>
     /// <returns>This instance or the 'real' instance if this is a duplicate.</returns>
-    public ModDefinition GetRealInstance() => _modDefinitionIdentity._realModDefinition;
+    public ModDefinition GetRealInstance() => _realModDefinition;
 
     private void Awake()
     {
-        _modDefinitionIdentity ??= new(this);
+        _realModDefinition = this;
 
         // if ScriptableObject was made through CreateInstance,
         // run Awake manually after the properties are initialized.
@@ -111,7 +104,7 @@ public class ModDefinition : ScriptableObject
         {
             existingMod.Content.AddRange(Content);
             Content = existingMod.Content;
-            _modDefinitionIdentity = existingMod._modDefinitionIdentity;
+            _realModDefinition = existingMod;
             return;
         }
 
