@@ -45,7 +45,7 @@ public class ModDefinition : ScriptableObject
     private ModDefinition _realModDefinition = null!;
 
     /// <summary>
-    /// Creates or gets an existing an instance of a <see cref="ModDefinition"/> ScriptableObject.
+    /// Creates or gets an existing instance of a <see cref="ModDefinition"/> ScriptableObject.
     /// </summary>
     /// <param name="authorName"></param>
     /// <param name="modName"></param>
