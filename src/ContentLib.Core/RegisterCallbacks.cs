@@ -15,10 +15,10 @@ public class RegisterCallbacks<T> where T : ContentDefinition
     /// Delegate method to feed into the constructor <see cref="RegisterCallbacks(ref CallbackInvoker)"/>
     /// that when called, will try to invoke a callback event for the specified ContentDefinition.
     /// </summary>
-    /// <inheritdoc cref="AddOnBeforeRegister(ModDefinition, string, Action{T})"/>
     /// <param name="contentDefinitionName">The name of the ContentDefinition ScriptableObject that is being registered.</param>
     /// <param name="isBefore">Is this event before the ContentDefinition has been registered or after?</param>
     /// <param name="contentDefinition">The ContentDefinition instance. Will be fed to whoever subscribed to this callback.</param>
+    /// <inheritdoc cref="AddOnBeforeRegister(ModDefinition, string, Action{T})"/>
     public delegate void CallbackInvoker(ModDefinition modDefinition, string contentDefinitionName, bool isBefore, T contentDefinition);
 
 #pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
