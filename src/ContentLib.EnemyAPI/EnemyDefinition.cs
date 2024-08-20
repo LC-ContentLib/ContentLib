@@ -14,6 +14,14 @@ namespace ContentLib.EnemyAPI;
 [CreateAssetMenu(fileName = "EnemyDefinition", menuName = "ContentLib/EnemyAPI/EnemyDefinition", order = 0)]
 public class EnemyDefinition : ContentDefinition
 {
+    /// <inheritdoc cref="RegisterCallbacks{T}"/>
+    public static RegisterCallbacks<EnemyDefinition> Callbacks { get; } = new(ref s_registerCallbackInvoker!);
+    internal static List<EnemyDefinition> s_registeredEnemies = [];
+    internal static bool s_lateForRegister = false;
+
+    /// <inheritdoc cref="RegisterCallbacks{T}.CallbackInvoker"/>
+    private static RegisterCallbacks<EnemyDefinition>.CallbackInvoker s_registerCallbackInvoker;
+
     /// <summary>
     /// The Vanilla EnemyType ScriptableObject.
     /// </summary>
@@ -38,13 +46,6 @@ public class EnemyDefinition : ContentDefinition
     /// </summary>
     /// <inheritdoc cref="InsideLevelMatchingTags"/>
     [field: SerializeField] public List<LevelMatchingTags> DaytimeLevelMatchingTags = [];
-
-    /// <inheritdoc cref="RegisterCallbacks{T}"/>
-    public static RegisterCallbacks<EnemyDefinition> Callbacks { get; } = new(ref s_registerCallbackInvoker!);
-    private static RegisterCallbacks<EnemyDefinition>.CallbackInvoker s_registerCallbackInvoker;
-
-    internal static List<EnemyDefinition> s_registeredEnemies = [];
-    internal static bool s_lateForRegister = false;
 
     /// <inheritdoc/>
     /// <exception cref="NullReferenceException"></exception>
@@ -90,7 +91,7 @@ public class EnemyDefinition : ContentDefinition
 
     private void ValidateEnemyPrefab()
     {
-        string enemyPrefabPath = $"{nameof(EnemyType)}.{nameof(EnemyType.enemyPrefab)}";
+        var enemyPrefabPath = $"{nameof(EnemyType)}.{nameof(EnemyType.enemyPrefab)}";
 
         // The enemy spawning explodes without an EnemyAI component.
         EnemyAI enemyAI = EnemyType.enemyPrefab.GetComponent<EnemyAI>();
@@ -125,7 +126,7 @@ public class EnemyDefinition : ContentDefinition
         else
         {
             // Needed so it can be scanned and not scanned when holding (needs tag to be untagged).
-            foreach (var scanNode in scanNodeProperties)
+            foreach (ScanNodeProperties scanNode in scanNodeProperties)
             {
                 ValidateLayerAndTag(scanNode.gameObject, "ScanNode", "Untagged",
                     $"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(scanNodeProperties)}");

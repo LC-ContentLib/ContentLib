@@ -53,7 +53,7 @@ public abstract class ContentDefinition : ScriptableObject
                 break;
 
             case WarningSeverityLevel.WarningsAsWarnings:
-                Plugin.Log.LogWarning(message);
+                Plugin.s_log.LogWarning(message);
                 break;
 
             case WarningSeverityLevel.IgnoreWarnings:
