@@ -1,6 +1,6 @@
 Attribution-NonCommercial-ShareAlike 4.0 International
 
-Copyright (c) 2024 LC-ContentLib Authors <https://github.com/LC-ContentLib/LC-ContentLib/blob/main/CONTRIBUTORS.txt> 
+Copyright (c) 2024 LC-ContentLib Authors <https://github.com/LC-ContentLib/ContentLib/blob/main/CONTRIBUTORS.txt> 
 =======================================================================
 
 Creative Commons Corporation ("Creative Commons") is not a law firm and

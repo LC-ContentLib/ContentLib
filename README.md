@@ -16,7 +16,7 @@ This project has been built to be modular and easily extensible, and aims to be 
 
 ### Working on the Project
 
-You can look for open [issues](https://github.com/LC-ContentLib/LC-ContentLib/issues) that you could take on.
+You can look for open [issues](https://github.com/LC-ContentLib/ContentLib/issues) that you could take on.
 
 When you are ready to work on an issue:
 
@@ -36,8 +36,8 @@ We enforce some coding style rules based on the above resources. These rules are
 
 ### Implementing New Modules
 
-The first part of implementing a new module is planning. If you wish for a module to be made, open an [issue](https://github.com/LC-ContentLib/LC-ContentLib/issues) on it so we can start discussing it.
+The first part of implementing a new module is planning. If you wish for a module to be made, open an [issue](https://github.com/LC-ContentLib/ContentLib/issues) on it so we can start discussing it.
 
 The next part is writing an API design document for the module. This is a document that describes what the public API for this module should expose and how it should be used.
 
-Once the API design document has been approved, it will be moved to [issues](https://github.com/LC-ContentLib/LC-ContentLib/issues) so it can be picked up and implemented. Consider using an existing module implementation as reference. For example: [ContentLib.EnemyAPI](/src/ContentLib.EnemyAPI/).
+Once the API design document has been approved, it will be moved to [issues](https://github.com/LC-ContentLib/ContentLib/issues) so it can be picked up and implemented. Consider using an existing module implementation as reference. For example: [ContentLib.EnemyAPI](/src/ContentLib.EnemyAPI/).
