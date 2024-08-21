@@ -1,0 +1,52 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "..",
+          "files": [
+            "src/**/ContentLib*.csproj"
+          ]
+        }
+      ],
+      "dest": "api",
+      "disableDefaultFilter": false,
+      "outputFormat": "mref",
+      "filter": "filterConfig.yml",
+      "categoryLayout": "nested",
+      "namespaceLayout": "flattened",
+      "memberLayout": "separatePages",
+      "enumSortOrder": "declaringOrder"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern"
+    ],
+    "globalMetadata": {
+      "_appName": "",
+      "_appTitle": "",
+      "_enableSearch": true,
+      "pdf": true
+    }
+  }
+}

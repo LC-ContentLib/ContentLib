@@ -21,5 +21,8 @@ internal static class LCMPluginInfo
     </ItemGroup>
     <WriteLinesToFile Lines="$(GeneratedText)" File="$(GeneratedFilePath)"
         WriteOnlyWhenDifferent="true" Overwrite="true" />
+    <PropertyGroup>
+      <DefineConstants>InfoPropsGenerated</DefineConstants>
+    </PropertyGroup>
   </Target>
 </Project>
