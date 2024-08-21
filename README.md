@@ -19,6 +19,7 @@ This project has been built to be modular and easily extensible, and aims to be 
 You can look for open [issues](https://github.com/LC-ContentLib/LC-ContentLib/issues) that you could take on.
 
 When you are ready to work on an issue:
+
 - leave a message on the issue to let others that know you are working on it.
 - fork this repository.
 - create a new branch on your fork for the issue.
@@ -28,8 +29,8 @@ Your pull request will be reviewed and feedback will be given. When everything i
 
 See these resources on code style and naming conventions to help write better code:
 
-- https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
-- https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names
+- <https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions>
+- <https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/identifier-names>
 
 We enforce some coding style rules based on the above resources. These rules are configured in the [.editorconfig](/.editorconfig) file. These will show up as warnings or suggestions in your IDE, and they exist to ensure that code style is mostly consistent across all modules.
 
