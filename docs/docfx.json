@@ -1,0 +1,56 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "..",
+          "files": [
+            "src/**/bin/Release/ContentLib*.dll"
+          ]
+        }
+      ],
+      "dest": "api",
+      "disableDefaultFilter": false,
+      "outputFormat": "mref",
+      "filter": "filterConfig.yml",
+      "categoryLayout": "nested",
+      "namespaceLayout": "nested",
+      "memberLayout": "samePage",
+      "enumSortOrder": "declaringOrder"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "_site/**"
+        ]
+      },
+      {
+        "src": "docs",
+        "dest": "docs",
+        "files": [
+          "**.md",
+          "**/toc.yml"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern",
+      "template"
+    ],
+    "globalMetadataFiles": ["globalmeta.json"]
+  }
+}

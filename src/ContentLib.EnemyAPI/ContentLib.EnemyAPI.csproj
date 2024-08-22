@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="$(ContentLibCore)"/>
+    <ProjectReference Include="../ContentLib.Core/ContentLib.Core.csproj"/>
   </ItemGroup>
 
 </Project>
