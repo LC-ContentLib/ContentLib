@@ -1,12 +1,19 @@
 
 [data-bs-theme="dark"] .hljs {
-/* Code blocks */
-background: #25252b !important;
+  /* Code blocks */
+  background: #25252b !important;
+}
+
+.bg-body {
+  /* Header opacity */
+  --bs-bg-opacity: 0.7 !important;
+  /* Add background blur effect to header */
+  backdrop-filter: blur(4px);
 }
 
 [data-bs-theme='dark'] body {
-/* Main background */
---bs-body-bg: #1d1e24 !important;
-/* Header background */
---bs-body-bg-rgb: 34, 34, 40 !important;
+  /* Main background */
+  --bs-body-bg: #1d1e24 !important;
+  /* Header background */
+  --bs-body-bg-rgb: 34, 34, 40 !important;
 }
