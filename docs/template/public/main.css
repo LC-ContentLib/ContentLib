@@ -4,6 +4,14 @@
   background: #25252b !important;
 }
 
+.breadcrumb {
+  outline-width: 1px;
+  outline-offset: 8px;
+  outline-color: var(--bs-dark-border-subtle);
+  outline-style: solid;
+  border-radius: 1px;
+}
+
 .bg-body {
   /* Header opacity */
   --bs-bg-opacity: 0.7 !important;
