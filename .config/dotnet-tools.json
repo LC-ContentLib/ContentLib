@@ -1,12 +1,18 @@
 {
-    "version": 1,
-    "isRoot": true,
-    "tools": {
-        "tcli": {
-            "version": "0.2.4",
-            "commands": [
-                "tcli"
-            ]
-        }
+  "version": 1,
+  "isRoot": true,
+  "tools": {
+    "tcli": {
+      "version": "0.2.4",
+      "commands": [
+        "tcli"
+      ]
+    },
+    "docfx": {
+      "version": "2.77.0",
+      "commands": [
+        "docfx"
+      ]
     }
+  }
 }

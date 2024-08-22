@@ -7,10 +7,7 @@ namespace ContentLib.Core;
 /// The Plugin instance of ContentLib.Core.
 /// </summary>
 /// <exclude />
-// [BepInPlugin("com.github.lc-contentlib.core", "ContentLib.Core", "0.1.0")]
-#if InfoPropsGenerated
 [BepInPlugin(LCMPluginInfo.PLUGIN_GUID, LCMPluginInfo.PLUGIN_NAME, LCMPluginInfo.PLUGIN_VERSION)]
-#endif
 public class Plugin : BaseUnityPlugin
 {
     internal static ManualLogSource s_log = null!;

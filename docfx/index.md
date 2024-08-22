@@ -1,11 +1,7 @@
----
-_layout: landing
----
+# ContentLib Docs
 
-# This is the **HOMEPAGE**.
+Welcome to the ContentLib Docs!
 
-Refer to [Markdown](http://daringfireball.net/projects/markdown/) for how to write markdown files.
+See: [Getting Started](./docs/getting-started.md)
 
-## Quick Start Notes:
-
-1. Add images to the *images* folder if the file is referencing an image.
+[!INCLUDE [readme](../README.md)]

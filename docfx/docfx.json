@@ -5,7 +5,7 @@
         {
           "src": "..",
           "files": [
-            "src/**/ContentLib*.csproj"
+            "src/**/bin/Release/ContentLib*.dll"
           ]
         }
       ],
@@ -14,8 +14,8 @@
       "outputFormat": "mref",
       "filter": "filterConfig.yml",
       "categoryLayout": "nested",
-      "namespaceLayout": "flattened",
-      "memberLayout": "separatePages",
+      "namespaceLayout": "nested",
+      "memberLayout": "samePage",
       "enumSortOrder": "declaringOrder"
     }
   ],
@@ -27,6 +27,14 @@
         ],
         "exclude": [
           "_site/**"
+        ]
+      },
+      {
+        "src": "docs",
+        "dest": "docs",
+        "files": [
+          "**.md",
+          "**/toc.yml"
         ]
       }
     ],
@@ -40,13 +48,9 @@
     "output": "_site",
     "template": [
       "default",
-      "modern"
+      "modern",
+      "template"
     ],
-    "globalMetadata": {
-      "_appName": "",
-      "_appTitle": "",
-      "_enableSearch": true,
-      "pdf": true
-    }
+    "globalMetadataFiles": ["globalmeta.json"]
   }
 }
