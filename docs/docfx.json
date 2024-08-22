@@ -5,11 +5,15 @@
         {
           "src": "..",
           "files": [
-            "src/**/bin/Release/ContentLib*.dll"
+            "src/**/bin/Release/com.github.lc-contentlib.*.dll"
           ]
         }
       ],
       "dest": "api",
+      "references": [{
+        "src": "..",
+        "files": "src/**/bin/Release/com.github.lc-contentlib.*.dll"
+      }],
       "disableDefaultFilter": false,
       "outputFormat": "mref",
       "filter": "filterConfig.yml",
