@@ -2,8 +2,10 @@
 - href: ../index.md
 - href: getting-started.md
 
+- name: Guides
+- href: blender-resources.md
 - name: Enemy Creation
-- href: ./enemy-creation/overview.md
+  href: ./enemy-creation/toc.yml
 
 - name: Contributing
 - href: ./contributing/writing-articles.md
