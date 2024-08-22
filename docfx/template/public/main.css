@@ -1,10 +1,12 @@
 
-/* Code blocks */
 [data-bs-theme="dark"] .hljs {
-background: #222326 !important;
+/* Code blocks */
+background: #25252b !important;
 }
 
-/* Main background */
 [data-bs-theme='dark'] body {
---bs-body-bg: #1a1d20 !important;
+/* Main background */
+--bs-body-bg: #1d1e24 !important;
+/* Header background */
+--bs-body-bg-rgb: 34, 34, 40 !important;
 }
