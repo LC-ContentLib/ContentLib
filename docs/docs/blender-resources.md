@@ -22,7 +22,7 @@ If you are completely new to Blender, the following tutorial series will guide y
 - [Part 4: Sculpting](https://youtu.be/--GVNZnSROc?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z) - Learn sculpting, especially useful for organic models.
 - [Part 5: Shading](https://youtu.be/fsLO1F5x7yM?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z) - Covers materials, texturing, and UV unwrapping.
 
-## Modeling
+### Modelling: Recommended Tutorials
 
 Here are some valuable tutorials to improve your modeling skills:
 
@@ -47,15 +47,17 @@ Here are some valuable tutorials to improve your modeling skills:
 > Unity does not natively understand Blender's shader node system, except for the Principled BSDF. If you use other nodes, you must bake your material as a texture for it to work in Unity.  
 > Note that Lethal Company automatically adds its own "style" to assets, so elaborate texturing might not be necessary.
 
-### Modelling:Recommended Tutorials
+### UV/Textures: Recommended Tutorials
 
 - [**2D Drawing to 3D Model Part 2 (UVs and Textures)**](https://www.youtube.com/watch?v=GLxMYj-pBQs) - Eve Sculpts  
+
 - [**Blender 4.0 - Texture Painting Quick Start Guide**](https://youtu.be/iwWoXMWzC_c) - Jamie Dunbar  
   A beginner-friendly introduction to texture painting.
+
 - [**Blender 4.0: How to UV Unwrap Anything**](https://youtu.be/XleO7DBm1Us) - On Mars 3D  
   Learn the essentials of UV unwrapping.
 
-## Rigging:Recommended Tutorials
+### Rigging: Recommended Tutorials
 
 Rigging is essential for creating movable, articulated models. The following tutorials will help you get started:
 
@@ -77,7 +79,7 @@ Rigging is essential for creating movable, articulated models. The following tut
 > **NLA Editor Use:**  
 > It's important to place individual animations in the NLA Editor so they can be used separately in Unity. The length of an animation in Unity is determined by the length set in the NLA Editor.
 
-### Animating:Recommended Tutorials
+### Animating: Recommended Tutorials
 
 - [**The Nuts and Bolts of Blender's Animation System**](https://youtu.be/p3m57yAcsi0) - CGDive  
   Provides an in-depth introduction to Blender's animation tools: Timeline, Dope Sheet, Graph Editor, NLA Editor, and Actions.
@@ -125,11 +127,3 @@ This aligns Blender's coordinate system with Unity's, ensuring your model is ori
 1. When making changes to your model in Blender, re-export the model by overwriting the previous FBX file.
 2. Do **not** delete the previous model version or its `.meta` file.
 3. Avoid overwriting the model directly within Unity to maintain all references. Instead, overwrite the FBX file from outside Unity.
-
----
-
-### Additional Suggestions
-
-1. **Images and Diagrams:** Ensure all images referenced in the guide are correctly linked and displayed. Diagrams explaining coordinate systems and export settings are particularly helpful.
-2. **External Resources:** Consider including a brief description or key takeaways from each linked video tutorial, so users know what to expect before watching.
-3. **Glossary or FAQ:** Consider adding a glossary of key terms or an FAQ section at the end to address common questions and clarify terminology.
