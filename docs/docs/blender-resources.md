@@ -1,110 +1,135 @@
 # 3D Modeling With Blender
 
-On this page, we have listed various resources in order to help you get started with making your own 3D models in Blender, including how to get your models into Unity.
+This guide provides a comprehensive collection of resources to help you start creating 3D models in Blender, and details how to import these models into Unity.
 
->[!TIP]
->You can check the ExampleEnemy Blender project included in the example enemy repository for reference.  
->It can be found under [AssetSources/Blender](https://github.com/Hamunii/LC-ExampleEnemy/tree/main/AssetSources/Blender).
+> [!TIP]  
+> **Reference Project:**  
+> Check the ExampleEnemy Blender project included in the example enemy repository for reference. It can be found under [AssetSources/Blender](https://github.com/Hamunii/LC-ExampleEnemy/tree/main/AssetSources/Blender).
 
 ## Blender Basics
 
->[!TIP]
->Don't press random keys, as Blender has a lot of keyboard shortcuts and you might have no idea what you just did or how to undo it.  
->That said, keyboard shortcuts can speed up your workflow by a lot, and you can use this [Blender 4.1 Shortcuts Cheat Sheet](https://surf-visualization.github.io/blender-course/references/cheat-sheet-4.1.pdf) by SURF HPCV, which can be useful.
+> [!TIP]  
+> **Keyboard Shortcuts:**  
+> Avoid pressing random keys, as Blender has numerous keyboard shortcuts that could lead to unexpected actions. However, mastering these shortcuts can greatly accelerate your workflow. Refer to this [Blender 4.1 Shortcuts Cheat Sheet](https://surf-visualization.github.io/blender-course/references/cheat-sheet-4.1.pdf) by SURF HPCV for quick reference.
 
-If you have absolutely no experience with Blender, the 5 parts of this series will be relevant.  
-[Blender 4.0 Beginner Donut Tutorial](https://www.youtube.com/playlist?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z) (playlist) - Blender Guru
+If you are completely new to Blender, the following tutorial series will guide you through the basics:
 
-- [Part 1: Introduction](https://youtu.be/B0J27sf9N1Y?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z) - Introduces the very basics of Blender
-- [Part 2: Basic Modeling](https://youtu.be/tBpnKTAc5Eo?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z) - Self-explanatory (Learn to model a Donut)
-- [Part 3: Modeling the Icing](https://youtu.be/AqJx5TJyhes?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z&t=42) - introduces more advanced modeling techniques (Detailing)
-- [Part 4: Sculpting](https://youtu.be/--GVNZnSROc?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z) - Sculpting can be especially useful when modeling organic things
-- [Part 5: Shading](https://youtu.be/fsLO1F5x7yM?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z) - Materials, texturing, UV unwrapping
+### Blender 4.0 Beginner Donut Tutorial - Blender Guru (Playlist)
+
+- [Part 1: Introduction](https://youtu.be/B0J27sf9N1Y?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z) - Covers the very basics of Blender.
+- [Part 2: Basic Modeling](https://youtu.be/tBpnKTAc5Eo?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z) - Learn to model a donut.
+- [Part 3: Modeling the Icing](https://youtu.be/AqJx5TJyhes?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z&t=42) - Introduces advanced modeling techniques for detailing.
+- [Part 4: Sculpting](https://youtu.be/--GVNZnSROc?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z) - Learn sculpting, especially useful for organic models.
+- [Part 5: Shading](https://youtu.be/fsLO1F5x7yM?list=PLjEaoINr3zgEPv5y--4MKpciLaoQYZB1Z) - Covers materials, texturing, and UV unwrapping.
 
 ## Modeling
 
-- [Fast Character Modeling with the Skin Modifier in Blender](https://youtu.be/DAAwy_l4jw4) - Joey Carlino
-  - Introduces a super cool and easy modeling technique. I recommend this a lot for learning to make basic initial meshes for characters or creatures.
-- [2D drawing to 3D model Part 1 (Modelling the shape)](https://www.youtube.com/watch?v=AlPPYkZg9D4) - Eve Sculpts
-  - Shows a smooth step by step process for going from a simple drawing to a textured and UV'd 3D model.
+Here are some valuable tutorials to improve your modeling skills:
+
+- [**Fast Character Modeling with the Skin Modifier in Blender**](https://youtu.be/DAAwy_l4jw4) - Joey Carlino  
+  Learn a simple yet effective modeling technique, perfect for creating basic initial meshes for characters or creatures.
+  
+- [**2D Drawing to 3D Model Part 1 (Modeling the Shape)**](https://www.youtube.com/watch?v=AlPPYkZg9D4) - Eve Sculpts  
+  This tutorial walks you through transforming a simple drawing into a 3D model.
 
 ### Modeling - Common Issues
 
-**Q: My mesh looks inverted in Blender or when imported to Unity.**  
+**Q: My mesh looks inverted in Blender or when imported into Unity.**  
 
-> This is because your normals got inverted in one way or another. Select your mesh in Edit Mode, press `A` to select everything, press `Shift+N` to recalculate your normals (do not select "Inside", that is the flipped state).  
-> If this doesn't fix the problem after importing to Unity, you likely have resized your object by a negative amount. This looks normal in Blender, but not in Unity. To fix this, go into Object Mode, select your object, press `Ctrl+A`, select apply scale. Now your normals should have flipped in Blender. Now, recalculate normals.
+> **Solution:**  
+> This is likely due to inverted normals. In Blender, select your mesh in Edit Mode, press `A` to select everything, and press `Shift+N` to recalculate your normals (ensure "Inside" is not selected).  
+> If the problem persists after importing to Unity, it could be due to resizing your object negatively. To fix this, switch to Object Mode, select your object, press `Ctrl+A`, and choose "Apply Scale." Then, recalculate normals again in Blender.
 
 ## Materials, Texturing & UV Unwrapping
 
->[!NOTE]  
->Unity does not understand Blender's shader node system. If you use it for anything other than the principled BSDF, you will have to bake your material as a texture before it will work in Unity.  
->Also make note of the fact that Lethal Company automatically adds its own "style" to everything, so you don't need to worry about that.
->However, textures are not necessary so you can basically skip this section entirely.  
+> [!NOTE]  
+> **Shader Compatibility:**  
+> Unity does not natively understand Blender's shader node system, except for the Principled BSDF. If you use other nodes, you must bake your material as a texture for it to work in Unity.  
+> Note that Lethal Company automatically adds its own "style" to assets, so elaborate texturing might not be necessary.
 
-- [2D drawing to 3D model Part 2 (UV's and textures)](https://www.youtube.com/watch?v=GLxMYj-pBQs) - Eve Sculpts
-- [Blender 4.0 - Texture Painting quick start guide](https://youtu.be/iwWoXMWzC_c) - Jamie Dunbar
-  - Introduction to texturing models.
-- [Blender 4.0: How to UV Unwrap Anything](https://youtu.be/XleO7DBm1Us) - On Mars 3D
-  - UV Unwrapping and dealing with UV maps.
+### Modelling:Recommended Tutorials
 
-## Rigging
+- [**2D Drawing to 3D Model Part 2 (UVs and Textures)**](https://www.youtube.com/watch?v=GLxMYj-pBQs) - Eve Sculpts  
+- [**Blender 4.0 - Texture Painting Quick Start Guide**](https://youtu.be/iwWoXMWzC_c) - Jamie Dunbar  
+  A beginner-friendly introduction to texture painting.
+- [**Blender 4.0: How to UV Unwrap Anything**](https://youtu.be/XleO7DBm1Us) - On Mars 3D  
+  Learn the essentials of UV unwrapping.
 
-- [Rigging for beginners](https://www.youtube.com/watch?v=mYgznqvbisM) - Ryan King Art
-  - Long but super easy to follow tutorial for rigging any humanoid model but concept can be applied on any model.
-- [Tutorial: My New Rigging Workflow in Blender](https://youtu.be/BiPoPMnU2VI) - Polyfjord
-  - Inverse kinematics on a mechanical character. Very useful for rigging legs.
-- [Rigging for impatient people - Blender Tutorial](https://youtu.be/DDeB4tDVCGY) - Joey Carlino
-  - Includes a lot of useful information about rigging, but it's a very fast paced video. Can be fairly hard to follow for a complete beginner. Likely a better watch after you've seen the more basic introductory type tutorials first.
-- [How to Rig and Animate in BLENDER!](https://youtu.be/1khSuB6sER0) - ProductionCrate
-  - Learn how to make a rig for a humanoid character, fix issues with Blender's automatic weights feature, as well as inverse kinematics.
+## Rigging:Recommended Tutorials
+
+Rigging is essential for creating movable, articulated models. The following tutorials will help you get started:
+
+- [**Rigging for Beginners**](https://www.youtube.com/watch?v=mYgznqvbisM) - Ryan King Art  
+  A detailed yet easy-to-follow tutorial on rigging humanoid models, applicable to any model type.
+  
+- [**Tutorial: My New Rigging Workflow in Blender**](https://youtu.be/BiPoPMnU2VI) - Polyfjord  
+  Learn about inverse kinematics, particularly useful for rigging legs.
+  
+- [**Rigging for Impatient People - Blender Tutorial**](https://youtu.be/DDeB4tDVCGY) - Joey Carlino  
+  A fast-paced but informative video, ideal after you've grasped the basics.
+
+- [**How to Rig and Animate in Blender!**](https://youtu.be/1khSuB6sER0) - ProductionCrate  
+  Covers rigging a humanoid character, resolving issues with automatic weights, and using inverse kinematics.
 
 ## Animation & NLA (Nonlinear Animation) Editor
 
->[!NOTE]
->We should put our individual animations in the NLA Editor so we can use them separately in Unity.  
->The length of the animation in Unity will be the length that you set in the NLA editor.  
->This is important to know if you set an animation cycle to repeat a certain amount of times in Blender when you want to for example preview it in combination with your other animations.
+> [!NOTE]  
+> **NLA Editor Use:**  
+> It's important to place individual animations in the NLA Editor so they can be used separately in Unity. The length of an animation in Unity is determined by the length set in the NLA Editor.
 
-- [The Nuts and Bolts of Blender's animation system](https://youtu.be/p3m57yAcsi0) - CGDive
-  - Introduces concepts in a very in-depth way. Introduces Timeline, Dope Sheet, Graph Editor, NLA Editor, Actions.
-- [Un-confusing the NLA Editor (Nonlinear Animation)](https://youtu.be/tAo7HxxxA08) - GCDive
-  - A more in-depth video about the NLA Editor. Do note though, we do not need to do anything complex with the NLA Editor.
-- [Become a PRO at Animation in 25 Minutes | Blender Tutorial](https://youtu.be/_C2ClFO3FAY) - CG Geek
-  - Animating a walk cycle. Uses Timeline, Dope Sheet and Graph Editor. Uses references for animation.
-- [Character animation for impatient people - Blender Tutorial](https://youtu.be/GAIZkIfXXjQ) - Joey Carlino
-  - If you don't want to make and rig your own models.
+### Animating:Recommended Tutorials
+
+- [**The Nuts and Bolts of Blender's Animation System**](https://youtu.be/p3m57yAcsi0) - CGDive  
+  Provides an in-depth introduction to Blender's animation tools: Timeline, Dope Sheet, Graph Editor, NLA Editor, and Actions.
+  
+- [**Un-confusing the NLA Editor (Nonlinear Animation)**](https://youtu.be/tAo7HxxxA08) - CGDive  
+  A more detailed guide to the NLA Editor, focusing on basic usage for Unity compatibility.
+
+- [**Become a PRO at Animation in 25 Minutes | Blender Tutorial**](https://youtu.be/_C2ClFO3FAY) - CG Geek  
+  Learn to animate a walk cycle using Timeline, Dope Sheet, and Graph Editor.
+
+- [**Character Animation for Impatient People - Blender Tutorial**](https://youtu.be/GAIZkIfXXjQ) - Joey Carlino  
+  A quick guide for those who want to animate without creating their own rigs.
 
 ### Animation - Common Issues
 
-**Q: Objects in my model appear in different places as in Blender when exporting to Unity.**  
+**Q: Objects in my model appear in different places in Unity compared to Blender.**  
 
-> This might be because you have directly animated an object, instead of an armature. Try parenting your object to an armature and remake your animation with that.
+> **Solution:**  
+> This may occur if you have animated an object directly instead of using an armature. Try parenting your object to an armature and re-create the animation.
 
 **Q: Some animations do nothing in Unity.**  
 
-> This might be because you have animations with the same name in your NLA editor. Make sure your animations have unique names.
+> **Solution:**  
+> This could be due to having animations with identical names in the NLA Editor. Ensure all your animations have unique names.
 
 ## Exporting Assets For Unity
 
-- To export your model, go to: `File` -> `Export` -> `FBX (.fbx)`  
-- This will open our FBX exporter window, where we have some options available to us. If you have put your animations in the NLA editor, you'll want to disable `All Actions` under the `Bake Animation` dropdown.
+### Basic Export Instructions
 
-- ![Screenshot: Export as FBX Settings](/images/lethallib/custom-enemies/blender/BlenderExportAsFBX.png)
+1. Go to `File` -> `Export` -> `FBX (.fbx)`.
+2. In the FBX export window, ensure that under the "Bake Animation" dropdown, `All Actions` is disabled if you have placed your animations in the NLA Editor.
+3. The most crucial part is setting the correct transform options to ensure your model appears correctly in Unity:
 
-- The most important thing here however is the transform section. Because of the differences in Blender's and Unity's coordinate systems, exporting your model is not quite as straight-forward as you'd think. It's very easy to get your model pointing in the wrong direction, being sideways, or even upside down if you don't have correct values set.
+    - Set `Forward` to `-Z Forward`.
+    - Set `Up` to `Y Up`.
 
-- Blender considers "Forward" to be `-Y`, while in Unity it's `Z`. And "Up" in Blender is `Z`, while in Unity it's `Y`. "Forward" is illustrated with the green arrow in the image below, while the blue arrow is "Up". The left side represents Blender's coordinate space, center represents our export settings in Blender's space, while the right side represents the output in Unity's space.
+This aligns Blender's coordinate system with Unity's, ensuring your model is oriented correctly.
 
-- ![Illustration: Blender coordinates to Unity](/images/lethallib/custom-enemies/blender/BlenderToUnityCoordinates.png)
+### Exporting an Updated Version of Your Model for Unity
 
-- We set `Forward` (`-Y`) to `-Z Forward`, and `Up` (`Z`) to `Y Up` and our model appears correctly in Unity space. The reason `-Z Forward` becomes positive `Z` might be because technically, `Z` is inverted between Blender and Unity, which we can see in the illustration.  
+> [!CAUTION]  
+> **Backup Your Unity Project:**  
+> Always back up your Unity project before importing updated models.
 
-## Exporting an Updated Version of Your Model For Unity
+1. When making changes to your model in Blender, re-export the model by overwriting the previous FBX file.
+2. Do **not** delete the previous model version or its `.meta` file.
+3. Avoid overwriting the model directly within Unity to maintain all references. Instead, overwrite the FBX file from outside Unity.
 
->[!CAUTION]
->Make sure to have a backup of your Unity project before doing this!
+---
 
-- If you have made changes to your model in Blender and want to bring the updated model into Unity, you will want to export your model again, overwriting the previous FBX file.
-- Don't delete the previous version of the model or the accompanying .meta file, and don't overwrite the model inside of Unity.
-- We want to keep all the references intact, and the best way to do that is to overwrite the FBX file from outside of Unity.
+### Additional Suggestions
+
+1. **Images and Diagrams:** Ensure all images referenced in the guide are correctly linked and displayed. Diagrams explaining coordinate systems and export settings are particularly helpful.
+2. **External Resources:** Consider including a brief description or key takeaways from each linked video tutorial, so users know what to expect before watching.
+3. **Glossary or FAQ:** Consider adding a glossary of key terms or an FAQ section at the end to address common questions and clarify terminology.
