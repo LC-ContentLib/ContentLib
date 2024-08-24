@@ -47,18 +47,20 @@ public abstract class ContentDefinition : ScriptableObject
                     $"The `{nameof(ModDefinition)} {nameof(Mod)}` of this ContentDefinition exists but isn't registered! " +
                     "Please create your ModDefinition through intended methods.");
             }
-
-            return result;
         }
-
-        if (!TryGetModDefinitionFromCallingAssembly(out ModDefinition? modDefinition))
+        else if (TryGetModDefinitionFromCallingAssembly(out ModDefinition? modDefinition))
+            Mod = modDefinition;
+        else
         {
             MarkAsInvalid(ref result,
                 $"Tried getting {nameof(BepInPlugin)} Attribute from CallingAssembly, but the attribute was not found! " +
                 "Make sure to call ContentLib from a valid BepInEx Plugin assembly.");
+
+            return result;
         }
 
-        Mod = modDefinition;
+        if (!Mod.Content.Contains(this))
+            Mod.Content.Add(this);
 
         return result;
     }
