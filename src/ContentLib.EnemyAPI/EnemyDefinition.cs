@@ -50,6 +50,20 @@ public class EnemyDefinition : ContentDefinition
     /// <inheritdoc cref="IgnoreEnemyDefinitionValidationFlags"/>
     [field: SerializeField] public IgnoreEnemyDefinitionValidationFlags IgnoreValidationFlags { get; set; } = 0;
 
+    /// <summary>
+    /// Creates a new instance of <see cref="EnemyDefinition"/>.
+    /// </summary>
+    /// <param name="enemyType">A vanilla EnemyType.</param>
+    /// <returns>A new instance of <see cref="EnemyDefinition"/>.</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public static EnemyDefinition Create(EnemyType enemyType)
+    {
+        EnemyDefinition enemyDefinition = CreateInstance<EnemyDefinition>();
+        enemyDefinition.EnemyType = enemyType ?? throw new ArgumentNullException(nameof(enemyType));
+
+        return enemyDefinition;
+    }
+
     /// <inheritdoc/>
     public override (bool isValid, string? message) Validate()
     {
