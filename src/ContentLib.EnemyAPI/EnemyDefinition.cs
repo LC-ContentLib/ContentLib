@@ -61,6 +61,10 @@ public class EnemyDefinition : ContentDefinition
         EnemyDefinition enemyDefinition = CreateInstance<EnemyDefinition>();
         enemyDefinition.EnemyType = enemyType ?? throw new ArgumentNullException(nameof(enemyType));
 
+        if (string.IsNullOrEmpty(enemyType.name))
+            throw new ArgumentException($"{nameof(enemyType)}.{nameof(enemyType.name)} is null!");
+
+        enemyDefinition.name = $"{enemyType.name} EnemyDefinition";
         return enemyDefinition;
     }
 
