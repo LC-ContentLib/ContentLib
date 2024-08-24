@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using ContentLib.Core;
 using ContentLib.Core.Exceptions;
 using ContentLib.Core.Tags;
+using ContentLib.EnemyAPI.Exceptions;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace ContentLib.EnemyAPI;
 
@@ -48,21 +48,34 @@ public class EnemyDefinition : ContentDefinition
     [field: SerializeField] public List<LevelMatchingTags> DaytimeLevelMatchingTags = [];
 
     /// <inheritdoc/>
+    public override (bool isValid, string? message) Validate()
+    {
+        (bool isValid, string? message) result = base.Validate();
+
+        ValidateEnemyType(ref result);
+
+        // We need the above stuff to be valid for the next part.
+        if (!result.isValid)
+            return result;
+
+        ValidateEnemyPrefab(ref result);
+
+        return result;
+    }
+
+    /// <inheritdoc/>
     /// <exception cref="NullReferenceException"></exception>
     /// <exception cref="ContentRegisteredTooLateException"></exception>
     /// <exception cref="ContentAlreadyRegisteredException"></exception>
-    public override void Register(ModDefinition modDefinition)
+    public override void Register()
     {
-        if (modDefinition == null)
-            throw new ArgumentNullException(nameof(modDefinition));
 
-        ModDefinition realMod = modDefinition.GetRealInstance();
-        base.Register(realMod);
+        (var isValid, var message) = Validate();
 
-        s_registerCallbackInvoker.Invoke(realMod, name, isBefore: true, this);
+        if (!isValid)
+            throw new EnemyDefinitionRegistrationException(message!);
 
-        ValidateEnemyType();
-        ValidateEnemyPrefab();
+        // s_registerCallbackInvoker.Invoke(realMod, name, isBefore: true, this);
 
         if (s_lateForRegister)
             throw new ContentRegisteredTooLateException($"EnemyDefinition '{name}' was registered too late!");
@@ -72,43 +85,55 @@ public class EnemyDefinition : ContentDefinition
 
         IsRegistered = true;
         s_registeredEnemies.Add(this);
-        s_registerCallbackInvoker.Invoke(realMod, name, isBefore: false, this);
+        // s_registerCallbackInvoker.Invoke(realMod, name, isBefore: false, this);
     }
 
-    private void ValidateEnemyType() 
+    private void ValidateEnemyType(ref (bool isValid, string? message) result) 
     {
         if (EnemyType == null)
-            throw new NullReferenceException($"{nameof(EnemyType)} is null!");
+        {
+            MarkAsInvalid(ref result, $"{nameof(EnemyType)} is null!");
+            return;
+        }
 
         if (EnemyType.enemyPrefab == null)
-            throw new NullReferenceException($"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)} is null!");
+        {
+            MarkAsInvalid(ref result, $"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)} is null!");
+            return;
+        }
 
-        ValidateLayerAndTag(EnemyType.enemyPrefab, "Enemies", "Enemy", nameof(EnemyType.enemyPrefab));
+        ValidateLayerAndTag(ref result, EnemyType.enemyPrefab, "Enemies", "Enemy", nameof(EnemyType.enemyPrefab));
         
         if (string.IsNullOrEmpty(EnemyType.enemyName))
-            throw new NullReferenceException($"{nameof(EnemyType)}{nameof(EnemyType.enemyName)} is null or empty!");
+        {
+            MarkAsInvalid(ref result, $"{nameof(EnemyType)}{nameof(EnemyType.enemyName)} is null or empty!");
+            return;
+        }
     }
 
-    private void ValidateEnemyPrefab()
+    private void ValidateEnemyPrefab(ref (bool isValid, string? message) result)
     {
         var enemyPrefabPath = $"{nameof(EnemyType)}.{nameof(EnemyType.enemyPrefab)}";
 
         // The enemy spawning explodes without an EnemyAI component.
         EnemyAI enemyAI = EnemyType.enemyPrefab.GetComponent<EnemyAI>();
         if (enemyAI == null)
-            throw new NullReferenceException($"{enemyPrefabPath}.{nameof(enemyAI)} is null!");
+        {
+            MarkAsInvalid(ref result, $"{enemyPrefabPath}.{nameof(enemyAI)} is null!");
+            return;
+        }
 
         // Needed for the enemy to reference important base values.
         if (enemyAI.enemyType == null)
-            throw new NullReferenceException($"{enemyPrefabPath}.{nameof(enemyAI)}.{nameof(enemyAI.enemyType)} is null!");
+            MarkAsInvalid(ref result, $"{enemyPrefabPath}.{nameof(enemyAI)}.{nameof(enemyAI.enemyType)} is null!");
 
         // Needed for the enemy to move around the world.
         if (enemyAI.agent == null)
-            throw new NullReferenceException($"{enemyPrefabPath}.{nameof(enemyAI)}.{nameof(enemyAI.agent)} is null!");
+            MarkAsInvalid(ref result, $"{enemyPrefabPath}.{nameof(enemyAI)}.{nameof(enemyAI.agent)} is null!");
 
         // Needed to animate the enemy.
         if (enemyAI.creatureAnimator == null)
-            throw new NullReferenceException($"{enemyPrefabPath}.{nameof(enemyAI)}.{nameof(enemyAI.creatureAnimator)} is null!");
+            MarkAsInvalid(ref result, $"{enemyPrefabPath}.{nameof(enemyAI)}.{nameof(enemyAI.creatureAnimator)} is null!");
 
         // Needed so that the game knows what states you're switching when using SwitchBehaviour.
         // Not an issue if not using the game's Behaviour system, so should this be checked?
@@ -120,15 +145,15 @@ public class EnemyDefinition : ContentDefinition
         ScanNodeProperties[] scanNodeProperties = EnemyType.enemyPrefab.GetComponentsInChildren<ScanNodeProperties>();
         if (scanNodeProperties.Length == 0)
         {
-            WarnBySeverity($"{nameof(EnemyType.enemyPrefab)} '{EnemyType.enemyPrefab.name}' doesn't have any {nameof(ScanNodeProperties)} components! It can't be scanned.",
-                (message) => throw new NullReferenceException(message));
+            MarkAsInvalid(ref result,
+                $"{nameof(EnemyType.enemyPrefab)} '{EnemyType.enemyPrefab.name}' doesn't have any {nameof(ScanNodeProperties)} components! It can't be scanned.");
         }
         else
         {
             // Needed so it can be scanned and not scanned when holding (needs tag to be untagged).
             foreach (ScanNodeProperties scanNode in scanNodeProperties)
             {
-                ValidateLayerAndTag(scanNode.gameObject, "ScanNode", "Untagged",
+                ValidateLayerAndTag(ref result, scanNode.gameObject, "ScanNode", "Untagged",
                     $"{nameof(EnemyType)}{nameof(EnemyType.enemyPrefab)}{nameof(scanNodeProperties)}");
             }
         }
@@ -144,27 +169,24 @@ public class EnemyDefinition : ContentDefinition
         EnemyAICollisionDetect[] collisionDetectComponents = EnemyType.enemyPrefab.GetComponentsInChildren<EnemyAICollisionDetect>();
         if (collisionDetectComponents.Length == 0)
         {
-            WarnBySeverity(
-                $"Enemy '{EnemyType.enemyName}' doesn't reference any EnemyAI Collision Detect Scripts!",
-                (message) => throw new NullReferenceException(message));
+            MarkAsInvalid(ref result,
+                $"Enemy '{EnemyType.enemyName}' doesn't reference any EnemyAI Collision Detect Scripts!");
         }
         foreach (EnemyAICollisionDetect collisionDetect in collisionDetectComponents)
         {
             if (collisionDetect.mainScript == null)
             {
-                WarnBySeverity(
-                    $"An Enemy AI Collision Detect Script on GameObject '{collisionDetect.gameObject.name}' of enemy '{EnemyType.enemyName}' does not reference a 'Main Script', and could cause Null Reference Exceptions.",
-                    (message) => throw new NullReferenceException(message));
+                MarkAsInvalid(ref result,
+                    $"An Enemy AI Collision Detect Script on GameObject '{collisionDetect.gameObject.name}' of enemy '{EnemyType.enemyName}' does not reference a 'Main Script', and could cause Null Reference Exceptions.");
             }
-            ValidateLayerAndTag(collisionDetect.gameObject, "Enemies", "Enemy",
+            ValidateLayerAndTag(ref result, collisionDetect.gameObject, "Enemies", "Enemy",
                 $"Enemy '{EnemyType.enemyName}' has invalid layer or tag on a GameObject with an {nameof(EnemyAICollisionDetect)} Script!");
 
             // Needed for opening doors and stuff.
             if (collisionDetect.gameObject.GetComponent<Rigidbody>() == null)
             {
-                WarnBySeverity(
-                    $"An Enemy AI Collision Detect Script on GameObject '{collisionDetect.gameObject.name}' of enemy '{EnemyType.enemyName}' does not have a {nameof(Rigidbody)} Component attached, which prevents the enemy from opening doors!",
-                    (message) => throw new MissingComponentException(message));
+                MarkAsInvalid(ref result,
+                    $"An Enemy AI Collision Detect Script on GameObject '{collisionDetect.gameObject.name}' of enemy '{EnemyType.enemyName}' does not have a {nameof(Rigidbody)} Component attached, which prevents the enemy from opening doors!");
             }
         }
 
@@ -173,6 +195,7 @@ public class EnemyDefinition : ContentDefinition
     }
 
     private void ValidateLayerAndTag(
+        ref (bool isValid, string? message) result,
         GameObject gameObject,
         string requiredLayer,
         string requiredTag,
@@ -181,9 +204,8 @@ public class EnemyDefinition : ContentDefinition
     {
         if (gameObject.layer != LayerMask.NameToLayer(requiredLayer) || gameObject.tag != requiredTag)
         {
-            WarnBySeverity(
-                $"{errorMessagePrefix} is not set on the correct layer ('{requiredLayer}') or tag ('{requiredTag}')!",
-                (message) => throw new Exception(message));
+            MarkAsInvalid(ref result,
+                $"{errorMessagePrefix} is not set on the correct layer ('{requiredLayer}') or tag ('{requiredTag}')!");
         }
     }
 }
