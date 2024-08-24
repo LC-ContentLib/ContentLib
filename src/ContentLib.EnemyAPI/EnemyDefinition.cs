@@ -46,6 +46,9 @@ public class EnemyDefinition : ContentDefinition
     /// </summary>
     /// <inheritdoc cref="InsideLevelMatchingTags"/>
     [field: SerializeField] public List<LevelMatchingTags> DaytimeLevelMatchingTags = [];
+    
+    /// <inheritdoc cref="IgnoreEnemyDefinitionValidationFlags"/>
+    [field: SerializeField] public IgnoreEnemyDefinitionValidationFlags IgnoreValidationFlags { get; set; } = 0;
 
     /// <inheritdoc/>
     public override (bool isValid, string? message) Validate()
@@ -140,7 +143,7 @@ public class EnemyDefinition : ContentDefinition
         ScanNodeProperties[] scanNodeProperties = EnemyType.enemyPrefab.GetComponentsInChildren<ScanNodeProperties>();
         if (scanNodeProperties.Length == 0)
         {
-            MarkAsInvalid(ref result,
+            MarkAsInvalid(ref result, IgnoreEnemyDefinitionValidationFlags.NoScanNode,
                 $"{nameof(EnemyType.enemyPrefab)} '{EnemyType.enemyPrefab.name}' doesn't have any {nameof(ScanNodeProperties)} components! It can't be scanned.");
         }
         else
@@ -164,7 +167,7 @@ public class EnemyDefinition : ContentDefinition
         EnemyAICollisionDetect[] collisionDetectComponents = EnemyType.enemyPrefab.GetComponentsInChildren<EnemyAICollisionDetect>();
         if (collisionDetectComponents.Length == 0)
         {
-            MarkAsInvalid(ref result,
+            MarkAsInvalid(ref result, IgnoreEnemyDefinitionValidationFlags.NoCollisionDetect,
                 $"Enemy '{EnemyType.enemyName}' doesn't reference any EnemyAI Collision Detect Scripts!");
         }
         foreach (EnemyAICollisionDetect collisionDetect in collisionDetectComponents)
@@ -174,13 +177,14 @@ public class EnemyDefinition : ContentDefinition
                 MarkAsInvalid(ref result,
                     $"An Enemy AI Collision Detect Script on GameObject '{collisionDetect.gameObject.name}' of enemy '{EnemyType.enemyName}' does not reference a 'Main Script', and could cause Null Reference Exceptions.");
             }
+
             ValidateLayerAndTag(ref result, collisionDetect.gameObject, "Enemies", "Enemy",
                 $"Enemy '{EnemyType.enemyName}' has invalid layer or tag on a GameObject with an {nameof(EnemyAICollisionDetect)} Script!");
 
             // Needed for opening doors and stuff.
             if (collisionDetect.gameObject.GetComponent<Rigidbody>() == null)
             {
-                MarkAsInvalid(ref result,
+                MarkAsInvalid(ref result, IgnoreEnemyDefinitionValidationFlags.NoRigidBodyOnCollisionDetect,
                     $"An Enemy AI Collision Detect Script on GameObject '{collisionDetect.gameObject.name}' of enemy '{EnemyType.enemyName}' does not have a {nameof(Rigidbody)} Component attached, which prevents the enemy from opening doors!");
             }
         }
@@ -202,5 +206,13 @@ public class EnemyDefinition : ContentDefinition
             MarkAsInvalid(ref result,
                 $"{errorMessagePrefix} is not set on the correct layer ('{requiredLayer}') or tag ('{requiredTag}')!");
         }
+    }
+
+    private void MarkAsInvalid(ref (bool isValid, string? message) result, IgnoreEnemyDefinitionValidationFlags thisCheckFlag, string message)
+    {
+        if (IgnoreValidationFlags.HasFlag(thisCheckFlag))
+            return;
+
+        MarkAsInvalid(ref result, message);
     }
 }
