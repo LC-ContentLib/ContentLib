@@ -57,7 +57,7 @@ public abstract class ContentDefinition : ScriptableObject
     /// If this method completes without throwing, <see cref="IsRegistered"/> of this instance
     /// is set to <see langword="true"/>.
     /// </remarks>
-    public abstract void Register(ModDefinition modDefinition);
+    public abstract void Register();
 
     /// <summary>
     /// Warn according to <see cref="WarningSeverity"/>.
