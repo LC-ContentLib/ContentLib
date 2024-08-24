@@ -38,10 +38,23 @@ public abstract class ContentDefinition : ScriptableObject
     {
         (bool isValid, string? message) result = new(true, null);
 
+        if (Mod is not null)
+        {
+            // The ModDefinition should always be in the the dictionary, so we validate it was created properly.
+            if (!ModDefinition.AllMods.ContainsKey(Mod.ModName))
+            {
+                MarkAsInvalid(ref result,
+                    $"The `{nameof(ModDefinition)} {nameof(Mod)}` of this ContentDefinition exists but isn't registered! " +
+                    "Please create your ModDefinition through intended methods.");
+            }
+
+            return result;
+        }
+
         if (!TryGetModDefinitionFromCallingAssembly(out ModDefinition? modDefinition))
         {
             MarkAsInvalid(ref result,
-                $"Tried getting {nameof(BepInPlugin)} Attribute from CallingAssembly, but the attribute was not found!\n" +
+                $"Tried getting {nameof(BepInPlugin)} Attribute from CallingAssembly, but the attribute was not found! " +
                 "Make sure to call ContentLib from a valid BepInEx Plugin assembly.");
         }
 
