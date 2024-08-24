@@ -93,7 +93,9 @@ public abstract class ContentDefinition : ScriptableObject
     protected void MarkAsInvalid(ref (bool isValid, string? message) result, string message)
     {
         result.isValid = false;
-        result.message += message;
+
+        result.message ??= "Content failed validation for the following reasons:";
+        result.message += $"\n{message}";
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Aggressive inlining is for GetCallingAssembly!
