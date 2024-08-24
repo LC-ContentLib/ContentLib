@@ -152,6 +152,29 @@ public class ModDefinition : ScriptableObject
     }
 
     /// <summary>
+    /// Validates all the content from this mod.
+    /// </summary>
+    /// <returns>If all the content passed validation, or otherwise a message with each issue.</returns>
+    public (bool isValid, string? message) ValidateContent()
+    {
+        (bool isValid, string? message) result = new(true, null);
+
+        foreach (ContentDefinition contentDefinition in Content)
+        {
+            (bool isValid, string? message) newResult = contentDefinition.Validate();
+
+            if (!newResult.isValid)
+            {
+                result.isValid = false;
+                result.message += $"\n{newResult.message}";
+            }
+        }
+
+        return result;
+    }
+
+
+    /// <summary>
     /// Registers all the content from this mod that hasn't been registered.
     /// </summary>
     public void RegisterContent()
@@ -159,7 +182,7 @@ public class ModDefinition : ScriptableObject
         foreach (ContentDefinition contentDefinition in Content)
         {
             if (!contentDefinition.IsRegistered)
-                contentDefinition.Register(this);
+                contentDefinition.Register();
         }
     }
 }
