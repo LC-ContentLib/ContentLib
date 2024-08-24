@@ -36,7 +36,7 @@ public abstract class ContentDefinition : ScriptableObject
     [MethodImpl(MethodImplOptions.AggressiveInlining)] // Aggressive inlining is for GetCallingAssembly!
     public virtual (bool isValid, string? message) Validate()
     {
-        (bool isValid, string? message) result = new();
+        (bool isValid, string? message) result = new(true, null);
 
         if (!TryGetModDefinitionFromCallingAssembly(out ModDefinition? modDefinition))
         {
