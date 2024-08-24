@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using BepInEx;
 using ContentLib.Core.Exceptions;
 using UnityEngine;
 
@@ -52,6 +53,28 @@ public class ModDefinition : ScriptableObject
     public static IReadOnlyDictionary<string, ModDefinition> AllMods => s_allMods;
     private static readonly Dictionary<string, ModDefinition> s_allMods = [];
     private ModDefinition _realModDefinition = null!;
+
+    /// <param name="pluginInfo">PluginInfo for a plugin from BepInEx.</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <inheritdoc cref="Create(string, string)"/>
+    public static ModDefinition Create(PluginInfo pluginInfo)
+    {
+        if (pluginInfo is null)
+            throw new ArgumentNullException($"{nameof(pluginInfo)} is null!");
+
+        return Create(pluginInfo.Metadata);
+    }
+
+    /// <param name="bepInPlugin">A BepInPlugin Attribute which contains the mod's GUID and name.</param>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <inheritdoc cref="Create(string, string)"/>
+    public static ModDefinition Create(BepInPlugin bepInPlugin)
+    {
+        if (bepInPlugin is null)
+            throw new ArgumentNullException($"{nameof(bepInPlugin)} is null!");
+
+        return Create(bepInPlugin.GUID, bepInPlugin.Name);
+    }
 
     /// <summary>
     /// Creates or gets an existing instance of a <see cref="ModDefinition"/> ScriptableObject.
