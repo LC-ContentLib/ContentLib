@@ -60,13 +60,17 @@ public class EnemyDefinition : ContentDefinition
 
         ValidateEnemyPrefab(ref result);
 
+        if (s_lateForRegister)
+            MarkAsInvalid(ref result, $"Registration window has closed!");
+
+        if (IsRegistered)
+            MarkAsInvalid(ref result, $"EnemyDefinition '{name}' has already been registered!");
+
         return result;
     }
 
     /// <inheritdoc/>
-    /// <exception cref="NullReferenceException"></exception>
-    /// <exception cref="ContentRegisteredTooLateException"></exception>
-    /// <exception cref="ContentAlreadyRegisteredException"></exception>
+    /// <exception cref="EnemyDefinitionRegistrationException"></exception>
     public override void Register()
     {
 
@@ -75,17 +79,8 @@ public class EnemyDefinition : ContentDefinition
         if (!isValid)
             throw new EnemyDefinitionRegistrationException(message!);
 
-        // s_registerCallbackInvoker.Invoke(realMod, name, isBefore: true, this);
-
-        if (s_lateForRegister)
-            throw new ContentRegisteredTooLateException($"EnemyDefinition '{name}' was registered too late!");
-
-        if (IsRegistered)
-            throw new ContentAlreadyRegisteredException($"EnemyDefinition '{name}' has already been registered!");
-
         IsRegistered = true;
         s_registeredEnemies.Add(this);
-        // s_registerCallbackInvoker.Invoke(realMod, name, isBefore: false, this);
     }
 
     private void ValidateEnemyType(ref (bool isValid, string? message) result) 
