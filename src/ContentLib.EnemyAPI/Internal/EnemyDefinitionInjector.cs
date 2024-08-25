@@ -5,16 +5,17 @@ namespace ContentLib.EnemyAPI.Internal;
 internal static partial class EnemyDefinitionInjector
 {
     internal static bool s_lateForRegister = false;
-    private static List<EnemyDefinition> s_registeredEnemies = null!;
+    private static List<EnemyDefinition> s_enemiesToRegister = null!;
 
     internal static void Register(EnemyDefinition enemyDefinition)
     {
-        if (s_registeredEnemies is null)
+        if (s_enemiesToRegister is null)
         {
-            s_registeredEnemies = [];
+            s_enemiesToRegister = [];
             On.QuickMenuManager.Start += Hook_InjectToQuickMenuManager;
+            On.RoundManager.Start += Hook_InjectEnemiesToLevels;
         }
 
-        s_registeredEnemies.Add(enemyDefinition);
+        s_enemiesToRegister.Add(enemyDefinition);
     }
 }

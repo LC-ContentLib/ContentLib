@@ -14,7 +14,7 @@ internal static partial class EnemyDefinitionInjector
 
         SelectableLevel testLevel = self.testAllEnemiesLevel;
 
-        foreach (EnemyDefinition enemyDefinition in s_registeredEnemies)
+        foreach (EnemyDefinition enemyDefinition in s_enemiesToRegister)
         {
             SpawnableEnemyWithRarity enemyDefWithRarity = new()
             {
