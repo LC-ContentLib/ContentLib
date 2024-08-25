@@ -8,7 +8,7 @@ internal static partial class EnemyDefinitionInjector
     /// Adds enemies to the Debug/Test Menu that can be accessed by forcing
     /// <see cref="Application.isEditor"/> to be true and opening the menu in-game as the host.
     /// </summary>
-    private static void Hook_InjectToQuickMenuManager(On.QuickMenuManager.orig_Start orig, QuickMenuManager self)
+    private static void Hook_InjectEnemiesToDebugMenu(On.QuickMenuManager.orig_Start orig, QuickMenuManager self)
     {
         orig(self);
 
