@@ -22,13 +22,13 @@ internal static partial class EnemyDefinitionInjector
                 rarity = 0,
             };
 
-            if (enemyDefinition.InsideLevelMatchingTags is not null)
+            if (enemyDefinition.InsideLevelMatchingTags.Count != 0)
                 testLevel.Enemies.Add(enemyDefWithRarity);
 
-            if (enemyDefinition.OutsideLevelMatchingTags is not null)
+            if (enemyDefinition.OutsideLevelMatchingTags.Count != 0)
                 testLevel.OutsideEnemies.Add(enemyDefWithRarity);
 
-            if (enemyDefinition.DaytimeLevelMatchingTags is not null)
+            if (enemyDefinition.DaytimeLevelMatchingTags.Count != 0)
                 testLevel.DaytimeEnemies.Add(enemyDefWithRarity);
         }
     }
