@@ -9,7 +9,7 @@ namespace ContentLib.Core.Networking;
 /// <summary>
 /// Handles registering network prefabs.
 /// </summary>
-public static class NetworkPrefabs
+public static class NetworkPrefabManager
 {
     private static HashSet<GameObject>? s_networkPrefabs;
 
