@@ -87,7 +87,6 @@ public class EnemyDefinition : ContentDefinition
     /// <exception cref="EnemyDefinitionRegistrationException"></exception>
     public override void Register()
     {
-
         (var isValid, var message) = Validate();
 
         if (!isValid)
