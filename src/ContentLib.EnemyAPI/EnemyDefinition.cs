@@ -4,6 +4,7 @@ using ContentLib.Core;
 using ContentLib.Core.Networking;
 using ContentLib.Core.Tags;
 using ContentLib.EnemyAPI.Exceptions;
+using ContentLib.EnemyAPI.Internal;
 using UnityEngine;
 
 namespace ContentLib.EnemyAPI;
@@ -14,9 +15,6 @@ namespace ContentLib.EnemyAPI;
 [CreateAssetMenu(fileName = "EnemyDefinition", menuName = "ContentLib/EnemyAPI/EnemyDefinition", order = 0)]
 public class EnemyDefinition : ContentDefinition
 {
-    internal static List<EnemyDefinition> s_registeredEnemies = [];
-    internal static bool s_lateForRegister = false;
-
     /// <summary>
     /// The Vanilla EnemyType ScriptableObject.
     /// </summary>
@@ -76,7 +74,7 @@ public class EnemyDefinition : ContentDefinition
 
         ValidateEnemyPrefab(ref result);
 
-        if (s_lateForRegister)
+        if (EnemyDefinitionInjector.s_lateForRegister)
             MarkAsInvalid(ref result, $"Registration window has closed!");
 
         if (IsRegistered)
@@ -97,7 +95,7 @@ public class EnemyDefinition : ContentDefinition
 
         NetworkPrefabManager.RegisterNetworkPrefab(EnemyType.enemyPrefab);
 
-        s_registeredEnemies.Add(this);
+        EnemyDefinitionInjector.Register(this);
         IsRegistered = true;
     }
 
