@@ -17,7 +17,9 @@ public abstract class ContentDefinition : ScriptableObject
     /// The owner of this content.
     /// </summary>
     /// <remarks>
-    /// This member is not null when <see cref="IsRegistered"/> of this instance is <see langword="true"/>.
+    /// This is guaranteed not null when <see cref="IsRegistered"/> of this instance is <see langword="true"/>.<br/>
+    /// This is set in <see cref="Validate"/> if ModDefinition is successfully gotten via reflection
+    /// based on the <see cref="BepInPlugin"/> Attribute. If this fails, validation fails, and the content can't be registered.
     /// </remarks>
     public ModDefinition? Mod { get; private set; }
 
