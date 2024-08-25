@@ -11,8 +11,8 @@ namespace ContentLib.Core;
 /// </summary>
 /// <remarks>
 /// This is mostly intended to be used as ScriptableObjects in Unity, but it can be used programmatically too,<br/>
-/// although ContentLib can automatically create a <see cref="ContentDefinition"/> from your 
-/// <see cref="BepInEx.BepInPlugin"/> Attribute in your assembly, using reflection.<br/>
+/// although ContentLib can automatically create a ModDefinition from your 
+/// <see cref="BepInPlugin"/> Attribute in your assembly, using reflection.<br/>
 /// <br/>
 /// If two or more <see cref="ModDefinition"/> instances with the same <see cref="ModGUID"/> are loaded
 /// from AssetBundles, the one that was loaded first will get all the Content from the other loaded
