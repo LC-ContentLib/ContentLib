@@ -14,13 +14,8 @@ namespace ContentLib.EnemyAPI;
 [CreateAssetMenu(fileName = "EnemyDefinition", menuName = "ContentLib/EnemyAPI/EnemyDefinition", order = 0)]
 public class EnemyDefinition : ContentDefinition
 {
-    /// <inheritdoc cref="RegisterCallbacks{T}"/>
-    public static RegisterCallbacks<EnemyDefinition> Callbacks { get; } = new(ref s_registerCallbackInvoker!);
     internal static List<EnemyDefinition> s_registeredEnemies = [];
     internal static bool s_lateForRegister = false;
-
-    /// <inheritdoc cref="RegisterCallbacks{T}.CallbackInvoker"/>
-    private static RegisterCallbacks<EnemyDefinition>.CallbackInvoker s_registerCallbackInvoker;
 
     /// <summary>
     /// The Vanilla EnemyType ScriptableObject.
