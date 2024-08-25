@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using ContentLib.Core;
-using ContentLib.Core.Exceptions;
+using ContentLib.Core.Networking;
 using ContentLib.Core.Tags;
 using ContentLib.EnemyAPI.Exceptions;
 using UnityEngine;
@@ -95,8 +95,10 @@ public class EnemyDefinition : ContentDefinition
         if (!isValid)
             throw new EnemyDefinitionRegistrationException(message!);
 
-        IsRegistered = true;
+        NetworkPrefabManager.RegisterNetworkPrefab(EnemyType.enemyPrefab);
+
         s_registeredEnemies.Add(this);
+        IsRegistered = true;
     }
 
     private void ValidateEnemyType(ref (bool isValid, string? message) result) 
