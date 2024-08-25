@@ -33,19 +33,19 @@ public class EnemyDefinition : ContentDefinition
     /// <remarks>
     /// If no tags match, the enemy won't be injected into this spawn pool.
     /// </remarks>
-    [field: SerializeField] public List<LevelMatchingTags> InsideLevelMatchingTags = [];
+    [field: SerializeField] public List<LevelMatchingTags> InsideLevelMatchingTags { get; set; } = [];
 
     /// <summary>
     /// Tags for matching and getting a weight for injecting this enemy to outside enemies spawn pool.
     /// </summary>
     /// <inheritdoc cref="InsideLevelMatchingTags"/>
-    [field: SerializeField] public List<LevelMatchingTags> OutsideLevelMatchingTags = [];
+    [field: SerializeField] public List<LevelMatchingTags> OutsideLevelMatchingTags { get; set; } = [];
 
     /// <summary>
     /// Tags for matching and getting a weight for injecting this enemy to daytime enemies spawn pool.
     /// </summary>
     /// <inheritdoc cref="InsideLevelMatchingTags"/>
-    [field: SerializeField] public List<LevelMatchingTags> DaytimeLevelMatchingTags = [];
+    [field: SerializeField] public List<LevelMatchingTags> DaytimeLevelMatchingTags { get; set; } = [];
     
     /// <inheritdoc cref="IgnoreEnemyDefinitionValidationFlags"/>
     [field: SerializeField] public IgnoreEnemyDefinitionValidationFlags IgnoreValidationFlags { get; set; } = 0;
