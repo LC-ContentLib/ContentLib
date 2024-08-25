@@ -11,13 +11,18 @@ internal static partial class EnemyDefinitionInjector
     {
         if (s_enemiesToRegister is null)
         {
-            s_enemiesToRegister = [];
-
-            On.Terminal.Start += Hook_InjectEnemiesToBestiary;
-            On.QuickMenuManager.Start += Hook_InjectEnemiesToDebugMenu;
-            On.RoundManager.Start += Hook_InjectEnemiesToLevels;
+            s_enemiesToRegister = [enemyDefinition];
+            InitializeHooks();
+            return;
         }
 
         s_enemiesToRegister.Add(enemyDefinition);
+    }
+
+    private static void InitializeHooks()
+    {
+        On.Terminal.Start += Hook_InjectEnemiesToBestiary;
+        On.QuickMenuManager.Start += Hook_InjectEnemiesToDebugMenu;
+        On.RoundManager.Start += Hook_InjectEnemiesToLevels;
     }
 }
