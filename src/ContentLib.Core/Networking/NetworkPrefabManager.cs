@@ -27,8 +27,9 @@ public static class NetworkPrefabManager
 
         if (s_networkPrefabs is null)
         {
-            s_networkPrefabs = [];
+            s_networkPrefabs = [prefab];
             On.GameNetworkManager.Start += Hook_RegisterNetworkPrefabs;
+            return;
         }
 
         if (!s_networkPrefabs.Contains(prefab))
