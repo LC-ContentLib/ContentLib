@@ -13,9 +13,6 @@ namespace ContentLib.Core;
 /// </summary>
 public abstract class ContentDefinition : ScriptableObject
 {
-    /// <inheritdoc cref="WarningSeverityLevel"/>
-    [field: SerializeField] public WarningSeverityLevel WarningSeverity { get; set; } = WarningSeverityLevel.WarningsAsExceptions;
-
     /// <summary>
     /// The owner of this content.
     /// </summary>
@@ -73,32 +70,6 @@ public abstract class ContentDefinition : ScriptableObject
     /// is set to <see langword="true"/>.
     /// </remarks>
     public abstract void Register();
-
-    /// <summary>
-    /// Warn according to <see cref="WarningSeverity"/>.
-    /// </summary>
-    /// <param name="message">The error or warning message.</param>
-    /// <param name="throwDelegate">A delegate that throws an exception with a message.</param>
-    /// <exception cref="InvalidOperationException"></exception>
-    protected void WarnBySeverity(string message, Action<string> throwDelegate)
-    {
-        switch (WarningSeverity)
-        {
-            case WarningSeverityLevel.WarningsAsExceptions:
-                throwDelegate($"WarningsAsExceptions: {message}");
-                break;
-
-            case WarningSeverityLevel.WarningsAsWarnings:
-                Plugin.s_log.LogWarning(message);
-                break;
-
-            case WarningSeverityLevel.IgnoreWarnings:
-                return;
-            
-            default:
-                throw new InvalidOperationException($"{nameof(WarningSeverity)} isn't set to a valid value! Value: {WarningSeverity}");
-        }
-    }
 
     /// <summary>
     /// Used for marking a <see cref="Validate"/> return value as invalid.
