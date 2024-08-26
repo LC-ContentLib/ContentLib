@@ -22,7 +22,7 @@
 [build]
   icon  ="./icon.png"
   outdir="./build"
-  readme="../README.md"
+  readme="../../../README.md"
 
 #Don't change this
 [general]
