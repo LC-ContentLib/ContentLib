@@ -2,4 +2,5 @@
 - href: ../index.md
 - href: getting-started.md
 - name: Contributing
+- href: ./contributing/contributing-guidelines.md
 - href: ./contributing/writing-articles.md
