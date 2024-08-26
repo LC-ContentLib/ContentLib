@@ -5,7 +5,7 @@
 [package]
   #Edit this in the CSPROJ instead, the workflow will automate copying
   #it here for you
-  description="The EnemyAI Module of ContentLib."
+  description="The EnemyAPI Module of ContentLib."
 
   #Change this to true if your mod has any NSFW content. Please follow the rules
   #on image and text content on your listing or your package may be removed
