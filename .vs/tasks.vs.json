@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskName": "Dry-run package test",
+      "type": "shell",
+      "command": "dotnet tool run tcli build --config-path ./artifacts/tspublish/Core/thunderstore.toml; dotnet tool run tcli build --config-path ./artifacts/tspublish/EnemyAI/thunderstore.toml"
+    }
+  ]
+}
