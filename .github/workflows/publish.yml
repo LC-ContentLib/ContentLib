@@ -23,7 +23,7 @@ jobs:
         run: |
           dotnet restore --locked-mode
           dotnet tool restore
-          dotnet build -c Release
+          dotnet pack -c Release
 
       - name: Publish to TS
         env:
