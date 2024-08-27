@@ -23,7 +23,7 @@
     </ItemGroup>
 
     <Copy
-      DestinationFolder="$(SolutionDir)\artifacts\tspublish\Core\dist"
+      DestinationFolder="$(SolutionDir)\artifacts\tspublish\$(Product)\dist"
       SourceFiles="@(PackageFiles)"
     />
 
