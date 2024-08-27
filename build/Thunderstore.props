@@ -1,0 +1,25 @@
+<Project>
+
+  <PropertyGroup>
+    <DeleteExistingFiles>True</DeleteExistingFiles>
+    <DeployAsIisApp>False</DeployAsIisApp>
+    <EnableMSDeployAppOffline>True</EnableMSDeployAppOffline>
+    <EnableMSDeployBackup>False</EnableMSDeployBackup>
+    <ExcludeApp_Data>True</ExcludeApp_Data>
+    <ExcludeFilesFromAppData>True</ExcludeFilesFromAppData>
+    <ExcludeFilesFromDeployment>bin\**;obj\**</ExcludeFilesFromDeployment>
+    <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
+    <LastUsedPlatform>Any CPU</LastUsedPlatform>
+    <LaunchSiteAfterPublish>False</LaunchSiteAfterPublish>
+    <MSDeployPublishMethod>FileSystem</MSDeployPublishMethod>
+    <PublishDir>$(SolutionDir)\artifacts\tspublish\$(Product)\dist\plugins</PublishDir>
+    <PublishFramework>$(TargetFramework)</PublishFramework>
+    <PublishProtocol>FileSystem</PublishProtocol>
+    <SkipACLAttribute>True</SkipACLAttribute>
+    <SkipAppDataFolder>True</SkipAppDataFolder>
+    <SkipExtraFilesOnServer>True</SkipExtraFilesOnServer>
+    <UsePowerShell>False</UsePowerShell>
+    <WebPublishMethod>FileSystem</WebPublishMethod>
+  </PropertyGroup>
+
+</Project>
