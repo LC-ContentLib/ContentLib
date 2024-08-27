@@ -26,6 +26,7 @@ public abstract class ContentDefinition : ScriptableObject
     /// <summary>
     /// Get whether or not this content has been registered.
     /// </summary>
+    [MemberNotNullWhen(returnValue: true, nameof(Mod))]
     public bool IsRegistered { get; protected set; }
 
     /// <summary>
