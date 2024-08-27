@@ -23,11 +23,11 @@ jobs:
         run: |
           dotnet restore --locked-mode
           dotnet tool restore
-          dotnet build
+          dotnet build -c Release
 
       - name: Publish to TS
         env:
           TCLI_AUTH_TOKEN: ${{ secrets.TCLI_AUTH_TOKEN }}
           PACKAGE_VERSION: ${{ github.ref_name }}
         run: |
-          dotnet publish -c Release
+          dotnet publish -c Release --no-release
