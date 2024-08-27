@@ -28,6 +28,6 @@ jobs:
       - name: Publish to TS
         env:
           TCLI_AUTH_TOKEN: ${{ secrets.TCLI_AUTH_TOKEN }}
-          PACKAGE_VERSION: ${{ github.ref_name }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
           dotnet publish -c Release --no-build

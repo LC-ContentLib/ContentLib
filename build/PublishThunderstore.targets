@@ -1,0 +1,20 @@
+<Project>
+
+  <Target Name="ThunderstorePublish" AfterTargets="CustomPublish;NuGetPublish">
+    <ItemGroup>
+      <PackageFiles Include="$(SolutionDir)\LICENSE.txt" />
+    </ItemGroup>
+
+    <Copy
+      DestinationFolder="$(SolutionDir)\artifacts\tspublish\$(Product)\dist"
+      SourceFiles="@(PackageFiles)"
+    />
+
+    <Exec
+      Command='dotnet tcli publish --package-name "$(Product)" --package-namespace "$(Authors)" --package-version "$(Version)"'
+      ConsoleToMSBuild="true"
+      WorkingDirectory="$(SolutionDir)\artifacts\tspublish\$(Product)\"
+    />
+  </Target>
+
+</Project>

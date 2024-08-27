@@ -4,7 +4,7 @@
     <Authors>ContentLib</Authors>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/LC-ContentLib/ContentLib</RepositoryUrl>
-    <PublishProfile>Thunderstore</PublishProfile>
+    <PublishProfile>PublishAll</PublishProfile>
   </PropertyGroup>
 
   <PropertyGroup>
