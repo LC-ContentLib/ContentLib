@@ -30,4 +30,4 @@ jobs:
           TCLI_AUTH_TOKEN: ${{ secrets.TCLI_AUTH_TOKEN }}
           PACKAGE_VERSION: ${{ github.ref_name }}
         run: |
-          dotnet publish -c Release --no-release
+          dotnet publish -c Release --no-build
