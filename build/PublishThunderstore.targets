@@ -1,6 +1,6 @@
 <Project>
 
-  <Target Name="ThunderstorePublish" AfterTargets="CustomPublish;NuGetPublish">
+  <Target Name="ThunderstorePublish" AfterTargets="CustomPublish">
     <ItemGroup>
       <PackageFiles Include="$(SolutionDir)\LICENSE.txt" />
     </ItemGroup>
