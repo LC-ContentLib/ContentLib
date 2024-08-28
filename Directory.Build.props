@@ -23,6 +23,7 @@
     <ProjectDepsFileName>$(Product).deps.json</ProjectDepsFileName>
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>

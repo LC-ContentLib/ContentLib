@@ -2,9 +2,9 @@
 
   <Target Name="NuGetPublish" AfterTargets="CustomPublish">
     <Exec
-      Command='dotnet nuget push $(OutputPath)*.nupkg --api-key $(NUGET_API_KEY) --source https://api.nuget.org/v3/index.json'
+      Command='dotnet nuget push $(AssemblyName).*.nupkg - -api-key $(NUGET_API_KEY) - -source https://api.nuget.org/v3/index.json'
       ConsoleToMSBuild="true"
-      WorkingDirectory="$(MSBuildProjectDirectory)\"
+      WorkingDirectory="$(PackageOutputPath)"
     />
   </Target>
 
