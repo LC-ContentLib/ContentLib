@@ -13,6 +13,8 @@ A modular custom content API for Lethal Company.
 - HazardAPI (TODO)
 - More coming soon...
 
+Interested in helping design and implement API modules? See the instructions below!
+
 ## Contributing
 
 If you are a developer, consider contributing to ContentLib!  
