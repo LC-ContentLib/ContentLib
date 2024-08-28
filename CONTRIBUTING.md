@@ -1,6 +1,6 @@
 # Contributing Guidelines
 
-Thank you for being interested in contributing to ContentLib! ContentLib aims to be a community-driven project, and needs contributors and maintainers to ensure this project lives on.
+Thank you for your interest in contributing to ContentLib! ContentLib aims to be a community-driven project, and needs contributors and maintainers to ensure this project lives on.
 
 ## Working on the Project
 
