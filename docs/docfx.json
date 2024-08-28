@@ -5,14 +5,14 @@
         {
           "src": "..",
           "files": [
-            "src/**/bin/Release/com.github.lc-contentlib.*.dll"
+            "artifacts/bin/ContentLib.*/release/com.github.lc-contentlib.*.dll"
           ]
         }
       ],
       "dest": "api",
       "references": [{
         "src": "..",
-        "files": "src/**/bin/Release/com.github.lc-contentlib.*.dll"
+        "files": "artifacts/bin/ContentLib.*/release/com.github.lc-contentlib.*.dll"
       }],
       "disableDefaultFilter": false,
       "outputFormat": "mref",
