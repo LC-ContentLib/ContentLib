@@ -26,9 +26,47 @@ if (!inSpecialAnimation)
 
 This also means that if `syncMovementSpeed` is zero, or a very big number, the enemy movement will appear janky on clients other than the host.
 
-The `DoAIInterval()` method runs in an interval we've set in Unity on our custom AI script which is attached to our enemy prefab. By default this is set to 0.2 seconds, which is also used in the game by for example the BaboonHawk enemy and probably other enemies too.
+The `DoAIInterval()` method runs in an interval we've set in Unity on our `CustomAI` script (which inherits `EnemyAI`) on the enemy's prefab.  
+By default this is set to 0.2 seconds, which is also used in the game by for example the BaboonHawk enemy and probably other enemies too.
 
-If `movingTowardsTargetPlayer` is set to True, the Enemy will automatically set its destination to the target player, at an interval of 0.25 seconds, this is done in the `base.DoAIInterval()` Method:
+If `movingTowardsTargetPlayer` is set to true, the `EnemyAI`'s `NavMeshAgent` will automatically set `destination` to the `targetPlayer` IF `targetPlayer` is not null.  
+Both `base.Update()` and `base.DoAIInterval()` Methods work together to set the position/`destination` of the enemy:
+
+```cs
+public virtual void Update()
+{
+    // ... deep in EnemyAI.Update
+    if (this.movingTowardsTargetPlayer && this.targetPlayer != null)
+    {
+        if (this.setDestinationToPlayerInterval <= 0f)
+        {
+            // Sets the timer to reset where the enemy is going (so every 0.25 seconds the player's precise NAVMESH position is updated for the enemy).
+            this.setDestinationToPlayerInterval = 0.25f;
+            // Sets a destination that it uses in `Base.DoAIInterval()`.
+            this.destination = RoundManager.Instance.GetNavMeshPosition(this.targetPlayer.transform.position, RoundManager.Instance.navHit, 2.7f, -1);
+        }
+        else
+        {
+            // Sets the destination for the enemy when the interval is not up (The only change is that the destination isn't set to the NavMesh directly unlike in the if statement above, this is likely because GetNavMeshPosition is performance intensive.)
+            this.destination = new Vector3(this.targetPlayer.transform.position.x, this.destination.y, this.targetPlayer.transform.position.z);
+            // Decreases the timer for setting the enemy to the player's exact NavMesh position.
+            this.setDestinationToPlayerInterval -= Time.deltaTime;
+        }
+        if (this.addPlayerVelocityToDestination > 0f)
+        {
+            // Checks to overshoot the destination depending on the direction and speed of the player moving.
+            if (this.targetPlayer == GameNetworkManager.Instance.localPlayerController)
+            {
+                this.destination += Vector3.Normalize(this.targetPlayer.thisController.velocity * 100f) * this.addPlayerVelocityToDestination;
+            }
+            else if (this.targetPlayer.timeSincePlayerMoving < 0.25f)
+            {
+                this.destination += Vector3.Normalize((this.targetPlayer.serverPlayerPosition - this.targetPlayer.oldPlayerPosition) * 100f) * this.addPlayerVelocityToDestination;
+            }
+        }
+    }
+}
+```
 
 ```cs
 // ... in EnemyAI.DoAIInterval
@@ -46,14 +84,153 @@ public virtual void DoAIInterval()
 }
 ```
 
-As shown above, the enemy updates its destination every DoAIInterval call if `moveTowardsDestination` is True. It is True by default, and also gets set True if you run the `SetDestinationToPosition()` method, returning true, which means the enemy was able to pathfind to the player. Running that method also sets `movingTowardsTargetPlayer` to False, and updates the `destination` variable.
+As shown above, the enemy updates its destination every `Base.DoAIInterval()` call if `moveTowardsDestination` is `true`. It is true by default, and also gets set `true` if you run the `SetDestinationToPosition()` method.  
 
-The `OnCollideWithPlayer()` method will run when an object with a trigger collider and the Enemy AI Collision Detect (Script). This is also the collider we can hit with a shovel, and we need to implement `HitEnemy()` for our enemy to be able to take damage and die.
+### `public bool SetDestinationToPosition(Vector3 position, [bool checkForPath = false])`
+
+#### Parameters
+
+- `Vector3 position`: the destination
+- `bool checkForPath` *(optional, default is `false`)*: if `true`, it should check if there's a `NavMeshPath` from where it currently is to the given `position`.
+
+##### Return Value
+
+Returns `true` if it was able to find a valid path, or `false` otherwise.
+
+Running `SetDestinationToPosition()` sets `movingTowardsTargetPlayer` to false, and updates the `destination` variable for use in DoAIInterval.
+
+`OnCollideWithPlayer()` and `OnCollideWithEnemy()` are methods that runs once an object with both an __isTrigger__ [`Collider`](https://docs.unity3d.com/ScriptReference/Collider.html) and the `EnemyAICollisionDetect` Script attached to the same `GamObject` collide with a player/enemy.  
+This is also the [`Collider`](https://docs.unity3d.com/ScriptReference/Collider.html) that is hittable with the `Shovel`.  
+`HitEnemy()` still needs to be implemented for the enemy to be able to take damage and die like so:
+
+```cs
+// ... inside our CustomAI implementation.
+// Method to override (HitEnemy).
+public override void HitEnemy(int force = 1, PlayerControllerB? playerWhoHit = null, bool playHitSFX = false, int hitID = -1)
+{
+    // Call base to play some sounds set in the enemyType such as hitEnemyVoiceSFX in enemyType.
+    base.HitEnemy(force, playerWhoHit, playHitSFX, hitID);
+    // No need to keep on calling it if the enemy is already dead.
+    if (isEnemyDead) return;
+    // Decrease the HP by force.
+    enemyHP = enemyHP - force;
+    
+    // Base game calls to declare the enemy as dead on all clients.
+    if (IsOwner && enemyHP <= 0 && !isEnemyDead) {
+        KillEnemyOnOwnerClient();
+        return;
+    }
+    // Optional Logging, will error out unless you have an ExtendedLogging method defined in your base Plugin class in Plugin.cs file.
+    Plugin.ExtendedLogging($"Player who hit: {playerWhoHit}");
+    Plugin.ExtendedLogging($"Enemy HP: {enemyHP}");
+    Plugin.ExtendedLogging($"Hit with force {force}");
+}
+```
+
+`SetEnemyStunned` is the base-game method called when an `EnemyAI` is nearby an exploded `StunGrenade` (Mods could also cause this method to be called on your enemy too).  
+
+```cs
+// ... inside EnemyAI.
+public virtual void SetEnemyStunned(bool setToStunned, float setToStunTime = 1f, PlayerControllerB setStunnedByPlayer = null)
+{
+    // Checks to ensure that the enemy is dead and can be stunned before applying any stun.
+    if (this.isEnemyDead)
+    {
+        return;
+    }
+    if (!this.enemyType.canBeStunned)
+    {
+        return;
+    }
+    // if setTuStunned is false, resets the enemy's stun timer.
+    if (setToStunned)
+    {
+        // if currently invincible from a previous stun, don't stun again immediately after.
+        if (this.postStunInvincibilityTimer >= 0f)
+        {
+            return;
+        }
+        // Play's a stun sound from enemyType if creatureVoice is not null and the enemy is NOT already stunned.
+        if (this.stunNormalizedTimer <= 0f && this.creatureVoice != null)
+        {
+            this.creatureVoice.PlayOneShot(this.enemyType.stunSFX);
+        }
+        // Sets player that stunned the enemy, an invincibility timer of 0.5 seconds, and how long they'll be stunned for.
+        this.stunnedByPlayer = setStunnedByPlayer;
+        this.postStunInvincibilityTimer = 0.5f;
+        this.stunNormalizedTimer = setToStunTime;
+        return;
+    }
+    else
+    {
+        this.stunnedByPlayer = null;
+        if (this.stunNormalizedTimer > 0f)
+        {
+            this.stunNormalizedTimer = 0f;
+            return;
+        }
+        return;
+    }
+}
+```
+
+One last important method that you'd need to keep in mind when creating a custom enemy is a method ran on `Base.Update()` exclusively for daytime enemies, `CheckTimeOfDayToLeave()`.  
+
+```cs
+// ... in EnemyAI
+private void CheckTimeOfDayToLeave()
+{
+    // Null checking whether time exists in the level.
+    if (TimeOfDay.Instance == null)
+    {
+        return;
+    }
+    // Checks whether this daytime enemy is an outside enemy (enemyType.isOutside needs to be enabled for daytime enemies too!!).
+    // Checks whether it's been enough time in the day to "leave" (enemyType has a curve for normalisedTimeInDayToLeave set in Unity).
+    if (TimeOfDay.Instance.timeHasStarted && TimeOfDay.Instance.normalizedTimeOfDay > this.enemyType.normalizedTimeInDayToLeave && this.isOutside)
+    {
+        // Sets leaving to true and calls the leave function, by default, the leave function does NOTHING, implementation is dependent on the enemy instead.
+        this.daytimeEnemyLeaving = true;
+        this.DaytimeEnemyLeave();
+    }
+}
+
+public override void DaytimeEnemyLeave()
+{
+    base.DaytimeEnemyLeave();
+    // Custom implementation, possibly despawning the enemy as vanilla enemies do and as seen below.
+}
+
+// ... in DocileLocustBeesAI
+public override void DaytimeEnemyLeave()
+{
+    // Calls base (which only includes debug logs).
+    base.DaytimeEnemyLeave();
+    // ...Miscellanous code that includes playing sound effects once leaving.
+    
+    // Starts a Coroutine to determine when the bugs would "leave", implementation seen below.
+    StartCoroutine(this.bugsLeave());
+}
+
+private IEnumerator bugsLeave()
+{
+    // Waits 6 seconds before executing the next pieces of code.
+    yield return new WaitForSeconds(6f);
+    // Kills the enemy as it is time for it to "leave".
+    base.KillEnemyOnOwnerClient(true);
+}
+```
+
+### `public void KillEnemyOnOwnerClient([bool overrideDestroy = false])`
+
+#### Parameters
+
+- `bool overrideDestroy` *(optional, default is `false`)*: if `true`, it should completely destroy the enemy when killing it.
 
 >[!TIP]
 >When we want to implement these methods from `EnemyAI` into our AI script, we will have to use the `override` modifier on the method to override the virtual base method.  
->We will also want to call the original virtual method inside our override method like this: 
->
+>We will also want to call the original virtual method inside our override method like this:  
+
 ```cs
 public override void DoAIInterval()
 {
@@ -65,6 +242,7 @@ public override void DoAIInterval()
 >
 
 ## Behavior Examples
+
 ### Enemy Movement
 
 The `TargetClosestPlayer()` method can be used to make the enemy change its targetPlayer to the closest player.
@@ -73,6 +251,7 @@ Then, we can for example do `SetDestinationToPosition(targetPlayer.transform.pos
 ### Using Random Without Desync
 
 We can implement our own random variable which we initialize with a set seed in our `Start()` method, and use it like this:
+
 ```cs
 System.Random enemyRandom;
 
@@ -81,7 +260,8 @@ public override void Start()
     base.Start();
     enemyRandom = new System.Random(StartOfRound.Instance.randomMapSeed + thisEnemyIndex);
 }
-``` 
+```
+
 And we can use it for example this: `enemyRandom.Next(0, 5)`. This will choose the next random integer in our range.
 
 We should still be careful about using random, as it is still possible that for example some `if` statement might have a different outcome due to some small desync, and then our random numbers also get desynced.
@@ -116,6 +296,7 @@ class MyComplexAI : EnemyAI {
 ```
 
 Now we have two states in this example, the `WANDERING` state and the `CHASING` state. What's great about enums is that we can very easily add a new state to our AI. In order to use our new states we need to modify our `DoAIInterval()` method.
+
 ```cs
 class MyComplexAI : EnemyAI
 {
@@ -152,7 +333,9 @@ class MyComplexAI : EnemyAI
     }
 }
 ```
+
 Now all we need to do is instruct *when* the AI should change state:
+
 ```cs
 // ... in our DoAIInterval() method
 switch(currentBehaviourStateIndex)
@@ -175,6 +358,7 @@ switch(currentBehaviourStateIndex)
         break;
 }
 ```
+
 We've now converted our AI into a state machine by using an enum! This helps you organize larger AI systems into chunks that can't interfere with each other so you'll encounter less bugs. It's also a lot easier for you to now add more states to your AI without having to use a bunch of `if` checks.
 
 ## External Resources
