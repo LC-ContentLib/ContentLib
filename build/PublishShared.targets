@@ -1,0 +1,18 @@
+<Project>
+
+  <Target Name="CustomPublish" AfterTargets="Publish">
+    <ItemGroup>
+      <FilesToExclude Include="$(PublishDir)\.gitkeep" />
+      <FilesToExclude Include="$(PublishDir)\0Harmony.dll" />
+      <FilesToExclude Include="$(PublishDir)\Assembly-CSharp.dll" />
+      <FilesToExclude Include="$(PublishDir)\BepInEx.dll" />
+      <FilesToExclude Include="$(PublishDir)\Mono.Cecil*.dll" />
+      <FilesToExclude Include="$(PublishDir)\MonoMod.*.dll" />
+      <FilesToExclude Include="$(PublishDir)\Newtonsoft.Json.dll" />
+      <FilesToExclude Include="$(PublishDir)\System.*.dll" />
+      <FilesToExclude Include="$(PublishDir)\UnityEngine*.dll" />
+    </ItemGroup>
+    <Delete Files="@(FilesToExclude)" />
+  </Target>
+
+</Project>

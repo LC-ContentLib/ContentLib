@@ -17,16 +17,17 @@ jobs:
         with:
           dotnet-version: "8.x"
           cache: true
+          cache-dependency-path: '**/packages.lock.json'
 
       - name: Restore and Build
         run: |
           dotnet restore --locked-mode
           dotnet tool restore
-          dotnet build
+          dotnet pack -c Release
 
       - name: Publish to TS
         env:
           TCLI_AUTH_TOKEN: ${{ secrets.TCLI_AUTH_TOKEN }}
-          PACKAGE_VERSION: ${{ github.ref_name }}
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
         run: |
-          dotnet publish -c Release
+          dotnet publish -c Release --no-build

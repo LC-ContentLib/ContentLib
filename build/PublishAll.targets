@@ -1,0 +1,8 @@
+<Project>
+
+  <Import Project="$(SolutionDir)\build\PublishShared.props" />
+  <Import Project="$(SolutionDir)\build\PublishShared.targets" />
+  <Import Project="$(SolutionDir)\build\PublishThunderstore.targets" />
+  <Import Project="$(SolutionDir)\build\PublishNuGet.targets" />
+
+</Project>

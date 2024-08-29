@@ -1,27 +1,40 @@
 <Project>
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>ContentLib</Authors>
-
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <RootNamespace>$(Product)</RootNamespace>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://github.com/LC-ContentLib/LC-ContentLib</RepositoryUrl>
-    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
-    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <PublishProfile>Thunderstore</PublishProfile>
-    <TargetName>$(Product)</TargetName>
-    <ProjectDepsFileName>$(Product).deps.json</ProjectDepsFileName>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <RepositoryUrl>https://github.com/LC-ContentLib/ContentLib</RepositoryUrl>
+    <PublishProfile>PublishAll</PublishProfile>
+  </PropertyGroup>
 
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>embedded</DebugType>
     <!-- Trim the project path in debug symbols -->
     <PathMap>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))=./</PathMap>
+  </PropertyGroup>
 
+  <PropertyGroup>
+    <TargetName>$(Product)</TargetName>
+    <RootNamespace>$(Product)</RootNamespace>
+    <ProjectDepsFileName>$(Product).deps.json</ProjectDepsFileName>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <UseArtifactsOutput>true</UseArtifactsOutput>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- 
+      Ensure SolutionDir is actually defined, because otherwise it might not be in every situation.
+      This situation specifically was importing projects in pubxml files and running `dotnet publish`.
+    -->
+    <SolutionDir>$(MSBuildThisFileDirectory)</SolutionDir>
   </PropertyGroup>
 
 </Project>

@@ -1,6 +1,5 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
-using ContentLib.Core;
 using UnityEngine;
 
 namespace ContentLib.EnemyAPI;
@@ -21,13 +20,12 @@ public class Plugin : BaseUnityPlugin
 
         // We might need a project purely for tests. Leaving this as a reminder for later
         // as we could accidentally break this whole system and not realize for a while.
-        var myMod = ModDefinition.Create("test", "test");
         EnemyDefinition myEnemy = ScriptableObject.CreateInstance<EnemyDefinition>();
         myEnemy.name = "testEnemyDefinition";
 
-        EnemyDefinition.Callbacks.AddOnBeforeRegister(myMod, "testEnemyDefinition",
-            (enemy) => s_log.LogInfo("I was called! " + enemy.name));
+        // EnemyDefinition.Callbacks.AddOnBeforeRegister(myMod, "testEnemyDefinition",
+        //     (enemy) => s_log.LogInfo("I was called! " + enemy.name));
 
-        myEnemy.Register(myMod);
+        myEnemy.Register();
     }
 }

@@ -8,4 +8,5 @@
   href: ./enemy-creation/toc.yml
 
 - name: Contributing
+- href: ./contributing/contributing-guidelines.md
 - href: ./contributing/writing-articles.md
