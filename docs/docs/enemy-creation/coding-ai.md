@@ -1,13 +1,17 @@
 # Coding Our Custom AI
 
 >[!IMPORTANT]
->You should use a [decompiler FILL THIS IN](FILL THIS IN) to look how the enemy AI scripts work in the game.  
->All the game code is contained inside `Lethal Company/Lethal Company_Data/Managed/Assembly-CSharp.dll`, so you should open that file in your decompiler!
+>You should use a [ILSpy](FILL THIS IN) or [DnSpy](FILL THIS IN) to look how the enemy AI scripts work in the game.  
+>All the game code is contained inside `Lethal Company/Lethal Company_Data/Managed/Assembly-CSharp.dll`, so you should open that file in your decompiler!  
+>To open the file, there will usually be a button at the top left, for `DnSpy` it is "File", from there, press "Open..." and select the specified dll from above.  
+>Keep in mind that you are NOT allowed to distribute this file ANYWHERE, make sure it is out of your github if you place the dll there or anywhere.  
+>`Assembly_CSharp.dll` contains all the game mode, which makes it illegal to distribute, so beware!  
 >[!tip]
->See our tips for optimizing your mod testing workflow on [Mod Testing Tips](/dev/mod-testing-tips.md)! These will be particularly helpful when tweaking your AI.
+>See our tips for optimizing your mod testing workflow on [Mod Testing Tips](/dev/mod-testing-tips.md)! These will be particularly helpful when tweaking your AI.  
 
 ## Overview of EnemyAI
 
+This guide will walk you through the process of creating a custom enemy AI in Lethal Company, using the `EnemyAI` base class as a foundation.
 Every enemy in Lethal Company inherits from the `abstract class EnemyAI`, so we do the same. We will now go over some of the relevant methods:
 
 The `Start()` method will run when the enemy spawns in a level. We can initialize our variables here.
@@ -33,6 +37,7 @@ If `movingTowardsTargetPlayer` is set to true, the `EnemyAI`'s `NavMeshAgent` wi
 Both `base.Update()` and `base.DoAIInterval()` Methods work together to set the position/`destination` of the enemy:
 
 ```cs
+// Update method of EnemyAI.
 public virtual void Update()
 {
     // ... deep in EnemyAI.Update
@@ -90,12 +95,12 @@ As shown above, the enemy updates its destination every `Base.DoAIInterval()` ca
 
 #### Parameters
 
-- `Vector3 position`: the destination
+- `Vector3 position`: the `destination` of the enemy.
 - `bool checkForPath` *(optional, default is `false`)*: if `true`, it should check if there's a `NavMeshPath` from where it currently is to the given `position`.
 
 ##### Return Value
 
-Returns `true` if it was able to find a valid path, or `false` otherwise.
+Returns `true` if it was able to find a valid path and setting a destination, or `false` otherwise, preventing movement.
 
 Running `SetDestinationToPosition()` sets `movingTowardsTargetPlayer` to false, and updates the `destination` variable for use in DoAIInterval.
 
@@ -239,7 +244,6 @@ public override void DoAIInterval()
     // ... custom logic
 }
 ```
->
 
 ## Behavior Examples
 
@@ -360,6 +364,8 @@ switch(currentBehaviourStateIndex)
 ```
 
 We've now converted our AI into a state machine by using an enum! This helps you organize larger AI systems into chunks that can't interfere with each other so you'll encounter less bugs. It's also a lot easier for you to now add more states to your AI without having to use a bunch of `if` checks.
+
+## Common Mistakes
 
 ## External Resources
 
