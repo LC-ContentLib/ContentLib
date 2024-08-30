@@ -1,10 +1,12 @@
 # Coding Our Custom AI
 
 >[!IMPORTANT]
->You should use [ILSpy](https://github.com/icsharpcode/ILSpy/releases) or [DnSpyEx](https://github.com/dnSpyEx/dnSpy/releases) to examine how the enemy AI scripts work in the game. All the game code is contained inside the `Lethal Company/Lethal Company_Data/Managed/Assembly-CSharp.dll` file, so you should open that file in your decompiler. To open the file, there is usually a button at the top left. For `DnSpy`, it is "File"; from there, press "Open..." and select the specified DLL mentioned above.  
+>You should use [ILSpy](https://github.com/icsharpcode/ILSpy/releases) or [DnSpyEx](https://github.com/dnSpyEx/dnSpy/releases) to examine how the enemy AI scripts work in the game. All the game code is contained inside the `Lethal Company/Lethal Company_Data/Managed/Assembly-CSharp.dll` file, so you should open that file in your decompiler. To open the file, there is usually a button at the top left. (For DnSpy, it is `File`) From there, press "Open..." and select the specified DLL mentioned above.  
 >Keep in mind that you are **not** allowed to distribute this file **anywhere**. Ensure it is removed from your GitHub or any other place where you might have uploaded it. `Assembly_CSharp.dll` contains all the game code, making it illegal to distribute, so be cautious!  
 >[!tip]
 >See our tips for optimizing your mod testing workflow on [Mod Testing Tips](/dev/mod-testing-tips.md)! These will be particularly helpful when tweaking your AI.  
+
+## Table Of Contents
 
 ## Overview of EnemyAI
 
@@ -12,17 +14,18 @@ This guide will walk you through the process of creating a custom enemy AI in Le
 Every enemy in Lethal Company inherits from `abstract class EnemyAI`, so we do the same.  
 
 ```cs
+ // namespaces are used to declare a scope that contains a set of related objects, see "C# References" for more information.
 namespace CustomEnemy;
 class CustomEnemyAI : EnemyAI
 {
-    // ... Fields/Properties
-    
-    // ... Methods
+    // Empty for now.
 }
 ```
 
+### Generic Unity Methods
+
 We will now go over some of the relevant methods:
-The `Start()` method will run when the enemy spawns in a level. We can initialize our variables here.
+The `Start()` method will run when the enemy spawns in a level. Use Start to initialize things that don't need constant updates.
 
 The `Update()` method will run every frame, and we should try to avoiding intensive calculations here.  
 This is also where the enemy position gets updated for clients other than the host:
@@ -36,12 +39,8 @@ if (!inSpecialAnimation)
 }
 ```
 
-This also means that if `syncMovementSpeed` is zero, or a very big number, the enemy movement will appear janky on clients other than the host.
-
-The `DoAIInterval()` method runs in an interval we've set in Unity on our `CustomAI` script (which inherits `EnemyAI`) on the enemy's prefab.  
-By default this is set to 0.2 seconds, which is also used in the game; For example the `BaboonHawk` enemy and probably other enemies too.
-
-If `movingTowardsTargetPlayer` is `true` and `targetPlayer` is not null, the `EnemyAI`'s `NavMeshAgent` will automatically set `destination` to the `targetPlayer`'s Vector3 position.  
+This also means that if `syncMovementSpeed` is zero, or a very big number, the enemy movement will appear janky on clients other than the host, see [Adding Network Transforms](./unity-project.md#adding-advanced-unity-tools) and [Network Transform Documentation](#network-transform) for a smoother more optimised method for syncing movement in-between clients.  
+If `movingTowardsTargetPlayer` is `true` and `targetPlayer` is not `null`, the `EnemyAI`'s [NavMeshAgent](#networking---unity-docs) will automatically set `destination` to the `targetPlayer`'s Vector3 position.  
 Both `base.Update()` and `base.DoAIInterval()` Methods work together to set the position/`destination` of the enemy:
 
 ```cs
@@ -78,17 +77,19 @@ if (this.movingTowardsTargetPlayer && this.targetPlayer != null)
 }
 ```
 
+The `DoAIInterval()` method runs in an interval we've set in Unity on our `CustomAI` script (which inherits `EnemyAI`) on the enemy's prefab.  
+By default this is set to 0.2 (seconds).
+
 ```cs
 // ... in EnemyAI.DoAIInterval
 if (moveTowardsDestination) {
-    // agent is the Nav Mesh Agent attached to our prefab
+    // agent is the NavMeshAgent attached to our prefab
     agent.SetDestination(destination);
 }
-// Updates serverPosition to current enemy position on server if
-// distance from serverPosition to current position is above
-// updatePositionThreshold, which we set in our custom AI script
-// in Unity.
-SyncPositionToClients();
+
+// Updates serverPosition to the current position of the enemy by checking the distance
+// Using the updatePositionThreshold value set in Unity.
+SyncPositionToClients();  
 ```
 
 As shown above, the enemy updates its destination every `base.DoAIInterval()` call if `moveTowardsDestination` is `true`. It is `true` both by default, and set to `true` through the [SetDestinationToPosition()](#public-bool-setdestinationtopositionvector3-position-bool-checkforpath--false) method.  
@@ -98,7 +99,7 @@ This is also the [`Collider`](https://docs.unity3d.com/ScriptReference/Collider.
 `HitEnemy()` still needs to be implemented for the enemy to be able to take damage and die like so:
 
 ```cs
-// ... inside our CustomAI implementation.
+// ... in our CustomAI implementation.
 // Method to override (HitEnemy).
 public override void HitEnemy(int force = 1, PlayerControllerB? playerWhoHit = null, bool playHitSFX = false, int hitID = -1)
 {
@@ -170,7 +171,7 @@ public virtual void SetEnemyStunned(bool setToStunned, float setToStunTime = 1f,
 }
 ```
 
-One last important method that you'd need to keep in mind when creating a custom enemy is a method ran on `Base.Update()` exclusively for daytime enemies, `CheckTimeOfDayToLeave()`.  
+One last important method that you'd need to keep in mind when creating a custom enemy is a method called by `base.Update()` exclusively for daytime enemies, `CheckTimeOfDayToLeave()`.  
 
 ```cs
 // ... in EnemyAI
@@ -288,7 +289,7 @@ public override void Start()
 
 We should be careful about using random, as it is still possible that, as an example, some `if` statement might have a different outcome due to some small desync, and then our randomly generated numbers become desynced across players.
 
-One way to ensure we don't get desync is to use [ClientRpc](#networking---unity-docs) and [ServerRpc](networking---unity-docs) methods, as those are networked. To be able to use these methods like in Unity, we can use [Unity Netcode Patcher](https://github.com/EvaisaDev/UnityNetcodePatcher). It is already set up in the example enemy project.
+One way to ensure we don't get desync is to use [ClientRpc](#clientrpc)'s and [ServerRpc](#serverrpc)'s methods, as those are networked. To be able to use these methods like in Unity, we can use [Unity Netcode Patcher](https://github.com/EvaisaDev/UnityNetcodePatcher). It is already set up in the example-enemy template project.
 
 ## Making More Complex AI
 
@@ -307,7 +308,7 @@ internal static void ExtendedLogging(object text) {
 }
 ```
 
-### CustomAI
+### MyComplexAI
 
 In order to properly structure our AI when it gets more complex is to use enums. Enums can be used to more explicitly define the "state" that our AI is in. Do note however that the game uses `currentBehaviourStateIndex` for the state of the enemy's behavior, and this can be changed with `SwitchToBehaviourClientRpc()`. For example:
 
@@ -398,7 +399,7 @@ switch(currentBehaviourStateIndex)
 }
 ```
 
-We've now converted our AI into a state machine by using an enum! This helps you organize larger AI systems into chunks that can't interfere with each other so you'll encounter less bugs. It's also a lot easier for you to now add more states to your AI without having to use a bunch of `if` checks.
+We've now converted our AI into a state machine by using an enum! This helps you organize larger AI systems into chunks that can't interfere with each other so you'll encounter less bugs. It's also a lot easier for you to now add more states to your AI without having to use a bunch of `Conditional Operators` such as "C# if-else" statements.
 
 ## Common Mistakes
 
@@ -406,25 +407,39 @@ We've now converted our AI into a state machine by using an enum! This helps you
 
 ### C# Reference
 
+[namespace](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/namespace)  
 [Virtual modifier](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/virtual)  
 [Override modifier](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/override)  
 [Abstract modifier](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/abstract)  
 [Enums](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/enum)  
-[Switch statement](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/selection-statements#the-switch-statement)
+[Switch statement](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/selection-statements#the-switch-statement)  
 
 ### Randomness
 
-[UnityEngine Random](https://docs.unity3d.com/ScriptReference/Random.Range.html)
-[System Random](https://learn.microsoft.com/en-us/dotnet/api/system.random?view=net-8.0)
-[Randomness](https://developers.dusk.gg/docs/advanced/randomness/)
+[UnityEngine Random](https://docs.unity3d.com/ScriptReference/Random.Range.html)  
+[System Random](https://learn.microsoft.com/en-us/dotnet/api/system.random?view=net-8.0)  
+[Randomness](https://developers.dusk.gg/docs/advanced/randomness/)  
 
 ### Networking - Unity Docs
 
->[!IMPORTANT]
->We are using [Unity Netcode Patcher](https://github.com/EvaisaDev/UnityNetcodePatcher) to make Rpc methods work.
+#### ClientRpc
 
 [ClientRpc](https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/message-system/clientrpc/)  
-[ServerRpc](https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/message-system/serverrpc/)
+
+#### ServerRpc
+
+[ServerRpc](https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/message-system/serverrpc/)  
+
+#### Network Transform
+
+[Network Transform](https://docs-multiplayer.unity3d.com/netcode/current/components/networktransform/)  
+
+#### Network Animator
+
+[Network Animator](https://docs-multiplayer.unity3d.com/netcode/current/components/networkanimator/)  
+
+>[!IMPORTANT]
+>We are using [Unity Netcode Patcher](https://github.com/EvaisaDev/UnityNetcodePatcher) to make Rpc methods work.
 
 ## Contributors
 
