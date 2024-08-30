@@ -470,6 +470,7 @@ We've now converted our AI into a state machine by using an enum! This helps you
 
 This documentation is a community effort! If you have suggestions for improvements or additional examples, feel free to contribute. Every bit of help is appreciated!  
 
-- Hamunii (Suni)
+- Hamunii
 - Xu Xiaolan (XuuXiao)
 - Cosmo Brain (cosmobrain0)
+- Bongo (LoafOrc)
