@@ -28,12 +28,6 @@
     - [C# Reference](#c-reference)
     - [Randomness](#randomness)
     - [Unity Docs](#unity-docs)
-      - [ScriptingAPI](#scriptingapi)
-      - [Coroutines](#coroutines)
-      - [ClientRpc](#clientrpc)
-      - [ServerRpc](#serverrpc)
-      - [Network Transform](#network-transform)
-      - [Network Animator](#network-animator)
   - [Contributors](#contributors)
 
 ## Overview of EnemyAI
@@ -70,8 +64,8 @@ if (!inSpecialAnimation)
 }
 ```
 
-This also means that if `syncMovementSpeed` is zero, or a very big number, the enemy movement will appear janky on clients other than the host, see [Adding Network Transforms](./unity-project.md#adding-advanced-unity-tools) and [Network Transform Documentation](#network-transform) for a smoother more optimised method for syncing movement in-between clients.  
-If `movingTowardsTargetPlayer` is `true` and `targetPlayer` is not `null`, the `EnemyAI`'s [NavMeshAgent](#networking---unity-docs) will automatically set `destination` to the `targetPlayer`'s Vector3 position.  
+This also means that if `syncMovementSpeed` is zero, or a very big number, the enemy movement will appear janky on clients other than the host, see [Adding Network Transforms](./unity-project.md#adding-advanced-unity-tools) and [Network Transform Documentation](#unity-docs) for a smoother more optimised method for syncing movement in-between clients.  
+If `movingTowardsTargetPlayer` is `true` and `targetPlayer` is not `null`, the `EnemyAI`'s [NavMeshAgent](#unity-docs) will automatically set `destination` to the `targetPlayer`'s Vector3 position.  
 Both `base.Update()` and `base.DoAIInterval()` Methods work together to set the position/`destination` of the enemy:
 
 ```csharp
@@ -127,8 +121,8 @@ SyncPositionToClients();
 
 As shown above, the enemy updates its destination every `base.DoAIInterval()` call if `moveTowardsDestination` is `true`. It is `true` both by default, and set to `true` through the [SetDestinationToPosition()](#public-bool-setdestinationtopositionvector3-position-bool-checkforpath--false) method.  
 
-`OnCollideWithPlayer()` and `OnCollideWithEnemy()` are methods that runs once an object with both an **isTrigger** [`Collider`](https://docs.unity3d.com/ScriptReference/Collider.html) and the `EnemyAICollisionDetect` Script attached to the same `GamObject` collide with a player/enemy.  
-This is also the [`Collider`](https://docs.unity3d.com/ScriptReference/Collider.html) that is hittable with the `Shovel`.  
+`OnCollideWithPlayer()` and `OnCollideWithEnemy()` are methods that runs once an object with both an **isTrigger** [`Collider`](#unity-docs) and the `EnemyAICollisionDetect` Script attached to the same `GamObject` collide with a player/enemy.  
+This is also the [`Collider`](#unity-docs) that is hittable with the `Shovel`.  
 `HitEnemy()` still needs to be implemented for the enemy to be able to take damage and die like so:
 
 ```csharp
@@ -320,7 +314,7 @@ public override void Start()
 
 We should be careful about using random, as it is still possible that, as an example, some `if` statement might have a different outcome due to some small desync, and then our randomly generated numbers become desynced across players.
 
-One way to ensure we don't get desync is to use [ClientRpc](#clientrpc)'s and [ServerRpc](#serverrpc)'s methods, as those are networked. To be able to use these methods like in Unity, we can use [Unity Netcode Patcher](https://github.com/EvaisaDev/UnityNetcodePatcher). It is already set up in the example-enemy template project.
+One way to ensure we don't get desync is to use [ClientRpc](#unity-docs)'s and [ServerRpc](#unity-docs)'s methods, as those are networked. To be able to use these methods like in Unity, we can use [Unity Netcode Patcher](https://github.com/EvaisaDev/UnityNetcodePatcher). It is already set up in the example-enemy template project.
 
 ## Making More Complex AI
 
@@ -436,9 +430,9 @@ We've now converted our AI into a state machine by using an enum! This helps you
 
 - **Forgetting to Call `base` Methods**: When overriding methods, always remember to call the base method (e.g., `base.Start()`, `base.DoAIInterval()`) unless you have a specific reason not to. This ensures that the original functionality is preserved.
   
-- **Overloading the `Update()` Method**: Placing too much logic in `Update()` can lead to performance issues, especially in networked environments. Offload logic to `DoAIInterval()` or use [Coroutines](#coroutines) for actions that don't need to run every frame.
+- **Overloading the `Update()` Method**: Placing too much logic in `Update()` can lead to performance issues, especially in networked environments. Offload logic to `DoAIInterval()` or use [Coroutines](#unity-docs) for actions that don't need to run every frame.
 
-- **Desync Issues with Randomness**: When using [randomness](#randomness), ensure that all clients are synchronized by using the same seed or leveraging networked methods like [`ClientRpc`](#clientrpc) or [`ServerRpc`](#serverrpc).
+- **Desync Issues with Randomness**: When using [randomness](#randomness), ensure that all clients are synchronized by using the same seed or leveraging networked methods like [`ClientRpc`](#unity-docs) or [`ServerRpc`](#unity-docs).
 
 ## External Resources
 
@@ -460,28 +454,13 @@ We've now converted our AI into a state machine by using an enum! This helps you
 
 ### Unity Docs
 
-#### ScriptingAPI
-
 - [Unity Scripting API](https://docs.unity3d.com/ScriptReference/)
-
-#### Coroutines
-
+- [Collider](https://docs.unity3d.com/ScriptReference/Collider.html)
+- [NavMeshAgent](https://docs.unity3d.com/ScriptReference/AI.NavMeshAgent.html)
 - [Coroutines](https://docs.unity3d.com/Manual/Coroutines.html)
-
-#### ClientRpc
-
 - [ClientRpc](https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/message-system/clientrpc/)  
-
-#### ServerRpc
-
 - [ServerRpc](https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/message-system/serverrpc/)  
-
-#### Network Transform
-
 - [Network Transform](https://docs-multiplayer.unity3d.com/netcode/current/components/networktransform/)  
-
-#### Network Animator
-
 - [Network Animator](https://docs-multiplayer.unity3d.com/netcode/current/components/networkanimator/)  
 
 >[!IMPORTANT]
