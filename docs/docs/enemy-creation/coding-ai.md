@@ -1,26 +1,34 @@
 # Coding Our Custom AI
 
 >[!IMPORTANT]
->You should use a [ILSpy](FILL THIS IN) or [DnSpy](FILL THIS IN) to look how the enemy AI scripts work in the game.  
->All the game code is contained inside `Lethal Company/Lethal Company_Data/Managed/Assembly-CSharp.dll`, so you should open that file in your decompiler!  
->To open the file, there will usually be a button at the top left, for `DnSpy` it is "File", from there, press "Open..." and select the specified dll from above.  
->Keep in mind that you are NOT allowed to distribute this file ANYWHERE, make sure it is out of your github if you place the dll there or anywhere.  
->`Assembly_CSharp.dll` contains all the game mode, which makes it illegal to distribute, so beware!  
+>You should use [ILSpy](https://github.com/icsharpcode/ILSpy/releases) or [DnSpyEx](https://github.com/dnSpyEx/dnSpy/releases) to examine how the enemy AI scripts work in the game. All the game code is contained inside the `Lethal Company/Lethal Company_Data/Managed/Assembly-CSharp.dll` file, so you should open that file in your decompiler. To open the file, there is usually a button at the top left. For `DnSpy`, it is "File"; from there, press "Open..." and select the specified DLL mentioned above.  
+>Keep in mind that you are **not** allowed to distribute this file **anywhere**. Ensure it is removed from your GitHub or any other place where you might have uploaded it. `Assembly_CSharp.dll` contains all the game code, making it illegal to distribute, so be cautious!  
 >[!tip]
 >See our tips for optimizing your mod testing workflow on [Mod Testing Tips](/dev/mod-testing-tips.md)! These will be particularly helpful when tweaking your AI.  
 
 ## Overview of EnemyAI
 
 This guide will walk you through the process of creating a custom enemy AI in Lethal Company, using the `EnemyAI` base class as a foundation.
-Every enemy in Lethal Company inherits from the `abstract class EnemyAI`, so we do the same. We will now go over some of the relevant methods:
+Every enemy in Lethal Company inherits from `abstract class EnemyAI`, so we do the same.  
 
+```cs
+namespace CustomEnemy;
+class CustomEnemyAI : EnemyAI
+{
+    // ... Fields/Properties
+    
+    // ... Methods
+}
+```
+
+We will now go over some of the relevant methods:
 The `Start()` method will run when the enemy spawns in a level. We can initialize our variables here.
 
 The `Update()` method will run every frame, and we should try to avoiding intensive calculations here.  
 This is also where the enemy position gets updated for clients other than the host:
 
 ```cs
-// ... in EnemyAI, Update()
+// ... in EnemyAI.Update()
 if (!inSpecialAnimation)
 {
     base.transform.position = Vector3.SmoothDamp(base.transform.position, serverPosition, ref tempVelocity, syncMovementSpeed);
@@ -31,43 +39,40 @@ if (!inSpecialAnimation)
 This also means that if `syncMovementSpeed` is zero, or a very big number, the enemy movement will appear janky on clients other than the host.
 
 The `DoAIInterval()` method runs in an interval we've set in Unity on our `CustomAI` script (which inherits `EnemyAI`) on the enemy's prefab.  
-By default this is set to 0.2 seconds, which is also used in the game by for example the BaboonHawk enemy and probably other enemies too.
+By default this is set to 0.2 seconds, which is also used in the game; For example the `BaboonHawk` enemy and probably other enemies too.
 
-If `movingTowardsTargetPlayer` is set to true, the `EnemyAI`'s `NavMeshAgent` will automatically set `destination` to the `targetPlayer` IF `targetPlayer` is not null.  
+If `movingTowardsTargetPlayer` is `true` and `targetPlayer` is not null, the `EnemyAI`'s `NavMeshAgent` will automatically set `destination` to the `targetPlayer`'s Vector3 position.  
 Both `base.Update()` and `base.DoAIInterval()` Methods work together to set the position/`destination` of the enemy:
 
 ```cs
-// Update method of EnemyAI.
-public virtual void Update()
+// ... in EnemyAI.Update
+if (this.movingTowardsTargetPlayer && this.targetPlayer != null)
 {
-    // ... deep in EnemyAI.Update
-    if (this.movingTowardsTargetPlayer && this.targetPlayer != null)
+    if (this.setDestinationToPlayerInterval <= 0f)
     {
-        if (this.setDestinationToPlayerInterval <= 0f)
+        // Sets the timer to reset where the enemy is going (so every 0.25 seconds the player's precise NAVMESH position is updated for the enemy).
+        this.setDestinationToPlayerInterval = 0.25f;
+        // Sets a destination that it uses in `base.DoAIInterval()`.
+        this.destination = RoundManager.Instance.GetNavMeshPosition(this.targetPlayer.transform.position, RoundManager.Instance.navHit, 2.7f, -1);
+    }
+    else
+    {
+        // Sets the destination for the enemy when the interval is not up (The only change is that the destination isn't set to the NavMesh directly unlike in the if statement above, this is likely because GetNavMeshPosition is performance intensive.)
+        this.destination = new Vector3(this.targetPlayer.transform.position.x, this.destination.y, this.targetPlayer.transform.position.z);
+        // Decreases the timer for setting the enemy to the player's exact NavMesh position.
+        this.setDestinationToPlayerInterval -= Time.deltaTime;
+    }
+    if (this.addPlayerVelocityToDestination > 0f)
+    {
+        // Checks to overshoot the destination depending on the direction and speed of the player moving.
+        // Uses addPlayerVelocityToDestination set from EnemyAI script in Unity to multiply the destination's Vector3 position.
+        if (this.targetPlayer == GameNetworkManager.Instance.localPlayerController)
         {
-            // Sets the timer to reset where the enemy is going (so every 0.25 seconds the player's precise NAVMESH position is updated for the enemy).
-            this.setDestinationToPlayerInterval = 0.25f;
-            // Sets a destination that it uses in `Base.DoAIInterval()`.
-            this.destination = RoundManager.Instance.GetNavMeshPosition(this.targetPlayer.transform.position, RoundManager.Instance.navHit, 2.7f, -1);
+            this.destination += Vector3.Normalize(this.targetPlayer.thisController.velocity * 100f) * this.addPlayerVelocityToDestination;
         }
-        else
+        else if (this.targetPlayer.timeSincePlayerMoving < 0.25f)
         {
-            // Sets the destination for the enemy when the interval is not up (The only change is that the destination isn't set to the NavMesh directly unlike in the if statement above, this is likely because GetNavMeshPosition is performance intensive.)
-            this.destination = new Vector3(this.targetPlayer.transform.position.x, this.destination.y, this.targetPlayer.transform.position.z);
-            // Decreases the timer for setting the enemy to the player's exact NavMesh position.
-            this.setDestinationToPlayerInterval -= Time.deltaTime;
-        }
-        if (this.addPlayerVelocityToDestination > 0f)
-        {
-            // Checks to overshoot the destination depending on the direction and speed of the player moving.
-            if (this.targetPlayer == GameNetworkManager.Instance.localPlayerController)
-            {
-                this.destination += Vector3.Normalize(this.targetPlayer.thisController.velocity * 100f) * this.addPlayerVelocityToDestination;
-            }
-            else if (this.targetPlayer.timeSincePlayerMoving < 0.25f)
-            {
-                this.destination += Vector3.Normalize((this.targetPlayer.serverPlayerPosition - this.targetPlayer.oldPlayerPosition) * 100f) * this.addPlayerVelocityToDestination;
-            }
+            this.destination += Vector3.Normalize((this.targetPlayer.serverPlayerPosition - this.targetPlayer.oldPlayerPosition) * 100f) * this.addPlayerVelocityToDestination;
         }
     }
 }
@@ -75,36 +80,20 @@ public virtual void Update()
 
 ```cs
 // ... in EnemyAI.DoAIInterval
-public virtual void DoAIInterval()
-{
-    if (moveTowardsDestination) {
-        // agent is the Nav Mesh Agent attached to our prefab
-        agent.SetDestination(destination);
-    }
-    // Updates serverPosition to current enemy position on server if
-    // distance from serverPosition to current position is above
-    // updatePositionThreshold, which we set in our custom AI script
-    // in Unity.
-    SyncPositionToClients();
+if (moveTowardsDestination) {
+    // agent is the Nav Mesh Agent attached to our prefab
+    agent.SetDestination(destination);
 }
+// Updates serverPosition to current enemy position on server if
+// distance from serverPosition to current position is above
+// updatePositionThreshold, which we set in our custom AI script
+// in Unity.
+SyncPositionToClients();
 ```
 
-As shown above, the enemy updates its destination every `Base.DoAIInterval()` call if `moveTowardsDestination` is `true`. It is true by default, and also gets set `true` if you run the `SetDestinationToPosition()` method.  
+As shown above, the enemy updates its destination every `base.DoAIInterval()` call if `moveTowardsDestination` is `true`. It is `true` both by default, and set to `true` through the [SetDestinationToPosition()](#public-bool-setdestinationtopositionvector3-position-bool-checkforpath--false) method.  
 
-### `public bool SetDestinationToPosition(Vector3 position, [bool checkForPath = false])`
-
-#### Parameters
-
-- `Vector3 position`: the `destination` of the enemy.
-- `bool checkForPath` *(optional, default is `false`)*: if `true`, it should check if there's a `NavMeshPath` from where it currently is to the given `position`.
-
-##### Return Value
-
-Returns `true` if it was able to find a valid path and setting a destination, or `false` otherwise, preventing movement.
-
-Running `SetDestinationToPosition()` sets `movingTowardsTargetPlayer` to false, and updates the `destination` variable for use in DoAIInterval.
-
-`OnCollideWithPlayer()` and `OnCollideWithEnemy()` are methods that runs once an object with both an __isTrigger__ [`Collider`](https://docs.unity3d.com/ScriptReference/Collider.html) and the `EnemyAICollisionDetect` Script attached to the same `GamObject` collide with a player/enemy.  
+`OnCollideWithPlayer()` and `OnCollideWithEnemy()` are methods that runs once an object with both an **isTrigger** [`Collider`](https://docs.unity3d.com/ScriptReference/Collider.html) and the `EnemyAICollisionDetect` Script attached to the same `GamObject` collide with a player/enemy.  
 This is also the [`Collider`](https://docs.unity3d.com/ScriptReference/Collider.html) that is hittable with the `Shovel`.  
 `HitEnemy()` still needs to be implemented for the enemy to be able to take damage and die like so:
 
@@ -131,6 +120,8 @@ public override void HitEnemy(int force = 1, PlayerControllerB? playerWhoHit = n
     Plugin.ExtendedLogging($"Hit with force {force}");
 }
 ```
+
+See implementation: [ExtendedLogging Utility](#utility)
 
 `SetEnemyStunned` is the base-game method called when an `EnemyAI` is nearby an exploded `StunGrenade` (Mods could also cause this method to be called on your enemy too).  
 
@@ -206,7 +197,7 @@ public override void DaytimeEnemyLeave()
     // Custom implementation, possibly despawning the enemy as vanilla enemies do and as seen below.
 }
 
-// ... in DocileLocustBeesAI
+// ... in DocileLocustBeesAI (a vanilla daytime EnemyAI)
 public override void DaytimeEnemyLeave()
 {
     // Calls base (which only includes debug logs).
@@ -226,14 +217,43 @@ private IEnumerator bugsLeave()
 }
 ```
 
-### `public void KillEnemyOnOwnerClient([bool overrideDestroy = false])`
+### EnemyAI Methods
 
-#### Parameters
+#### `public bool SetDestinationToPosition(Vector3 position, [bool checkForPath = false])`
 
-- `bool overrideDestroy` *(optional, default is `false`)*: if `true`, it should completely destroy the enemy when killing it.
+| **Parameter**                    | **Description**                                                                                                     |
+|----------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| `Vector3 position`               | The `destination` of the enemy.                                                                                     |
+| `bool checkForPath` *(optional)* | If `true`, checks if there's a `NavMeshPath` from the current position to the given `position`. Default is `false`.  |
+
+| **Function Description**                                                                                                      |
+|-------------------------------------------------------------------------------------------------------------------------------|
+| The method `SetDestinationToPosition` sets the enemy's destination to a specified position. It optionally checks if a valid path exists before moving. |
+
+| **Return Value**                                                                                                               |
+|-------------------------------------------------------------------------------------------------------------------------------|
+| Returns `true` if a valid path is found and the destination is set, or `false` otherwise, preventing movement.                 |
+
+---
+
+#### `public void KillEnemyOnOwnerClient([bool overrideDestroy = false])`
+
+| **Parameter**                    | **Description**                                                                                                      |
+|----------------------------------|----------------------------------------------------------------------------------------------------------------------|
+| `bool overrideDestroy` *(optional)* | If `true`, the enemy will be completely destroyed when killed. Default is `false`.                                  |
+
+| **Function Description**                                                                                                      |
+|-------------------------------------------------------------------------------------------------------------------------------|
+| The method `KillEnemyOnOwnerClient` is used to kill the enemy on the owner's client. If `overrideDestroy` is set to `true`, the enemy will be completely destroyed when killed. |
+
+| **Return Value**                                                                                                               |
+|-------------------------------------------------------------------------------------------------------------------------------|
+| This method does not return a value (`void`).                                                                                  |
+
+Now, both methods include a "Function Description" and a "Return Value" section, providing a clear and complete understanding of each method's purpose and behavior.
 
 >[!TIP]
->When we want to implement these methods from `EnemyAI` into our AI script, we will have to use the `override` modifier on the method to override the virtual base method.  
+>When we want to implement these methods from `EnemyAI` in our AI script, we will have to use the `override` modifier on the method to override the [virtual](#c-reference) or [abstract](#c-reference) base method.  
 >We will also want to call the original virtual method inside our override method like this:  
 
 ```cs
@@ -266,13 +286,28 @@ public override void Start()
 }
 ```
 
-And we can use it for example this: `enemyRandom.Next(0, 5)`. This will choose the next random integer in our range.
+We should be careful about using random, as it is still possible that, as an example, some `if` statement might have a different outcome due to some small desync, and then our randomly generated numbers become desynced across players.
 
-We should still be careful about using random, as it is still possible that for example some `if` statement might have a different outcome due to some small desync, and then our random numbers also get desynced.
-
-One way to ensure we don't get desync is to use ClientRpc methods, as those are networked. See the Unity Docs on [ClientRpcs](https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/message-system/clientrpc/) for more information. To be able to use these methods like in Unity, we can use [Unity Netcode Patcher](https://github.com/EvaisaDev/UnityNetcodePatcher). It is already set up in our example enemy project.
+One way to ensure we don't get desync is to use [ClientRpc](#networking---unity-docs) and [ServerRpc](networking---unity-docs) methods, as those are networked. To be able to use these methods like in Unity, we can use [Unity Netcode Patcher](https://github.com/EvaisaDev/UnityNetcodePatcher). It is already set up in the example enemy project.
 
 ## Making More Complex AI
+
+### Utility  
+
+Just to start off as a super simple base, we should create an `ExtendedLogging` method that we would log everything inside of for our testing, this is so that we can hide these logs behind configs so users can disable them when they are not needed, otherwise, please use the approach Debug Levels when creating a log.
+
+```cs
+// ... in Plugin class.
+
+internal static void ExtendedLogging(object text) {
+    // Example of gating log over a config value, usually true by default.
+    if (ModConfig.ConfigEnableExtendedLogging.Value) {
+        Logger.LogInfo(text);
+    }
+}
+```
+
+### CustomAI
 
 In order to properly structure our AI when it gets more complex is to use enums. Enums can be used to more explicitly define the "state" that our AI is in. Do note however that the game uses `currentBehaviourStateIndex` for the state of the enemy's behavior, and this can be changed with `SwitchToBehaviourClientRpc()`. For example:
 
@@ -377,11 +412,22 @@ We've now converted our AI into a state machine by using an enum! This helps you
 [Enums](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/builtin-types/enum)  
 [Switch statement](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/selection-statements#the-switch-statement)
 
+### Randomness
+
+[UnityEngine Random](https://docs.unity3d.com/ScriptReference/Random.Range.html)
+[System Random](https://learn.microsoft.com/en-us/dotnet/api/system.random?view=net-8.0)
+[Randomness](https://developers.dusk.gg/docs/advanced/randomness/)
+
 ### Networking - Unity Docs
 
-::: warning IMPORTANT
-We are using [Unity Netcode Patcher](https://github.com/EvaisaDev/UnityNetcodePatcher) to make our custom Rpc methods work.
-:::
+>[!IMPORTANT]
+>We are using [Unity Netcode Patcher](https://github.com/EvaisaDev/UnityNetcodePatcher) to make Rpc methods work.
 
 [ClientRpc](https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/message-system/clientrpc/)  
 [ServerRpc](https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/message-system/serverrpc/)
+
+## Contributors
+
+- Hamunii (Suni)
+- Xu Xiaolan (XuuXiao)
+- Cosmo Brain (cosmobrain0)
