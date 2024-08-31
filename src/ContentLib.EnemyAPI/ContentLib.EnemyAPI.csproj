@@ -11,9 +11,4 @@
     <ProjectReference Include="../ContentLib.Core/ContentLib.Core.csproj" Private="false" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Events\" />
-    <Folder Include="Patches\" />
-  </ItemGroup>
-
 </Project>
