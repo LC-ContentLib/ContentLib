@@ -61,7 +61,6 @@ public class ModDefinition : ScriptableObject
     {
         if (pluginInfo is null)
             throw new ArgumentNullException($"{nameof(pluginInfo)} is null!");
-
         return Create(pluginInfo.Metadata);
     }
 
