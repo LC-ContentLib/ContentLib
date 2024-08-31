@@ -15,7 +15,7 @@ public class EnemyManager
     /// Returns , or creates the singleton instance of the Enemy Manager. 
     /// </summary>
     /// <returns>The singleton instance.</returns>
-    public static EnemyManager? Instance()
+    public static EnemyManager Instance()
     {
         if (s_instance == null)
         {
@@ -64,14 +64,14 @@ public class EnemyManager
     /// </summary>
     /// <param name="id">The id to check.</param>
     /// <returns>True if the id corresponds to a registered enemy, False otherwise.</returns>
-    bool IsRegistered(ulong id) => _enemies.ContainsKey(id);
+    public bool IsRegistered(ulong id) => _enemies.ContainsKey(id);
     
     /// <summary>
     /// Check to see if the enemy with the given id is currently spawned in the game world.
     /// </summary>
     /// <param name="id">The id to check.</param>
     /// <returns>True if the id corresponds to a registered enemy that is currently spawned, False otherwise.</returns>
-    bool IsSpawned(ulong id) => _enemies[id].IsSpawned;
+    public bool IsSpawned(ulong id) => _enemies[id].IsSpawned;
 
     /// <summary>
     /// Checks to see if any player is in a given radius of the enemy. 
@@ -80,7 +80,7 @@ public class EnemyManager
     /// <param name="radius">The radius to check.</param>
     /// <returns>True if 1 or more players are within the given radius of the enemy with the given id,
     /// False otherwise.</returns>
-    bool PlayerWithinRadius(ulong enemyId, float radius)
+    public bool PlayerWithinRadius(ulong enemyId, float radius)
     {
         throw new NotImplementedException();
         
@@ -106,14 +106,14 @@ public class EnemyManager
     /// <returns>True if the enemy is of the given enemy type, False if either the typer is not a subclass of enemy
     /// or if the enemy is not of the given type. </returns>
     /// <exception cref="ArgumentException">Exception thrown if the type is not a subclass of "IEnemy".</exception>
-    bool IsEnemyTypeOf(IEnemy enemy, Type type)
+    public bool IsEnemyTypeOf(IEnemy enemy, Type type)
     {
         try
         {
-            if (!type.IsSubclassOf(typeof(IEnemy)))
+            if (!typeof(IEnemy).IsAssignableFrom(type))
                 throw new ArgumentException($"$ The Type {type} is not a sub class of {typeof(IEnemy)}");
 
-            return enemy.EnemyProperties.EnemyClassType.IsSubclassOf(type);
+            return type.IsAssignableFrom(enemy.EnemyProperties.EnemyClassType);
         }
         catch (ArgumentException e)
         {
