@@ -8,34 +8,46 @@ namespace ContentLib.EnemyAPI.Patches;
 public class CoilheadPatches
 {
     //TODO find the best way to get the SpringManAI (God damnit zeekers)
-    public static void Init()
+    public static void Init() => On.EnemyAI.Start += EnemyAI_Start;
+
+    private static void EnemyAI_Start(On.EnemyAI.orig_Start orig, EnemyAI self)
     {
-        
+        orig(self);
+        if (self is SpringManAI springManAI)
+        {
+            CoilheadSpawn(springManAI);
+        }
+    }
+
+    private static void CoilheadSpawn(SpringManAI springManAI)
+    {
+        var coilhead = new LocalCoilhead(springManAI);
+        EnemyManager.Instance().RegisterEnemy(coilhead);
     }
 
     private class LocalCoilhead(SpringManAI springManAI) : ICoilhead
     {
-        public ulong Id { get; }
-        public bool IsAlive { get; }
-        public int Health { get; }
-        public Vector3 Position { get; }
-        public IEnemyProperties EnemyProperties { get; }
-        public bool IsSpawned { get; }
-        public bool IsHostile { get; }
-        public bool IsChasing { get; }
-        public void OnCollideWithPlayer(Collider other) => throw new System.NotImplementedException();
+        public ulong Id => springManAI.NetworkObjectId;
+        public bool IsAlive => !springManAI.isEnemyDead;
+        public int Health => springManAI.enemyHP;
+        public Vector3 Position => springManAI.serverPosition;
+        public IEnemyProperties EnemyProperties => new CoilheadProperties(springManAI.enemyType);
+        public bool IsSpawned => springManAI.IsSpawned;
+        public bool IsHostile => true;
+        public bool IsChasing => springManAI.movingTowardsTargetPlayer;
+        public void OnCollideWithPlayer(Collider other) => springManAI.OnCollideWithPlayer(other);
 
-        public void SetAnimationStopServerRpc() => throw new System.NotImplementedException();
+        public void SetAnimationStopServerRpc() => springManAI.SetAnimationStopServerRpc();
 
-        public void SetAnimationStopClientRpc() => throw new System.NotImplementedException();
+        public void SetAnimationStopClientRpc() => springManAI.SetAnimationStopClientRpc();
 
-        public void SetAnimationGoServerRpc() => throw new System.NotImplementedException();
+        public void SetAnimationGoServerRpc() => springManAI.SetAnimationGoServerRpc();
 
-        public void SetAnimationGoClientRpc() => throw new System.NotImplementedException();
+        public void SetAnimationGoClientRpc() => springManAI.SetAnimationGoClientRpc();
 
-        public void SearchForPlayers() => throw new System.NotImplementedException();
+        public AISearchRoutine SearchForPlayers() => springManAI.searchForPlayers;
 
-        public CoilheadBehaviourState State { get; }
+        public CoilheadBehaviourState State => throw new NotImplementedException();
     }
 
     private class CoilheadProperties(EnemyType type) : IEnemyProperties
@@ -47,8 +59,24 @@ public class CoilheadPatches
             get => type.enemyPrefab;
             set => type.enemyPrefab = value;
         }
-        public AnimationCurve SpawnWeightMultiplier { get; set; }
-        public int MaxCount { get; set; }
-        public float PowerLevel { get; set; }
+        public AnimationCurve SpawnWeightMultiplier
+        {
+            get => type.probabilityCurve;
+            set => type.probabilityCurve = value;
+        }
+    
+
+    public int MaxCount
+    {
+        get => type.MaxCount;
+        set => type.MaxCount = value;
+        
+    }
+
+    public float PowerLevel
+    {
+        get => type.PowerLevel;
+        set => type.PowerLevel = value;
+    }
     }
 }
