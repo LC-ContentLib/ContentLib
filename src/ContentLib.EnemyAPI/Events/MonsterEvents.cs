@@ -16,11 +16,27 @@ public interface IMonsterEvents : IGameEvent
 
 public abstract class MonsterCollideWithPlayerEvent : IMonsterEvents
 {
+    /// <inheritdoc />
     public abstract IEnemy Enemy { get; }
+
+    /// <inheritdoc />
     public GameEventType EventType => GameEventType.MonsterPlayerCollisionEvent;
 
+    /// <inheritdoc />
     public bool IsCancelled { get; set; }
 
+}
+
+public abstract class MonsterKillsPlayerEvent : IMonsterEvents
+{
+    /// <inheritdoc />
+    public GameEventType EventType => GameEventType.MonsterKillsPlayerEvent;
+
+    /// <inheritdoc />
+    public bool IsCancelled { get; set; } = false;
+
+    /// <inheritdoc />
+    public abstract IEnemy Enemy { get; }
 }
 
 public enum MonsterType
