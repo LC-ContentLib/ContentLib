@@ -65,12 +65,21 @@ public class BrackenPatches
     private class BrackenProperties(FlowermanAI flowermanAI) : IEnemyProperties
     {
         private EnemyType _type = flowermanAI.enemyType;
+        public string Name { get; set; }
+        public bool IsCustom => false;
         public Type EnemyClassType => typeof(IBracken);
+        public bool SpawningDisabled { get; }
+        public AnimationCurve ProbabilityCurve { get; }
+
         public GameObject EnemyPrefab
         {
             get => _type.enemyPrefab;
             set => _type.enemyPrefab = value;
         }
+
+        public bool IsOutsideEnemy { get; set; }
+        public bool IsDaytimeEnemy { get; set; }
+        public bool SpawnFromWeeds { get; set; }
 
         public AnimationCurve SpawnWeightMultiplier
         {
@@ -89,6 +98,25 @@ public class BrackenPatches
             get => _type.PowerLevel;
             set => _type.PowerLevel = value; 
         }
+
+        public bool CanBeStunned { get; set; }
+        public bool CanDie { get; set; }
+        public bool DestroyOnDeath { get; set; }
+        public float StunTimeMultiplier { get; set; }
+        public float DoorSpeedMultiplier { get; set; }
+        public float StunGameDifficultyMultiplier { get; set; }
+        public bool CanSeeThroughFog { get; set; }
+        public float PushPlayerForce { get; set; }
+        public float PushPlayerDistance { get; set; }
+        public AudioClip HitBodySFX { get; set; }
+        public AudioClip HitEnemyVoiceSFX { get; set; }
+        public AudioClip DeathSFX { get; set; }
+        public AudioClip StunSFX { get; set; }
+        public MiscAnimation[] MiscAnimations { get; set; }
+        public AudioClip[] AudioClips { get; set; }
+        public float TimeToPlayAudio { get; set; }
+        public float LoudnessMultiplier { get; set; }
+        public AudioClip OverrideVentSFX { get; set; }
     }
 
     private class LocalMonsterCollideWithPlayerEvent(IEnemy enemy) : MonsterCollideWithPlayerEvent

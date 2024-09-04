@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ContentLib.EnemyAPI.Model.Enemy;
@@ -122,4 +123,21 @@ public class EnemyManager
         }
     }
 
+    /// <summary>
+    /// Returns all enemies currently registered to the manager that are not Vanilla (i.e. AssetBundle related enemies)
+    /// </summary>
+    /// <returns>List of all custom enemies.</returns>
+    public List<IEnemy> GetCustomEnemies() => _enemies
+        .Values
+        .Where(enemy => enemy.EnemyProperties.IsCustom)
+        .ToList();
+    
+    /// <summary>
+    /// Returns all enemies currently registered to the manager that are Vanilla (i.e. base game enemies).
+    /// </summary>
+    /// <returns>List of all the vanilla enemies.</returns>
+    public List<IEnemy> GetVanillaEnemies() => _enemies
+        .Values
+        .Where(enemy => !enemy.EnemyProperties.IsCustom)
+        .ToList();
 }
