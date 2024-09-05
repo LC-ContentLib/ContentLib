@@ -24,7 +24,7 @@ namespace ContentLib.Core.Model.Event
         /// Dictionary containing the various delegated handlers for specified GameEvents, determined by their
         /// GameEventType. 
         /// </summary>
-        private readonly Dictionary<Type, Delegate> eventHandlers = new Dictionary<Type, Delegate>();
+        private readonly Dictionary<Type, Delegate> _eventHandlers = new Dictionary<Type, Delegate>();
 
         /// <summary>
         /// Private constructor to ensure the GameEventManager is only obtainable via singleton method.
@@ -41,13 +41,13 @@ namespace ContentLib.Core.Model.Event
         {
             Type? eventType = typeof(TEvent).BaseType;
 
-            if (eventHandlers.TryGetValue(eventType, out var existingHandler))
+            if (_eventHandlers.TryGetValue(eventType, out var existingHandler))
             {
-                eventHandlers[eventType] = Delegate.Combine(existingHandler, handler);
+                _eventHandlers[eventType] = Delegate.Combine(existingHandler, handler);
             }
             else
             {
-                eventHandlers[eventType] = handler;
+                _eventHandlers[eventType] = handler;
             }
         }
 
@@ -62,12 +62,12 @@ namespace ContentLib.Core.Model.Event
         public void Unsubscribe<TEvent>(Action<TEvent> handler) where TEvent : IGameEvent
         {
             Type? eventType = typeof(TEvent).BaseType;
-            if (!eventHandlers.ContainsKey(eventType)) return;
+            if (!_eventHandlers.ContainsKey(eventType)) return;
             
-            eventHandlers[eventType] = Delegate.Remove(eventHandlers[eventType], handler);
-            if (eventHandlers[eventType] == null)
+            _eventHandlers[eventType] = Delegate.Remove(_eventHandlers[eventType], handler);
+            if (_eventHandlers[eventType] == null)
             {
-                eventHandlers.Remove(eventType);
+                _eventHandlers.Remove(eventType);
             }
         }
 
@@ -80,7 +80,7 @@ namespace ContentLib.Core.Model.Event
         {
             Type? eventType = typeof(TEvent).BaseType;
             Debug.Log($"$GameEventManager::Trigger: Game event type: {eventType}");
-            if (!eventHandlers.TryGetValue(eventType, out var handler)) return;
+            if (!_eventHandlers.TryGetValue(eventType, out var handler)) return;
             
             var eventHandler = handler as Action<TEvent>;
             eventHandler?.Invoke(gameEvent);
