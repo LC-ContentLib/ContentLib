@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using ContentLib.Core.Model.Event.Attributes;
 using UnityEngine;
 
 namespace ContentLib.Core.Model.Event
@@ -84,6 +87,43 @@ namespace ContentLib.Core.Model.Event
             
             var eventHandler = handler as Action<TEvent>;
             eventHandler?.Invoke(gameEvent);
+        }
+        
+        /// <summary>
+        /// Registers a class that implements IListener and subscribes to each IGameEvent method within the class. 
+        /// </summary>
+        /// <param name="listener">The listener to register.</param>
+        /// <exception cref="InvalidOperationException">Called if the methods marked with the EventDelegate
+        /// Attribute are not correctly formatted.</exception>
+        public void RegisterListener(IListener listener)
+        {
+            var listenerType = listener.GetType();
+            var methodsWithAttribute = listenerType.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
+                .Where(method => method.GetCustomAttributes(typeof(EventDelegate), true).Any());
+
+            foreach (var method in methodsWithAttribute)
+            {
+                var parameters = method.GetParameters();
+                if (parameters.Length != 1)
+                {
+                    throw new InvalidOperationException($"Method {method.Name} does not have exactly one parameter.");
+                }
+                var eventType = parameters[0].ParameterType;
+                
+                if (!typeof(IGameEvent).IsAssignableFrom(eventType))
+                    throw new InvalidOperationException($"Method {method.Name} parameter is not a game event!");
+                
+                var subscribeMethod = typeof(GameEventManager).GetMethod(nameof(Subscribe))
+                    ?.MakeGenericMethod(eventType);
+
+                // I know it's unlikely, but it's a nice hail mary check. 
+                if (subscribeMethod == null)
+                {
+                    throw new InvalidOperationException($"Unable to find Subscribe method for event type {eventType.Name}.");
+                }
+                var actionDelegate = Delegate.CreateDelegate(typeof(Action<>).MakeGenericType(eventType), listener, method);
+                subscribeMethod.Invoke(this, new object[] { actionDelegate });
+            }
         }
     }
 }
