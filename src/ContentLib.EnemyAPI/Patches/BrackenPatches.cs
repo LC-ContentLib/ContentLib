@@ -20,6 +20,7 @@ public class BrackenPatches
         orig(self);
         IEnemy vanillaBrackenEnemy = new LocalBracken(self);
         EnemyManager.Instance().RegisterEnemy(vanillaBrackenEnemy);
+        GameEventManager.Instance.Trigger(new LocalBrackenSpawnEvent(vanillaBrackenEnemy));
     }
     /// <summary>
     /// Patched method that will create either a MonsterCollideWithPlayerEvent or a MonsterKillPlayerEvent depending
@@ -146,6 +147,11 @@ public class BrackenPatches
     }
 
     private class LocalBrackenMonsterKillPlayerEvent(IEnemy enemy) : MonsterKillsPlayerEvent
+    {
+        public override IEnemy Enemy => enemy;
+    }
+    
+    private class LocalBrackenSpawnEvent(IEnemy enemy): MonsterSpawnEvent
     {
         public override IEnemy Enemy => enemy;
     }
