@@ -9,8 +9,7 @@ public class TestListener
 {
     public TestListener()
     {
-        GameEventManager.Instance.Subscribe<MonsterCollideWithPlayerEvent>(GameEventType.MonsterPlayerCollisionEvent,
-            OnMonsterColision);
+        GameEventManager.Instance.Subscribe<MonsterCollideWithPlayerEvent>(OnMonsterColision);
         Debug.Log("TestListener has been registered");
     }
     
