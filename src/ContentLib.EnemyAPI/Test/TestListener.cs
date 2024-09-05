@@ -1,10 +1,10 @@
 using ContentLib.Core.Model.Event;
-using ContentLib.Core.Model.Event.Attributes;
+using ContentLib.Core.Model.Event.Listener;
 using ContentLib.EnemyAPI.Model.Enemy;
 using ContentLib.EnemyAPI.Model.Enemy.Vanilla.Bracken;
 using UnityEngine;
 
-namespace Lethal_Promotions.Model.Events.Listeners;
+namespace ContentLib.EnemyAPI.Test;
 
 public class TestListener : IListener
 {

@@ -2,7 +2,7 @@
 using BepInEx.Logging;
 using ContentLib.Core.Model.Event;
 using ContentLib.EnemyAPI.Patches;
-using Lethal_Promotions.Model.Events.Listeners;
+using ContentLib.EnemyAPI.Test;
 using UnityEngine;
 
 namespace ContentLib.EnemyAPI;

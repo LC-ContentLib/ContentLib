@@ -1,6 +1,6 @@
 using System;
 
-namespace ContentLib.Core.Model.Event.Attributes;
+namespace ContentLib.Core.Model.Event.Listener;
 
 /// <summary>
 /// Attribute that will be used in conjunction with the IListener to allow for automatic subscription of Listener class

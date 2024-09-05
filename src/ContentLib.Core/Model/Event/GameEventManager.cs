@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using ContentLib.Core.Model.Event.Attributes;
+using ContentLib.Core.Model.Event.Listener;
 using UnityEngine;
 
 namespace ContentLib.Core.Model.Event
