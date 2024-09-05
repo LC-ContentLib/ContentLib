@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ContentLib.Core.Model.Event
 {
@@ -74,6 +75,7 @@ namespace ContentLib.Core.Model.Event
         /// <typeparam name="TEvent">The type parameter of the Triggered Event.</typeparam>
         public void Trigger<TEvent>(TEvent gameEvent) where TEvent : IGameEvent
         {
+            Debug.Log($"$GameEventManager::Trigger: Game event type: {gameEvent.EventType}");
             if (eventHandlers.TryGetValue(gameEvent.EventType, out var handler))
             {
                 var eventHandler = handler as Action<TEvent>;

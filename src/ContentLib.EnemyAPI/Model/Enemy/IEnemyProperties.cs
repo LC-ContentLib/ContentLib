@@ -32,18 +32,18 @@ namespace ContentLib.EnemyAPI.Model.Enemy
         /// <summary>
         /// Whether this enemy is considered an outside enemy.
         /// </summary>
-        bool IsOutsideEnemy { get; set; }
+        bool IsOutsideEnemy { get;}
 
         /// <summary>
         /// Whether this enemy is active during the day.
         /// </summary>
-        bool IsDaytimeEnemy { get; set; }
-        
+        bool IsDaytimeEnemy { get;}
+
         /// <summary>
         /// Whether this enemy's spawn probability is affected by the presence of weeds or mold.
         /// </summary>
-        bool SpawnFromWeeds { get; set; }
-        
+        bool SpawnFromWeeds { get; }
+
         /// <summary>
         /// The multiplier to determine spawn chance of the entity.
         /// </summary>
@@ -52,57 +52,57 @@ namespace ContentLib.EnemyAPI.Model.Enemy
         /// <summary>
         /// The maximum number of this enemy that can spawn on a moon.
         /// </summary>
-        int MaxCount { get; set; }
+        int MaxCount { get; }
         
         /// <summary>
         /// The power level of the enemy. 
         /// </summary>
-        float PowerLevel { get; set; }
+        float PowerLevel { get;}
         
         /// <summary>
         /// Whether the enemy can be stunned.
         /// </summary>
-        bool CanBeStunned { get; set; }
+        bool CanBeStunned { get;}
         
         /// <summary>
         /// Whether the enemy can be killed.
         /// </summary>
-        bool CanDie { get; set; }
+        bool CanDie { get;}
         
         /// <summary>
         /// Whether the enemy should be destroyed when it dies.
         /// </summary>
-        bool DestroyOnDeath { get; set; }
+        bool DestroyOnDeath { get;}
         
         /// <summary>
         /// Multiplier for how long the enemy stays stunned.
         /// </summary>
-        float StunTimeMultiplier { get; set; }
+        float StunTimeMultiplier { get;}
         
         /// <summary>
         /// Multiplier for the door interaction speed.
         /// </summary>
-        float DoorSpeedMultiplier { get; set; }
+        float DoorSpeedMultiplier { get;}
         
         /// <summary>
         /// The overall game difficulty multiplier affected by the stun mechanics.
         /// </summary>
-        float StunGameDifficultyMultiplier { get; set; }
+        float StunGameDifficultyMultiplier { get;}
         
         /// <summary>
         /// Whether the enemy can see through fog.
         /// </summary>
-        bool CanSeeThroughFog { get; set; }
+        bool CanSeeThroughFog { get;}
         
         /// <summary>
         /// Force with which the enemy pushes the player.
         /// </summary>
-        float PushPlayerForce { get; set; }
+        float PushPlayerForce { get;}
         
         /// <summary>
         /// Distance at which the enemy pushes the player.
         /// </summary>
-        float PushPlayerDistance { get; set; }
+        float PushPlayerDistance { get;}
         /// <summary>
         /// Audio for the sound of an item makes when hitting the enemy's body.
         /// </summary>

@@ -12,7 +12,6 @@ public class BrackenPatches
     {
         On.FlowermanAI.Start += FlowermanAI_Start;
         On.FlowermanAI.OnCollideWithPlayer += FlowerManAI_OnCollideWithPlayer;
-
     }
     private static void FlowermanAI_Start(On.FlowermanAI.orig_Start orig,FlowermanAI self)
     {
@@ -74,9 +73,9 @@ public class BrackenPatches
             set => _type.enemyPrefab = value;
         }
 
-        public bool IsOutsideEnemy { get; set; }
-        public bool IsDaytimeEnemy { get; set; }
-        public bool SpawnFromWeeds { get; set; }
+        public bool IsOutsideEnemy { get;}
+        public bool IsDaytimeEnemy { get;}
+        public bool SpawnFromWeeds { get;}
 
         public AnimationCurve SpawnWeightMultiplier
         {

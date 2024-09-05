@@ -52,13 +52,22 @@ public class CoilheadPatches
 
     private class CoilheadProperties(EnemyType type) : IEnemyProperties
     {
+        public string Name { get; set; }
+        public bool IsCustom { get; }
         public Type EnemyClassType => typeof(ICoilhead);
+        public bool SpawningDisabled => type.spawningDisabled;
+        public AnimationCurve ProbabilityCurve => type.probabilityCurve;
 
         public GameObject EnemyPrefab
         {
             get => type.enemyPrefab;
             set => type.enemyPrefab = value;
         }
+
+        public bool IsOutsideEnemy => type.isOutsideEnemy;
+        public bool IsDaytimeEnemy => type.isDaytimeEnemy;
+        public bool SpawnFromWeeds => type.spawnFromWeeds;
+
         public AnimationCurve SpawnWeightMultiplier
         {
             get => type.probabilityCurve;
@@ -78,5 +87,24 @@ public class CoilheadPatches
         get => type.PowerLevel;
         set => type.PowerLevel = value;
     }
+
+    public bool CanBeStunned { get; set; }
+    public bool CanDie { get; set; }
+    public bool DestroyOnDeath { get; set; }
+    public float StunTimeMultiplier { get; set; }
+    public float DoorSpeedMultiplier { get; set; }
+    public float StunGameDifficultyMultiplier { get; set; }
+    public bool CanSeeThroughFog { get; set; }
+    public float PushPlayerForce { get; set; }
+    public float PushPlayerDistance { get; set; }
+    public AudioClip HitBodySFX { get; set; }
+    public AudioClip HitEnemyVoiceSFX { get; set; }
+    public AudioClip DeathSFX { get; set; }
+    public AudioClip StunSFX { get; set; }
+    public MiscAnimation[] MiscAnimations { get; set; }
+    public AudioClip[] AudioClips { get; set; }
+    public float TimeToPlayAudio { get; set; }
+    public float LoudnessMultiplier { get; set; }
+    public AudioClip OverrideVentSFX { get; set; }
     }
 }
