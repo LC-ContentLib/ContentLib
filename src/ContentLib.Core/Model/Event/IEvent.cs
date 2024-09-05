@@ -20,11 +20,13 @@ public interface IGameEvent
 public enum GameEventType
 {
     MonsterPlayerCollisionEvent,
+    MonsterKillsPlayerEvent,
     ShipLanded, 
     ShipTakeoff, 
     ItemPickup,
     PlayerDamaged, 
     PlayerDeath,
     PlayerTeleported,
-    TVSwitch
+    TVSwitch,
+    
 }
