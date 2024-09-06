@@ -77,6 +77,7 @@ public class BrackenPatches
         public void ResetStealthTimerServerRpc(int playerObj) => brackenAi.ResetFlowermanStealthTimerServerRpc(playerObj);
 
         public void ResetStealthTimerClientRpc(int playerObj) => brackenAi.ResetFlowermanStealthClientRpc(playerObj);
+        public void Kill() => brackenAi.KillEnemy();
     }
 
     /// <summary>

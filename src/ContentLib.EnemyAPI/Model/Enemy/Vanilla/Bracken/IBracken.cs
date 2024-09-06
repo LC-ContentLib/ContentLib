@@ -1,3 +1,4 @@
+using ContentLib.Core.Model.Entity.Util;
 using Unity.Netcode;
 
 namespace ContentLib.EnemyAPI.Model.Enemy.Vanilla.Bracken;
@@ -5,7 +6,7 @@ namespace ContentLib.EnemyAPI.Model.Enemy.Vanilla.Bracken;
 /// <summary>
 /// Interface representing the general functionality of a Bracken.
 /// </summary>
-public interface IBracken : IEnemy
+public interface IBracken : IEnemy, IKillable
 {
     /// <summary>
     /// Adds a set amount to the Bracken's anger meter. 
