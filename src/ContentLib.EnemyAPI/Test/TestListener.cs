@@ -1,19 +1,15 @@
 using ContentLib.Core.Model.Event;
+using ContentLib.Core.Model.Event.Listener;
 using ContentLib.EnemyAPI.Model.Enemy;
 using ContentLib.EnemyAPI.Model.Enemy.Vanilla.Bracken;
 using UnityEngine;
 
-namespace Lethal_Promotions.Model.Events.Listeners;
+namespace ContentLib.EnemyAPI.Test;
 
-public class TestListener 
+public class TestListener : IListener
 {
-    public TestListener()
-    {
-        GameEventManager.Instance.Subscribe<MonsterCollideWithPlayerEvent>(GameEventType.MonsterPlayerCollisionEvent,
-            OnMonsterColision);
-        Debug.Log("TestListener has been registered");
-    }
     
+    [EventDelegate]
     private void OnMonsterColision(MonsterCollideWithPlayerEvent collideEvent)
     {
         Debug.Log("OnMonsterColision Check");
