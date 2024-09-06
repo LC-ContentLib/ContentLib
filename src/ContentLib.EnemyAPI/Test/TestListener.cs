@@ -8,18 +8,13 @@ namespace ContentLib.EnemyAPI.Test;
 
 public class TestListener : IListener
 {
-    
     [EventDelegate]
-    private void OnMonsterColision(MonsterCollideWithPlayerEvent collideEvent)
+    private void OnMonsterKill(MonsterKillsPlayerEvent killsPlayerEvent)
     {
-        Debug.Log("OnMonsterColision Check");
-        IEnemy enemy = collideEvent.Enemy;
-        Debug.Log($"The Enemy Type: {enemy.EnemyProperties.EnemyClassType}");
-        if(enemy is IBracken)
-            Debug.Log("It worked and is works");
-        if (EnemyManager.Instance().IsEnemyTypeOf(enemy,typeof(IBracken)))
+        IEnemy enemy = killsPlayerEvent.Enemy;
+        if (enemy is IBracken bracken)
         {
-            Debug.Log("[LC-ContentLib] The player has been killed by a Braken!");
+            Debug.Log($"[$LC-ContentLib] The player has been killed by a Braken with id: {bracken.Id}");
         }
     }
 }

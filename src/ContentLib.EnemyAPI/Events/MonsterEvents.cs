@@ -25,6 +25,9 @@ public abstract class MonsterCollideWithPlayerEvent : IMonsterEvents
 
 }
 
+/// <summary>
+/// Event triggered when a monster kills a player.
+/// </summary>
 public abstract class MonsterKillsPlayerEvent : IMonsterEvents
 {
     
@@ -35,7 +38,23 @@ public abstract class MonsterKillsPlayerEvent : IMonsterEvents
     public abstract IEnemy Enemy { get; }
 }
 
-public enum MonsterType
+/// <summary>
+/// Event triggered when a monster is spawned. (SHOULD NOT BE CANCELLABLE FOR THE TIME BEING) 
+/// </summary>
+public abstract class MonsterSpawnEvent : IMonsterEvents
 {
-    Bracken,Coilhead
+    /// <summary>
+    /// Bool showing if the event is cancelled or not. 
+    /// </summary>
+    protected bool _isCancelled = false;
+    public GameEventType EventType { get; }
+
+    //TODO might need to make a "cancelable" interface to add as a caveat additional inteface to events, as not all 
+    //TODO events should be cancellable. 
+    /// <inheritdoc />
+    public bool IsCancelled { get => _isCancelled; set => _isCancelled = value; }
+
+    /// <inheritdoc />
+    public abstract IEnemy Enemy { get; }
 }
+
