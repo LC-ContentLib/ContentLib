@@ -1,3 +1,5 @@
+using System;
+
 namespace ContentLib.Core.Model.Event;
 
 /// <summary>
@@ -7,26 +9,7 @@ namespace ContentLib.Core.Model.Event;
 public interface IGameEvent
 {
     /// <summary>
-    /// The type of Event.
-    /// </summary>
-    GameEventType EventType { get; }
-    
-    /// <summary>
     /// Checks to see if the Event has been cancelled. 
     /// </summary>
     bool IsCancelled { get; set; }
-}
-
-public enum GameEventType
-{
-    MonsterPlayerCollisionEvent,
-    MonsterKillsPlayerEvent,
-    ShipLanded, 
-    ShipTakeoff, 
-    ItemPickup,
-    PlayerDamaged, 
-    PlayerDeath,
-    PlayerTeleported,
-    TVSwitch,
-    
 }
