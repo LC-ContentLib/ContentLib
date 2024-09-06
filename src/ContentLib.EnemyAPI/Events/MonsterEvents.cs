@@ -43,16 +43,6 @@ public abstract class MonsterKillsPlayerEvent : IMonsterEvents
 /// </summary>
 public abstract class MonsterSpawnEvent : IMonsterEvents
 {
-    /// <summary>
-    /// Bool showing if the event is cancelled or not. 
-    /// </summary>
-    protected bool _isCancelled = false;
-
-    //TODO might need to make a "cancelable" interface to add as a caveat additional inteface to events, as not all 
-    //TODO events should be cancellable. 
-    /// <inheritdoc />
-    public bool IsCancelled { get => _isCancelled; set => _isCancelled = value; }
-
     /// <inheritdoc />
     public abstract IEnemy Enemy { get; }
 }

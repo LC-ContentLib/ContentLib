@@ -8,8 +8,5 @@ namespace ContentLib.Core.Model.Event;
 /// </summary>
 public interface IGameEvent
 {
-    /// <summary>
-    /// Checks to see if the Event has been cancelled. 
-    /// </summary>
-    bool IsCancelled { get; set; }
+   
 }
