@@ -1,7 +1,7 @@
 using System;
 using ContentLib.EnemyAPI.Model.Enemy;
 using UnityEngine;
-
+//TODO to be implemented proper and tested in this branch
 [CreateAssetMenu(menuName = "ScriptableObjects/EnemyType", order = 1)]
 public class CustomEnemyTypeSO : ScriptableObject, IEnemyProperties
 {
