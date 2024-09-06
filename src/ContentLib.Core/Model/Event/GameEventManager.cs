@@ -99,7 +99,7 @@ namespace ContentLib.Core.Model.Event
         {
             var listenerType = listener.GetType();
             var methodsWithAttribute = listenerType.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance)
-                .Where(method => method.GetCustomAttributes(typeof(EventDelegate), true).Any());
+                .Where(method => method.GetCustomAttributes(typeof(EventDelegateAttribute), true).Any());
 
             foreach (var method in methodsWithAttribute)
             {

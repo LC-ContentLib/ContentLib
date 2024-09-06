@@ -9,7 +9,7 @@ namespace ContentLib.Core.Model.Event.Listener;
 /// all methods that have this attribute. 
 /// </summary>
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
-public class EventDelegate : Attribute
+public class EventDelegateAttribute : Attribute
 {
     
 }
