@@ -47,7 +47,6 @@ public abstract class MonsterSpawnEvent : IMonsterEvents
     /// Bool showing if the event is cancelled or not. 
     /// </summary>
     protected bool _isCancelled = false;
-    public GameEventType EventType { get; }
 
     //TODO might need to make a "cancelable" interface to add as a caveat additional inteface to events, as not all 
     //TODO events should be cancellable. 

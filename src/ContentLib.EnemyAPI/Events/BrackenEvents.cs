@@ -8,10 +8,7 @@ public abstract class BrackenSeenByPlayerEvent : IMonsterEvents
     /// Boolean check to see if the event is cancelled. 
     /// </summary>
     protected bool _isCancelled;
-
-    /// <inheritdoc />
-    public GameEventType EventType { get; }
-
+    
     /// <inheritdoc />
     public bool IsCancelled { get => _isCancelled; set => _isCancelled = value; }
 
