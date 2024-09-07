@@ -15,7 +15,7 @@
         "files": "artifacts/bin/ContentLib.*/release/com.github.lc-contentlib.*.dll"
       }],
       "disableDefaultFilter": false,
-      "outputFormat": "mref",
+      "outputFormat": "markdown",
       "filter": "filterConfig.yml",
       "categoryLayout": "nested",
       "namespaceLayout": "nested",
