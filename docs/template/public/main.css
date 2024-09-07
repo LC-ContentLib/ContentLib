@@ -1,9 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
-[data-bs-theme="dark"] .hljs {
-  /* Code blocks */
-  background: #25252b !important;
+/*
+  This theme is based on the docfx material theme: https://github.com/ovasquez/docfx-material
+  It is licensed under the MIT License:
+
+  Copyright (c) 2019 Oscar Vásquez
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+*/
+
+:root {
+  --bs-font-sans-serif: 'Inter';
+  --bs-border-radius: 10px;
+
+  --border-radius-button: 40px;
+
+  /* We might wanna increase the line height */
+  /* --bs-body-line-height: 28px; */
+
 }
 
+[data-bs-theme='light'] {
+  --material-warning-background: #f6e8bd;
+  --material-info-background: #e3f2fd;
+  --material-danger-background: #ffebee;
+}
+
+[data-bs-theme='dark'] {
+  --material-warning-background: #3C331B;
+  --material-info-background: #272843;
+  --material-danger-background: #3E2129;
+}
+
+/* HEADINGS */
+
+h1 {
+  font-weight: 600;
+  font-size: 32px;
+}
+
+h2 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.8;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.8;
+}
+
+h5 {
+  font-size: 14px;
+  padding: 10px 0px;
+}
+
+article h2,
+article h3,
+article h4 {
+  margin-top: 24px;
+  margin-bottom: 15px;
+}
+
+article h4 {
+  padding-bottom: 8px;
+  border-bottom: 2px solid #ddd;
+}
+
+/** ALERTS **/
+.alert {
+  padding: 0;
+  border: none;
+}
+
+.alert > p {
+  color: var(--bs-body-color);
+  padding: 0.2rem 0.7rem 0.7rem 1rem;
+}
+
+.alert > ul {
+  margin-bottom: 0;
+  padding: 5px 40px;
+}
+
+.alert > h5 {
+  color: var(--bs-body-color);
+  padding: 0.5rem 0.7rem 0rem 1rem;
+  border-radius: var(--bs-border-radius) var(--bs-border-radius) 0 0;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.alert-info {
+  background-color: var(--material-info-background);
+}
+
+.alert-warning {
+  background-color: var(--material-warning-background);
+}
+
+.alert-danger {
+  background-color: var(--material-danger-background);
+}
+
+/* Custom Stuff */
+
+/* Get rid of header bottom border */
+.border-bottom {
+  border-bottom: none;
+}
+
+/* Code blocks */
+[data-bs-theme="dark"] .hljs {
+  background: #161618;
+  border-radius: var(--bs-border-radius);
+}
+
+/* Make breadcrumb have an outline */
 .breadcrumb {
   outline-width: 1px;
   outline-offset: 8px;
@@ -12,9 +142,12 @@
   border-radius: 1px;
 }
 
+/* Set main colors */
 [data-bs-theme='dark'] body {
   /* Main background */
-  --bs-body-bg: #1d1e24 !important;
+  --bs-body-bg: #1B1B1F;
   /* Header background */
-  --bs-body-bg-rgb: 34, 34, 40 !important;
+  --bs-body-bg-rgb: 32, 32, 36;
+  /* Text color */
+  --bs-body-color: #DFDFD7;
 }
