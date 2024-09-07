@@ -55,6 +55,7 @@
       "modern",
       "template"
     ],
-    "globalMetadataFiles": ["globalmeta.json"]
+    "globalMetadataFiles": ["globalmeta.json"],
+    "postProcessors": ["ExtractSearchIndex"]
   }
 }
