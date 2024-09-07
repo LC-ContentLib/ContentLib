@@ -37,9 +37,9 @@
 }
 
 [data-bs-theme='light'] {
-  --material-warning-background: #f6e8bd;
-  --material-info-background: #e3f2fd;
-  --material-danger-background: #ffebee;
+  --material-warning-background: #FCF4DC;
+  --material-info-background: #E9EAFF;
+  --material-danger-background: #FDE4E8;
 }
 
 [data-bs-theme='dark'] {
