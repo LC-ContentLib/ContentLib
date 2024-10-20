@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ContentLib.Core.Model.Entity.Util;
+namespace ContentLib.API.Model.Entity.Util;
 /// <summary>
 /// Interface representing if an instance is teleportable or not. 
 /// </summary>

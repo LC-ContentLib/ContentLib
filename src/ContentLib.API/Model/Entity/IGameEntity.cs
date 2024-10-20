@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace ContentLib.Core.Model.Entity;
+namespace ContentLib.API.Model.Entity;
 
 /// <summary>
 /// An interface representing the general functionality of an In-Game Entity. This can be an AI or Player. 

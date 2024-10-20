@@ -1,3 +1,4 @@
+using ContentLib.API.Model.Event;
 using ContentLib.EnemyAPI.Model.Enemy;
 
 namespace ContentLib.Core.Model.Event;

@@ -1,3 +1,4 @@
+using ContentLib.API.Model.Entity;
 using ContentLib.Core.Model.Entity;
 
 namespace ContentLib.EnemyAPI.Model.Enemy;

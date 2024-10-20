@@ -1,4 +1,4 @@
-namespace ContentLib.Core.Model.Mods;
+namespace ContentLib.API.Model.Mods;
 /// <summary>
 /// Interface representing the general functionality of a Lethal Company Mod. 
 /// </summary>
