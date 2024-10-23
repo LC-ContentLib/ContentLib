@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../ContentLib.Core/ContentLib.Core.csproj" Private="false" />
+    <ProjectReference Include="..\ContentLib.API\ContentLib.API.csproj" />
   </ItemGroup>
 
 </Project>
