@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
+using ContentLib.API.Model.Event;
 using ContentLib.Core.Loader;
 using ContentLib.EnemyAPI.Model.Enemy.Custom;
 using ContentLib.EnemyAPI.Patches;
@@ -24,15 +25,13 @@ public class Plugin : BaseUnityPlugin
         EnemyAIPatches.Init();
         BrackenPatches.Init();
         s_log.LogInfo($"Plugin {LCMPluginInfo.PLUGIN_NAME} is loaded!");
+        
+        //------------------------------------------------------------
+
+        #region TestMethods
         TestListener testListener = new();
-        // We might need a project purely for tests. Leaving this as a reminder for later
-        // as we could accidentally break this whole system and not realize for a while.
-        //EnemyDefinition myEnemy = ScriptableObject.CreateInstance<EnemyDefinition>();
-       // myEnemy.name = "testEnemyDefinition";
-
-        // EnemyDefinition.Callbacks.AddOnBeforeRegister(myMod, "testEnemyDefinition",
-        //     (enemy) => s_log.LogInfo("I was called! " + enemy.name));
-
-       // myEnemy.Register();
+        GameEventManager.Instance.RegisterListener(testListener);
+        #endregion
+        
     }
 }
