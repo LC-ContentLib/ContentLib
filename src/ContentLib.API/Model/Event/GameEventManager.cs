@@ -5,7 +5,7 @@ using System.Reflection;
 using ContentLib.Core.Model.Event.Listener;
 using UnityEngine;
 
-namespace ContentLib.Core.Model.Event
+namespace ContentLib.API.Model.Event
 {
     /// <summary>
     /// Manager responsible for the subscription and triggering of In-Game Events, for the purposes of API calls. <i>

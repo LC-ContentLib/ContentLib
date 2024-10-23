@@ -1,11 +1,14 @@
 using System;
-using ContentLib.EnemyAPI.Model.Enemy;
+using ContentLib.API.Model.Mods;
 using UnityEngine;
 
+namespace ContentLib.EnemyAPI.Model.Enemy.Custom.ScriptableObject;
+
 [CreateAssetMenu(menuName = "ScriptableObjects/EnemyType", order = 1)]
-public class CustomEnemyTypeSO : ScriptableObject, IEnemyProperties
+public class CustomEnemyTypeSO : UnityEngine.ScriptableObject, IEnemyProperties, ICustomContentProperties
 {
-    // IEnemyProperties implementation
+    [SerializeField]
+    private string classPath;
     [SerializeField] private string name;
     public string Name { get => name; set => name = value; }
     public bool IsCustom => true;
@@ -94,6 +97,10 @@ public class CustomEnemyTypeSO : ScriptableObject, IEnemyProperties
     [SerializeField] private AudioClip overrideVentSFX;
     public AudioClip OverrideVentSFX { get => overrideVentSFX; set => overrideVentSFX = value; }
 
-    // Reference to the HordeProperties (optional)
-    public EnemyHordeTypeSO hordeProperties;
+    public IEnemyHordeProperties? HordeProperties => hordeProperties;
+
+    [SerializeField]
+    public EnemyHordeTypeSO? hordeProperties;
+
+    public string ClassPath => classPath;
 }

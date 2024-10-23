@@ -1,4 +1,4 @@
-using ContentLib.Core.Model.Entity;
+using ContentLib.API.Model.Entity;
 
 namespace ContentLib.EnemyAPI.Model.Enemy;
 /// <summary>

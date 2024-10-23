@@ -1,6 +1,4 @@
-using System;
-
-namespace ContentLib.Core.Model.Event;
+namespace ContentLib.API.Model.Event;
 
 /// <summary>
 /// Interface representing the general functionality of an In-Game Event. Used for the purposes of mods to be able to
@@ -8,5 +6,10 @@ namespace ContentLib.Core.Model.Event;
 /// </summary>
 public interface IGameEvent
 {
-   
+    
+    /// <summary>
+    /// Checks to see if the Event has been cancelled. 
+    /// </summary>
+    bool IsCancelled { get; set; }
 }
+
