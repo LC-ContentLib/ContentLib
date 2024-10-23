@@ -4,7 +4,7 @@ using ContentLib.EnemyAPI.Model.Enemy;
 using ContentLib.EnemyAPI.Model.Enemy.Vanilla.Bracken;
 using UnityEngine;
 
-namespace Lethal_Promotions.Model.Events.Listeners;
+namespace ContentLib.EnemyAPI.Test;
 
 public class TestListener
 {
@@ -19,7 +19,7 @@ public class TestListener
         IEnemy enemy = collideEvent.Enemy;
         if(enemy is IBracken)
             Debug.Log("It worked and is works");
-        if (EnemyManager.Instance().IsEnemyTypeOf(enemy,typeof(IBracken)))
+        if (EnemyManager.Instance.IsEnemyTypeOf(enemy,typeof(IBracken)))
         {
             Debug.Log("[LC-ContentLib] The player has been killed by a Braken!");
         }

@@ -1,4 +1,5 @@
 using System;
+using ContentLib.API.Model.Mods;
 using UnityEngine;
 
 namespace ContentLib.EnemyAPI.Model.Enemy
@@ -148,5 +149,6 @@ namespace ContentLib.EnemyAPI.Model.Enemy
         /// Overide the Vent Noise made by a spawning entity.
         /// </summary>
         AudioClip OverrideVentSFX { get; set; }
+        IEnemyHordeProperties? HordeProperties { get; }
     }
 }

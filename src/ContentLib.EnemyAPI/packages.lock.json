@@ -385,6 +385,7 @@
         "type": "Project",
         "dependencies": {
           "BepInEx.Core": "[5.4.*, )",
+          "ContentLib.API": "[1.0.0, )",
           "LethalCompany.GameLibs.Steam": "[56.0.1-ngd.0, )",
           "UnityEngine.Modules": "[2023.2.4, )"
         }

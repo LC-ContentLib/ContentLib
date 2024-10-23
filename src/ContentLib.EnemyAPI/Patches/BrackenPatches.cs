@@ -22,12 +22,12 @@ public class BrackenPatches
         Debug.Log("BrackenSpawnPatch");
         IEnemy vanillaBrackenEnemy = new LocalBracken(self);
         Debug.Log("Bracken registration");
-        EnemyManager.Instance().RegisterEnemy(vanillaBrackenEnemy);
+        EnemyManager.Instance.RegisterEnemy(vanillaBrackenEnemy);
     }
     private static void FlowerManAI_OnCollideWithPlayer(On.FlowermanAI.orig_OnCollideWithPlayer orig, FlowermanAI self, Collider other)
     {
         orig(self, other);
-        IEnemy enemy = EnemyManager.Instance().GetEnemy(self.NetworkObjectId);
+        IEnemy enemy = EnemyManager.Instance.GetEnemy(self.NetworkObjectId);
         MonsterCollideWithPlayerEvent collideWithPlayerEvent = new LocalMonsterCollideWithPlayerEvent(enemy);
         GameEventManager.Instance.Trigger(collideWithPlayerEvent);
     }
@@ -118,6 +118,7 @@ public class BrackenPatches
         public float TimeToPlayAudio { get; set; }
         public float LoudnessMultiplier { get; set; }
         public AudioClip OverrideVentSFX { get; set; }
+        public IEnemyHordeProperties? HordeProperties => null;
     }
 
     private class LocalMonsterCollideWithPlayerEvent(IEnemy enemy) : MonsterCollideWithPlayerEvent

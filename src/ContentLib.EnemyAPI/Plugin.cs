@@ -1,7 +1,9 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
+using ContentLib.Core.Loader;
+using ContentLib.EnemyAPI.Model.Enemy.Custom;
 using ContentLib.EnemyAPI.Patches;
-using Lethal_Promotions.Model.Events.Listeners;
+using ContentLib.EnemyAPI.Test;
 using UnityEngine;
 
 namespace ContentLib.EnemyAPI;
@@ -19,7 +21,6 @@ public class Plugin : BaseUnityPlugin
     {
         s_log = Logger;
         s_log.LogInfo($"Plugin {LCMPluginInfo.PLUGIN_NAME} is loaded!");
-        
         BrackenPatches.Init();
         TestListener testListener = new();
         // We might need a project purely for tests. Leaving this as a reminder for later

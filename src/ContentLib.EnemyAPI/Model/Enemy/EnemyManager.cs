@@ -8,23 +8,10 @@ namespace ContentLib.EnemyAPI.Model.Enemy;
 public class EnemyManager
 {
     /// <summary>
-    /// Singleton instance of the Enemy Manager.
-    /// </summary>
-    private static EnemyManager? s_instance;
-
-    /// <summary>
     /// Returns , or creates the singleton instance of the Enemy Manager. 
     /// </summary>
     /// <returns>The singleton instance.</returns>
-    public static EnemyManager Instance()
-    {
-        if (s_instance == null)
-        {
-            s_instance = new EnemyManager();
-        }
-
-        return s_instance;
-    }
+    public static EnemyManager Instance { get; } = new();
     /// <summary>
     /// Dictionary of every registered enemy within the gameworld. 
     /// </summary>
@@ -51,6 +38,11 @@ public class EnemyManager
     /// </summary>
     /// <param name="id">The id of the enemy to unregister.</param>
     public void UnRegisterEnemy(ulong id) => _enemies.Remove(id);
+    
+    /// <summary>
+    /// Unregisters all the enemies from the Manager, typically called at the end of a Round. 
+    /// </summary>
+    public void UnRegisterAllEnemies() => _enemies.Clear();
     
     //TODO Probably needs some logic for invalid id's
     /// <summary>

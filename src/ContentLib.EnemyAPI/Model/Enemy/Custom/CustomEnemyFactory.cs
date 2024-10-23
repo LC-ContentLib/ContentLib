@@ -13,10 +13,10 @@ namespace ContentLib.EnemyAPI.Model.Enemy.Custom
         private readonly IEnemyProperties _properties;
         private readonly IEnemyHordeProperties _hordeProperties;
 
-        public CustomEnemyFactory(IEnemyProperties properties, IEnemyHordeProperties hordeProperties)
+        public CustomEnemyFactory(IEnemy enemy)
         {
-            _properties = properties;
-            _hordeProperties = hordeProperties;
+            _properties = enemy.EnemyProperties;
+            
         }
 
         public EnemyType Create()
