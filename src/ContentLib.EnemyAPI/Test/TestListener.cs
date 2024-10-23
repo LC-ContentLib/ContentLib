@@ -8,6 +8,7 @@ namespace ContentLib.EnemyAPI.Test;
 
 public class TestListener
 {
+    bool triggeredOnce = false;
     public TestListener()
     {
         GameEventManager.Instance.Subscribe<MonsterCollideWithPlayerEvent>(GameEventType.MonsterPlayerCollisionEvent,
@@ -16,14 +17,10 @@ public class TestListener
     
     private void OnMonsterColision(MonsterCollideWithPlayerEvent collideEvent)
     {
+        if (triggeredOnce)
+            return;
         IEnemy enemy = collideEvent.Enemy;
-        if(enemy is IBracken)
-            Debug.Log("It worked and is works");
-        if (EnemyManager.Instance.IsEnemyTypeOf(enemy,typeof(IBracken)))
-        {
-            Debug.Log("[LC-ContentLib] The player has been killed by a Braken!");
-        }
-
-        
+        if(enemy is IBracken bracken)
+            Debug.Log($"Bracken with network id: {bracken.Id}");
     }
 }

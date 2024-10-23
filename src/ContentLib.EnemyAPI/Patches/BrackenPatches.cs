@@ -11,7 +11,7 @@ public class BrackenPatches
 {
     public static void Init()
     {
-        Debug.Log("Bracken Patches");
+        Debug.Log("Patching Bracken");
         On.FlowermanAI.Start += FlowermanAI_Start;
         On.FlowermanAI.OnCollideWithPlayer += FlowerManAI_OnCollideWithPlayer;
 
@@ -19,9 +19,7 @@ public class BrackenPatches
     private static void FlowermanAI_Start(On.FlowermanAI.orig_Start orig,FlowermanAI self)
     {
         orig(self);
-        Debug.Log("BrackenSpawnPatch");
         IEnemy vanillaBrackenEnemy = new LocalBracken(self);
-        Debug.Log("Bracken registration");
         EnemyManager.Instance.RegisterEnemy(vanillaBrackenEnemy);
     }
     private static void FlowerManAI_OnCollideWithPlayer(On.FlowermanAI.orig_OnCollideWithPlayer orig, FlowermanAI self, Collider other)

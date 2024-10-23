@@ -8,13 +8,11 @@ public class EnemyAIPatches
 {
     public static void Init()
     {
-        Debug.Log("Initialising EnemyAI Patches");
+        Debug.Log("Patching EnemyAI");
         On.EnemyAI.Start += EnemyAIOnStart;
         On.EnemyAI.KillEnemy += EnemyAIOnKillEnemy;
-        On.StartOfRound.ShipLeave += StartOfRoundOnShipLeave;
     }
-
-    private static void StartOfRoundOnShipLeave(On.StartOfRound.orig_ShipLeave orig, StartOfRound self) => EnemyManager.Instance.UnRegisterAllEnemies();
+    
 
     private static void EnemyAIOnStart(On.EnemyAI.orig_Start orig, EnemyAI self)
     {
@@ -27,7 +25,6 @@ public class EnemyAIPatches
     {
         orig(self, destroy);
         EnemyManager.Instance.UnRegisterEnemy(self.NetworkObjectId);
-        
     }
     
 

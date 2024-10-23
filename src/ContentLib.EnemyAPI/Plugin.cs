@@ -20,8 +20,10 @@ public class Plugin : BaseUnityPlugin
     private void Awake()
     {
         s_log = Logger;
-        s_log.LogInfo($"Plugin {LCMPluginInfo.PLUGIN_NAME} is loaded!");
+        RoundPatches.Init();
+        EnemyAIPatches.Init();
         BrackenPatches.Init();
+        s_log.LogInfo($"Plugin {LCMPluginInfo.PLUGIN_NAME} is loaded!");
         TestListener testListener = new();
         // We might need a project purely for tests. Leaving this as a reminder for later
         // as we could accidentally break this whole system and not realize for a while.

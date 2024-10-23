@@ -42,15 +42,26 @@ public class EnemyManager
     /// <summary>
     /// Unregisters all the enemies from the Manager, typically called at the end of a Round. 
     /// </summary>
-    public void UnRegisterAllEnemies() => _enemies.Clear();
-    
+    public void UnRegisterAllEnemies()
+    {
+        Debug.Log("UnRegistering All Enemies in Level");
+        _enemies.Clear();
+    }
+
     //TODO Probably needs some logic for invalid id's
     /// <summary>
     /// Gets the enemy specified with the given id.
     /// </summary>
     /// <param name="id">The id of the enemy to get.</param>
     /// <returns>The enemy with the corresponding id</returns>
-    public IEnemy GetEnemy(ulong id) => _enemies[id];
+    public IEnemy GetEnemy(ulong id)
+    {
+        if (_enemies.TryGetValue(id, out var enemy))
+        {
+            return enemy;
+        }
+        throw new KeyNotFoundException($"Enemy with ID {id} was not found.");
+    }
     
     /// <summary>
     /// Checks ot see if an enemy with the given id is registered within the manager.
