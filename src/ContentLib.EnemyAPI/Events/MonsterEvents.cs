@@ -1,4 +1,5 @@
 using System;
+using ContentLib.API.Model.Event;
 using ContentLib.EnemyAPI.Model.Enemy;
 
 namespace ContentLib.Core.Model.Event;
@@ -19,7 +20,7 @@ public abstract class MonsterCollideWithPlayerEvent : IMonsterEvents
 {
     /// <inheritdoc />
     public abstract IEnemy Enemy { get; }
-    
+
     /// <inheritdoc />
     public bool IsCancelled { get; set; }
 
@@ -45,5 +46,7 @@ public abstract class MonsterSpawnEvent : IMonsterEvents
 {
     /// <inheritdoc />
     public abstract IEnemy Enemy { get; }
+
+    public bool IsCancelled { get; set; }
 }
 

@@ -6,10 +6,6 @@ namespace ContentLib.API.Model.Event;
 /// </summary>
 public interface IGameEvent
 {
-    /// <summary>
-    /// The type of Event.
-    /// </summary>
-    GameEventType EventType { get; }
     
     /// <summary>
     /// Checks to see if the Event has been cancelled. 
@@ -17,14 +13,3 @@ public interface IGameEvent
     bool IsCancelled { get; set; }
 }
 
-public enum GameEventType
-{
-    MonsterPlayerCollisionEvent,
-    ShipLanded, 
-    ShipTakeoff, 
-    ItemPickup,
-    PlayerDamaged, 
-    PlayerDeath,
-    PlayerTeleported,
-    TVSwitch
-}

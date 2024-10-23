@@ -22,7 +22,7 @@ public class CoilheadPatches
     private static void CoilheadSpawn(SpringManAI springManAI)
     {
         var coilhead = new LocalCoilhead(springManAI);
-        EnemyManager.Instance().RegisterEnemy(coilhead);
+        EnemyManager.Instance.RegisterEnemy(coilhead);
     }
 
     private class LocalCoilhead(SpringManAI springManAI) : ICoilhead
@@ -106,5 +106,6 @@ public class CoilheadPatches
     public float TimeToPlayAudio { get; set; }
     public float LoudnessMultiplier { get; set; }
     public AudioClip OverrideVentSFX { get; set; }
+    public IEnemyHordeProperties? HordeProperties { get; }
     }
 }
