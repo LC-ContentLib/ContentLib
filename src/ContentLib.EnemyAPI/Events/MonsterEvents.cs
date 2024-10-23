@@ -1,4 +1,4 @@
-using ContentLib.API.Model.Event;
+using System;
 using ContentLib.EnemyAPI.Model.Enemy;
 
 namespace ContentLib.Core.Model.Event;
@@ -17,14 +17,33 @@ public interface IMonsterEvents : IGameEvent
 
 public abstract class MonsterCollideWithPlayerEvent : IMonsterEvents
 {
+    /// <inheritdoc />
     public abstract IEnemy Enemy { get; }
-    public GameEventType EventType => GameEventType.MonsterPlayerCollisionEvent;
-
+    
+    /// <inheritdoc />
     public bool IsCancelled { get; set; }
 
 }
 
-public enum MonsterType
+/// <summary>
+/// Event triggered when a monster kills a player.
+/// </summary>
+public abstract class MonsterKillsPlayerEvent : IMonsterEvents
 {
-    Bracken,Coilhead
+    
+    /// <inheritdoc />
+    public bool IsCancelled { get; set; } = false;
+
+    /// <inheritdoc />
+    public abstract IEnemy Enemy { get; }
 }
+
+/// <summary>
+/// Event triggered when a monster is spawned. (SHOULD NOT BE CANCELLABLE FOR THE TIME BEING) 
+/// </summary>
+public abstract class MonsterSpawnEvent : IMonsterEvents
+{
+    /// <inheritdoc />
+    public abstract IEnemy Enemy { get; }
+}
+

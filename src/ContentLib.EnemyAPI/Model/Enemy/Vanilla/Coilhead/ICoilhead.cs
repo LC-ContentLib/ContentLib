@@ -23,7 +23,7 @@ public interface ICoilhead : IEnemy
     void SetAnimationGoClientRpc();
 
     // Search and Chase Methods
-    void SearchForPlayers();
+    AISearchRoutine SearchForPlayers();
 
     CoilheadBehaviourState State { get;}
 

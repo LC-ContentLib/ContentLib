@@ -1,26 +1,20 @@
-using ContentLib.API.Model.Event;
 using ContentLib.Core.Model.Event;
+using ContentLib.Core.Model.Event.Listener;
 using ContentLib.EnemyAPI.Model.Enemy;
 using ContentLib.EnemyAPI.Model.Enemy.Vanilla.Bracken;
 using UnityEngine;
 
 namespace ContentLib.EnemyAPI.Test;
 
-public class TestListener
+public class TestListener : IListener
 {
-    bool triggeredOnce = false;
-    public TestListener()
+    [EventDelegate]
+    private void OnMonsterKill(MonsterKillsPlayerEvent killsPlayerEvent)
     {
-        GameEventManager.Instance.Subscribe<MonsterCollideWithPlayerEvent>(GameEventType.MonsterPlayerCollisionEvent,
-            OnMonsterColision);
-    }
-    
-    private void OnMonsterColision(MonsterCollideWithPlayerEvent collideEvent)
-    {
-        if (triggeredOnce)
-            return;
-        IEnemy enemy = collideEvent.Enemy;
-        if(enemy is IBracken bracken)
-            Debug.Log($"Bracken with network id: {bracken.Id}");
+        IEnemy enemy = killsPlayerEvent.Enemy;
+        if (enemy is IBracken bracken)
+        {
+            Debug.Log($"[$LC-ContentLib] The player has been killed by a Braken with id: {bracken.Id}");
+        }
     }
 }

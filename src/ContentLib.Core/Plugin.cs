@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
+using ContentLib.Core.Utils;
 
 namespace ContentLib.Core;
 
@@ -15,10 +16,6 @@ public class Plugin : BaseUnityPlugin
     private void Awake()
     {
         s_log = Logger;
-        s_log.LogInfo($"Plugin {LCMPluginInfo.PLUGIN_NAME} is loaded!");
-
-        // TODO: Test behavior with loading an "identical" ModDefinition from an AssetBundle
-        //ModDefinition.Create("Author", "Test");
-        //ModDefinition.Create("Author", "Test");
+        CLLogger.Instance.Log($"{LCMPluginInfo.PLUGIN_NAME} is loaded!");
     }
 }
