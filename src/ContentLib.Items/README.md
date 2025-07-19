@@ -1,3 +1,3 @@
-# ContentLib.Core
+# ContentLib.Items
 
-Core module of the ContentLib API for Lethal Company.
+Items module of the ContentLib API for Lethal Company.

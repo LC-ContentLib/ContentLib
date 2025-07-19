@@ -5,16 +5,16 @@ namespace ContentLib.Core;
 /// <summary>
 /// A ContentLib wrapper for an <see cref="AssetBundle"/>.
 /// </summary>
-public sealed class PeakBundle
+public sealed class ContentBundle
 {
     /// <summary>
-    /// The <see cref="ModDefinition"/> that owns this <see cref="PeakBundle"/>.
+    /// The <see cref="ModDefinition"/> that owns this <see cref="ContentBundle"/>.
     /// </summary>
     public ModDefinition Mod { get; }
 
     private readonly AssetBundle bundle;
 
-    internal PeakBundle(AssetBundle assetBundle, ModDefinition modDefinition)
+    internal ContentBundle(AssetBundle assetBundle, ModDefinition modDefinition)
     {
         bundle = ThrowHelper.ThrowIfArgumentNull(assetBundle);
         Mod = ThrowHelper.ThrowIfArgumentNull(modDefinition);

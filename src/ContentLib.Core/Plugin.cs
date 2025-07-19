@@ -27,7 +27,7 @@ public partial class CorePlugin : BaseUnityPlugin
     {
         _instance = this;
         MonoDetourManager.InvokeHookInitializers(typeof(CorePlugin).Assembly);
-        BundleLoader.LoadAllBundles(Paths.PluginPath, ".autoload.peakbundle");
+        BundleLoader.LoadAllBundles(Paths.PluginPath, ".autoload.contentbundle");
 
         Log.LogInfo($"Plugin {Name} is loaded!");
     }

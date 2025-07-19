@@ -37,7 +37,7 @@ public static class BundleLoader
     /// <summary>
     /// And even that is fired for every AssetBundle loaded by ContentLib.
     /// </summary>
-    public static event Action<PeakBundle>? OnBundleLoaded;
+    public static event Action<ContentBundle>? OnBundleLoaded;
 
     private static bool calledOnBundleLoaded;
     private static bool bundleLoadingWindowClosed;
@@ -92,22 +92,22 @@ public static class BundleLoader
     /// Load an AssetBundle async and get a callback for when it's loaded.
     /// Does not register its contents automatically.
     /// </summary>
-    /// <inheritdoc cref="LoadBundleWithNameInternal(BaseUnityPlugin, string, Action{PeakBundle}, bool)"/>
+    /// <inheritdoc cref="LoadBundleWithNameInternal(BaseUnityPlugin, string, Action{ContentBundle}, bool)"/>
     public static void LoadBundleWithName(
         this BaseUnityPlugin baseUnityPlugin,
         string fileName,
-        Action<PeakBundle> onLoaded
+        Action<ContentBundle> onLoaded
     ) => LoadBundleWithNameInternal(baseUnityPlugin, fileName, onLoaded, loadContents: false);
 
     /// <summary>
     /// Load an AssetBundle async and get a callback for when it's loaded.
     /// Also registers its contents automatically.
     /// </summary>
-    /// <inheritdoc cref="LoadBundleWithNameInternal(BaseUnityPlugin, string, Action{PeakBundle}, bool)"/>
+    /// <inheritdoc cref="LoadBundleWithNameInternal(BaseUnityPlugin, string, Action{ContentBundle}, bool)"/>
     public static void LoadBundleAndContentsWithName(
         this BaseUnityPlugin baseUnityPlugin,
         string fileName,
-        Action<PeakBundle> onLoaded
+        Action<ContentBundle> onLoaded
     ) => LoadBundleWithNameInternal(baseUnityPlugin, fileName, onLoaded, loadContents: true);
 
     /// <summary></summary>
@@ -116,13 +116,13 @@ public static class BundleLoader
     /// whose <see cref="ModDefinition"/> to use.</param>
     /// <param name="fileName">The full file name without path. This is searched for recursively
     /// from the directory of the <see cref="BaseUnityPlugin"/> assembly.</param>
-    /// <inheritdoc cref="LoadBundleFromPath(string, Action{PeakBundle}, ModDefinition?)"/>
+    /// <inheritdoc cref="LoadBundleFromPath(string, Action{ContentBundle}, ModDefinition?)"/>
     /// <param name="onLoaded"></param>
     /// <param name="loadContents"></param>
     private static void LoadBundleWithNameInternal(
         this BaseUnityPlugin baseUnityPlugin,
         string fileName,
-        Action<PeakBundle> onLoaded,
+        Action<ContentBundle> onLoaded,
         bool loadContents
     )
     {
@@ -146,13 +146,13 @@ public static class BundleLoader
     /// Does not register its contents automatically.
     /// </summary>
     /// <remarks>
-    /// Prefer <see cref="LoadBundleWithName(BaseUnityPlugin, string, Action{PeakBundle})"/>
+    /// Prefer <see cref="LoadBundleWithName(BaseUnityPlugin, string, Action{ContentBundle})"/>
     /// over this method.
     /// </remarks>
-    /// <inheritdoc cref="LoadBundleAndContentsFromPath(string, Action{PeakBundle}?, ModDefinition?)"/>
+    /// <inheritdoc cref="LoadBundleAndContentsFromPath(string, Action{ContentBundle}?, ModDefinition?)"/>
     public static void LoadBundleFromPath(
         string path,
-        Action<PeakBundle> onLoaded,
+        Action<ContentBundle> onLoaded,
         ModDefinition? mod = null
     )
     {
@@ -167,17 +167,17 @@ public static class BundleLoader
     /// Also registers its contents automatically.
     /// </summary>
     /// <remarks>
-    /// Prefer <see cref="LoadBundleAndContentsWithName(BaseUnityPlugin, string, Action{PeakBundle})"/>
+    /// Prefer <see cref="LoadBundleAndContentsWithName(BaseUnityPlugin, string, Action{ContentBundle})"/>
     /// over this method.
     /// </remarks>
     /// <param name="path">The absolute path to the AssetBundle.</param>
     /// <param name="onLoaded">Callback for when the AssetBundle is loaded.</param>
-    /// <param name="mod">The <see cref="ModDefinition"/> that owns this <see cref="PeakBundle"/>.
+    /// <param name="mod">The <see cref="ModDefinition"/> that owns this <see cref="ContentBundle"/>.
     /// If this is set, the target asset bundle must not contain a <see cref="UnityModDefinition"/>
     /// <see cref="ScriptableObject"/>.</param>
     public static void LoadBundleAndContentsFromPath(
         string path,
-        Action<PeakBundle>? onLoaded = null,
+        Action<ContentBundle>? onLoaded = null,
         ModDefinition? mod = null
     )
     {
@@ -313,7 +313,7 @@ public static class BundleLoader
         public State CurrentState { get; set; } = State.LoadingBundle;
         public bool LoadContents { get; }
         public ModDefinition? ModDefinition { get; }
-        public Action<PeakBundle>? OnBundleLoaded { get; }
+        public Action<ContentBundle>? OnBundleLoaded { get; }
         public AssetBundleCreateRequest BundleRequest { get; }
         public TimeSpan ElapsedTime => DateTime.Now - StartTime;
         public string FileName => System.IO.Path.GetFileNameWithoutExtension(Path);
@@ -326,7 +326,7 @@ public static class BundleLoader
 
         internal LoadOperation(
             string path,
-            Action<PeakBundle>? onBundleLoaded = null,
+            Action<ContentBundle>? onBundleLoaded = null,
             bool loadContents = true,
             ModDefinition? modDefinition = null
         )
@@ -427,7 +427,7 @@ public static class BundleLoader
                 }
             }
 
-            var peakBundle = new PeakBundle(bundle, mod);
+            var peakBundle = new ContentBundle(bundle, mod);
 
             operation.OnBundleLoaded?.SafeInvoke(peakBundle);
             BundleLoader.OnBundleLoaded?.SafeInvoke(peakBundle);

@@ -41,4 +41,4 @@ communities = [ "lethal-company", ]
 [publish.categories]
 # See categories at:
 # https://thunderstore.io/api/experimental/community/lethal-company/category/
-peak = [ "libraries", "mods", "bepinex", ]
+lethal-company = [ "libraries", "mods", "bepinex", ]
