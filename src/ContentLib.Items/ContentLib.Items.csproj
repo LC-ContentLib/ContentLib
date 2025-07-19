@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../ContentLib.Core/ContentLib.Core.csproj" />
+    <PackageReference Include="Evaisa.LethalLib" Version="*" />
   </ItemGroup>
 
 </Project>

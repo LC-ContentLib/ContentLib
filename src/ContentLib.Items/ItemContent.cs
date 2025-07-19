@@ -24,6 +24,7 @@ public class ItemContent(Item item) : IContent<ItemContent>
 #if !UNITY_EDITOR
         NetworkPrefabManager.RegisterNetworkPrefab(Item.spawnPrefab);
         s_RegisteredItems.Add(registered);
+        LethalLib.Modules.Items.RegisterScrap(Item);
 #endif
         return registered;
     }
