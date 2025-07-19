@@ -16,10 +16,10 @@ obj/
 .idea/
 
 # Test Unity project
-/tests/UnityTestProject/*
-/tests/UnityTestProject/Assets/*
-!/tests/UnityTestProject/Assets/
-!/tests/UnityTestProject/Assets/TestProject/
+/tests/UnityContentLibTestProject/*
+/tests/UnityContentLibTestProject/Assets/*
+!/tests/UnityContentLibTestProject/Assets/
+!/tests/UnityContentLibTestProject/Assets/TestProject/
 
 # Config files
 !/.config/

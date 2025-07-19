@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using MonoDetour.HookGen;
 using UnityEngine;
 
 namespace ContentLib.Core;
@@ -8,7 +7,6 @@ namespace ContentLib.Core;
 /// <summary>
 /// Handles registering network prefabs.
 /// </summary>
-[MonoDetourTargets(typeof(GameNetworkManager))]
 public static class NetworkPrefabManager
 {
     /// <summary>

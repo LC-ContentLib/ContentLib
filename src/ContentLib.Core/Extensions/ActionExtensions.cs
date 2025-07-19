@@ -1,3 +1,4 @@
+#if !UNITY_EDITOR
 using System;
 using System.Linq;
 
@@ -35,3 +36,4 @@ internal static class ActionExtensions
         }
     }
 }
+#endif
