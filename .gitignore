@@ -11,6 +11,10 @@ obj/
 !/src/
 !/tests/
 
+# JetBrains Rider
+*.sln.iml
+.idea/
+
 # Test Unity project
 /tests/UnityTestProject/*
 /tests/UnityTestProject/Assets/*
