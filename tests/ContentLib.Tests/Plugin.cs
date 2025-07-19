@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
+using ContentLib.Core;
 
 namespace ContentLib.Tests;
 
@@ -14,6 +15,8 @@ public partial class TestsPlugin : BaseUnityPlugin
 
     private void Awake()
     {
+        this.LoadBundleAndContentsWithName("testscrap.contentbundle");
+
         Log.LogInfo($"Plugin {Name} is loaded!");
     }
 }

@@ -97,7 +97,11 @@ public static class BundleLoader
         this BaseUnityPlugin baseUnityPlugin,
         string fileName,
         Action<ContentBundle> onLoaded
-    ) => LoadBundleWithNameInternal(baseUnityPlugin, fileName, onLoaded, loadContents: false);
+    )
+    {
+        ThrowHelper.ThrowIfArgumentNull(onLoaded);
+        LoadBundleWithNameInternal(baseUnityPlugin, fileName, onLoaded, loadContents: false);
+    }
 
     /// <summary>
     /// Load an AssetBundle async and get a callback for when it's loaded.
@@ -107,7 +111,7 @@ public static class BundleLoader
     public static void LoadBundleAndContentsWithName(
         this BaseUnityPlugin baseUnityPlugin,
         string fileName,
-        Action<ContentBundle> onLoaded
+        Action<ContentBundle>? onLoaded = null
     ) => LoadBundleWithNameInternal(baseUnityPlugin, fileName, onLoaded, loadContents: true);
 
     /// <summary></summary>
@@ -122,13 +126,12 @@ public static class BundleLoader
     private static void LoadBundleWithNameInternal(
         this BaseUnityPlugin baseUnityPlugin,
         string fileName,
-        Action<ContentBundle> onLoaded,
+        Action<ContentBundle>? onLoaded,
         bool loadContents
     )
     {
         ThrowHelper.ThrowIfArgumentNull(baseUnityPlugin);
         ThrowHelper.ThrowIfArgumentNullOrWhiteSpace(fileName);
-        ThrowHelper.ThrowIfArgumentNull(onLoaded);
 
         var root = Path.GetDirectoryName(baseUnityPlugin.Info.Location);
         string[] files = Directory.GetFiles(root, fileName, SearchOption.AllDirectories);
@@ -401,6 +404,10 @@ public static class BundleLoader
                 mod.Content.Add(content);
             }
 
+            var contentBundle = new ContentBundle(bundle, mod);
+
+            operation.OnBundleLoaded?.SafeInvoke(contentBundle);
+
             if (operation.LoadContents)
             {
                 foreach (var content in contents)
@@ -427,10 +434,7 @@ public static class BundleLoader
                 }
             }
 
-            var peakBundle = new ContentBundle(bundle, mod);
-
-            operation.OnBundleLoaded?.SafeInvoke(peakBundle);
-            BundleLoader.OnBundleLoaded?.SafeInvoke(peakBundle);
+            BundleLoader.OnBundleLoaded?.SafeInvoke(contentBundle);
 
             // if (ConfigManager.ExtendedLogging.Value)
             // {
