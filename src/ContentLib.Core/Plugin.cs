@@ -1,5 +1,8 @@
-﻿using BepInEx;
+﻿#if !UNITY_EDITOR
+using System;
+using BepInEx;
 using BepInEx.Logging;
+using ContentLib.Core;
 
 namespace ContentLib;
 
@@ -11,9 +14,25 @@ namespace ContentLib;
 public partial class CorePlugin : BaseUnityPlugin
 {
     internal static ManualLogSource Log { get; } = BepInEx.Logging.Logger.CreateLogSource(Name);
+    internal static CorePlugin Instance =>
+        _instance
+        ?? throw new NullReferenceException(
+            "ContentLib.Core hasn't been initialized yet! "
+                + "Please depend on it with [BepInDependency(CorePlugin.Id)]"
+        );
+
+    private static CorePlugin? _instance = null;
 
     private void Awake()
     {
+        BundleLoader.LoadAllBundles(Paths.PluginPath, ".autoload.peakbundle");
+
         Log.LogInfo($"Plugin {Name} is loaded!");
     }
+
+    private void Start()
+    {
+        BundleLoader.CloseBundleLoadingWindow();
+    }
 }
+#endif
