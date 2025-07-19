@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentLib.Core", "src\Cont
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentLib.Items", "src\ContentLib.Items\ContentLib.Items.csproj", "{D170B93F-BBB7-4C3B-A2B3-06C761A64D3F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0FDBAAE5-F98E-4F29-B176-39076DCD7A0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentLib.Tests", "tests\ContentLib.Tests\ContentLib.Tests.csproj", "{A61982D5-5F5A-4EC4-8E2D-25FFFC3ECA5C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,9 +33,14 @@ Global
 		{D170B93F-BBB7-4C3B-A2B3-06C761A64D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D170B93F-BBB7-4C3B-A2B3-06C761A64D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D170B93F-BBB7-4C3B-A2B3-06C761A64D3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A61982D5-5F5A-4EC4-8E2D-25FFFC3ECA5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A61982D5-5F5A-4EC4-8E2D-25FFFC3ECA5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A61982D5-5F5A-4EC4-8E2D-25FFFC3ECA5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A61982D5-5F5A-4EC4-8E2D-25FFFC3ECA5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1E9152F5-D8C2-4717-8093-EFCBC578FB94} = {7A367D55-0919-4EC5-BB44-3E582D37C66D}
 		{D170B93F-BBB7-4C3B-A2B3-06C761A64D3F} = {7A367D55-0919-4EC5-BB44-3E582D37C66D}
+		{A61982D5-5F5A-4EC4-8E2D-25FFFC3ECA5C} = {0FDBAAE5-F98E-4F29-B176-39076DCD7A0D}
 	EndGlobalSection
 EndGlobal
