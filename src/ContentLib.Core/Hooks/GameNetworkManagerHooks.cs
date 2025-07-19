@@ -1,3 +1,4 @@
+#if !UNITY_EDITOR
 using MonoDetour;
 using MonoDetour.HookGen;
 using On.GameNetworkManager;
@@ -24,3 +25,4 @@ static class GameNetworkManagerHooks
         }
     }
 }
+#endif
