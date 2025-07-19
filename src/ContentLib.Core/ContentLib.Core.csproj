@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>com.github.LC-ContentLib.Core</AssemblyName>
+    <AssemblyTitle>ContentLib.Core</AssemblyTitle>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
+  <!-- NuGet metadata -->
+  <PropertyGroup>
+    <IsPackable>true</IsPackable>
+    <PackageId>LC-ContentLib.Core</PackageId>
+    <Description>Core module of the ContentLib API for Lethal Company.</Description>
+    <Authors>$(Authors), Hamunii</Authors>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="./README.md" Pack="true" PackagePath="/" />
+    <None Include="$(SolutionRoot)icon.png" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+</Project>

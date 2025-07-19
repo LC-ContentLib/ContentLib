@@ -1,0 +1,19 @@
+<Project>
+
+  <PropertyGroup>
+    <!-- Set if the default steam game install directory doesn't work. -->
+    <!-- <LethalCompanyGameRootDir></LethalCompanyGameRootDir> -->
+    <!-- Set if your BepInEx/plugins/ directory isn't in the game files. -->
+    <!-- <LethalCompanyPluginsDir></LethalCompanyPluginsDir> -->
+  </PropertyGroup>
+
+  <Target Name="DeployFiles" AfterTargets="Build">
+    <Message Text="Deploy → $(LethalCompanyPluginsDir)$(AssemblyName).dll" Importance="High" />
+    <Error
+      Text="Plugins directory '$([MSBuild]::NormalizeDirectory($(LethalCompanyPluginsDir)))' doesn't exist! Configure LethalCompanyPluginsDir to point to a valid path in the Config.Build.user.props file."
+      Condition="!Exists('$(LethalCompanyPluginsDir)')"
+    />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(LethalCompanyPluginsDir)" />
+  </Target>
+
+</Project>
