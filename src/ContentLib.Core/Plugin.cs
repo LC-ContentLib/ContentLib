@@ -2,9 +2,9 @@
 using System;
 using BepInEx;
 using BepInEx.Logging;
-using ContentLib.Core;
+using MonoDetour;
 
-namespace ContentLib;
+namespace ContentLib.Core;
 
 /// <summary>
 /// BepInEx plugin of ContentLib.Core.
@@ -25,6 +25,8 @@ public partial class CorePlugin : BaseUnityPlugin
 
     private void Awake()
     {
+        _instance = this;
+        MonoDetourManager.InvokeHookInitializers(typeof(CorePlugin).Assembly);
         BundleLoader.LoadAllBundles(Paths.PluginPath, ".autoload.peakbundle");
 
         Log.LogInfo($"Plugin {Name} is loaded!");
