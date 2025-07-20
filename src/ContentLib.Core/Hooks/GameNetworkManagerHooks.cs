@@ -1,4 +1,4 @@
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR_ASSEMBLY
 using MonoDetour;
 using MonoDetour.HookGen;
 using On.GameNetworkManager;

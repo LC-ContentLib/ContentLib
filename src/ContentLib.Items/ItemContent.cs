@@ -21,7 +21,7 @@ public class ItemContent(Item item) : IContent<ItemContent>
         var registered = ContentRegistry.Register(this, owner);
 
         // TODO: actual logic to register item.
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR_ASSEMBLY
         NetworkPrefabManager.RegisterNetworkPrefab(Item.spawnPrefab);
         s_RegisteredItems.Add(registered);
         LethalLib.Modules.Items.RegisterScrap(Item);

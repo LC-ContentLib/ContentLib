@@ -1,4 +1,4 @@
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR_ASSEMBLY
 using System;
 using System.Linq;
 

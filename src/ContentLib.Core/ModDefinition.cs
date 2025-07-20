@@ -46,7 +46,7 @@ public class ModDefinition : IModDefinitionResolvable
         Version = ThrowHelper.ThrowIfArgumentNull(version);
     }
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR_ASSEMBLY
     /// <summary>
     /// Creates a new <see cref="ModDefinition"/> for the <paramref name="pluginInfo"/>
     /// or returns it if it already exists.
@@ -98,7 +98,7 @@ public class ModDefinition : IModDefinitionResolvable
     public static bool TryGetMod(string id, [NotNullWhen(true)] out ModDefinition? modDefinition) =>
         s_guidToMod.TryGetValue(id, out modDefinition);
 
-#if !UNITY_EDITOR
+#if !UNITY_EDITOR_ASSEMBLY
     /// <summary>
     /// Registers all unregistered content belonging to this <see cref="ModDefinition"/>.
     /// </summary>
