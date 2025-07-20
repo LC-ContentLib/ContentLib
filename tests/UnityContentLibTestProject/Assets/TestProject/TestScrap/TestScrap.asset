@@ -53,7 +53,7 @@ MonoBehaviour:
   isDefensiveWeapon: 0
   toolTips: []
   verticalOffset: 0
-  floorYOffset: 0
+  floorYOffset: 5
   allowDroppingAheadOfPlayer: 0
   restingRotation: {x: 0, y: 0, z: 0}
   rotationOffset: {x: 0, y: 0, z: 0}
