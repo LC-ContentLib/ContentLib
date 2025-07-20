@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: -1944876729, guid: 4ffeeb1a62503f17fb0d8cf4bc2fd0fb, type: 3}
   m_Name: New Item Content Example SO
   m_EditorClassIdentifier: 
-  _item: {fileID: 0}
+  _item: {fileID: 1906448607135176016, guid: bc16c488318475c729fd6f6735f78912, type: 3}
   itemName: 
   spawnPositionTypes: []
   levelType: 
@@ -32,7 +32,8 @@ MonoBehaviour:
   maxValue: 0
   minValue: 0
   spawnPrefab:
-    _implementer: {fileID: 0}
+    _implementer: {fileID: 7543553394491477748, guid: bc16c488318475c729fd6f6735f78912,
+      type: 3}
   requiresBattery: 0
   batteryUsage: 0
   automaticallySetUsingPower: 0

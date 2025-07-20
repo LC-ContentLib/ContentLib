@@ -9,9 +9,6 @@ namespace ContentLib.Items.UnitySOs
     [CreateAssetMenu(menuName = "ContentLib/Item Content Example")]
     public class ItemContentExampleSO : ScriptableObject, IItemContentExample, IContent
     {
-        
-        
-        [SerializeField] UnityCustomItem _item = new UnityCustomItem();
         [Header("Basic Info")]
         [SerializeField]
         string itemName;
