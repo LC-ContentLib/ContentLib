@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ContentLib.Core.Model;
 using UnityEngine;
 
 namespace ContentLib.Core
@@ -30,7 +31,8 @@ namespace ContentLib.Core
         int GetMaxValue();
         int GetMinValue();
 
-        GameObject GetSpawnPrefab();
+        
+        IItemPrefab GetSpawnPrefab();
 
         bool GetRequiresBattery();
         float GetBatteryUsage();

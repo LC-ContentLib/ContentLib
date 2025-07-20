@@ -42,7 +42,6 @@ public static class BundleLoader
     private static bool calledOnBundleLoaded;
     private static bool bundleLoadingWindowClosed;
     private static readonly List<LoadOperation> _operations = [];
-
     private static void InvokeOnAllBundlesLoadedIfShould()
     {
         if (_operations.Count == 0 && bundleLoadingWindowClosed && !calledOnBundleLoaded)

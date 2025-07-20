@@ -24,4 +24,8 @@
     <PackageReference Include="Evaisa.LethalLib" Version="*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Register\" />
+  </ItemGroup>
+
 </Project>

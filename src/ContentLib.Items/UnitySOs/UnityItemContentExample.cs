@@ -1,12 +1,17 @@
 using System.Collections.Generic;
 using ContentLib.Core;
+using ContentLib.Core.Model;
+using KBCore.Refs;
 using UnityEngine;
 
-namespace ContentLib.Items.UnityEditor
+namespace ContentLib.Items.UnitySOs
 {
     [CreateAssetMenu(menuName = "ContentLib/Item Content Example")]
     public class ItemContentExampleSO : ScriptableObject, IItemContentExample, IContent
     {
+        
+        
+        [SerializeField] UnityCustomItem _item = new UnityCustomItem();
         [Header("Basic Info")]
         [SerializeField]
         string itemName;
@@ -67,7 +72,7 @@ namespace ContentLib.Items.UnityEditor
 
         [Header("Prefab")]
         [SerializeField]
-        private GameObject spawnPrefab;
+        private InterfaceRef<IItemPrefab> spawnPrefab;
 
         [Header("Battery Settings")]
         [SerializeField]
@@ -194,7 +199,7 @@ namespace ContentLib.Items.UnityEditor
         public int GetHighestSalePercentage() => highestSalePercentage;
         public int GetMaxValue() => maxValue;
         public int GetMinValue() => minValue;
-        public GameObject GetSpawnPrefab() => spawnPrefab;
+        public IItemPrefab GetSpawnPrefab() => spawnPrefab.Value;
         public bool GetRequiresBattery() => requiresBattery;
         public float GetBatteryUsage() => batteryUsage;
         public bool GetAutomaticallySetUsingPower() => automaticallySetUsingPower;
