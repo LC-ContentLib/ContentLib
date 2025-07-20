@@ -95,8 +95,9 @@ GameObject:
   - component: {fileID: 6557243416582839135}
   - component: {fileID: 3330648753965216011}
   - component: {fileID: 1764584834794956734}
-  - component: {fileID: 1080468164187217000}
+  - component: {fileID: 1906448607135176016}
   - component: {fileID: 7072228889244143065}
+  - component: {fileID: 5647627378347968567}
   m_Layer: 6
   m_Name: TestCube
   m_TagString: PhysicsProp
@@ -205,7 +206,7 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 1
   AutoObjectParentSync: 0
---- !u!114 &1080468164187217000
+--- !u!114 &1906448607135176016
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -214,45 +215,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3462096859365274220}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d0cf24d2ccc3b7eab72048d0f57c437, type: 3}
+  m_Script: {fileID: 297790455, guid: 4ffeeb1a62503f17fb0d8cf4bc2fd0fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grabbable: 1
-  isHeld: 0
-  isHeldByEnemy: 0
-  deactivated: 0
-  parentObject: {fileID: 0}
-  targetFloorPosition: {x: 0, y: 0, z: 0}
-  startFallingPosition: {x: 0, y: 0, z: 0}
-  floorYRot: 0
-  fallTime: 0
-  hasHitGround: 0
-  scrapValue: 0
-  itemUsedUp: 0
-  playerHeldBy: {fileID: 0}
-  isPocketed: 0
-  isBeingUsed: 0
-  isInElevator: 0
-  isInShipRoom: 0
-  isInFactory: 1
-  useCooldown: 0
-  currentUseCooldown: 0
-  itemProperties: {fileID: 11400000, guid: 59f6ec167cad92d9b81e1937982ae842, type: 2}
-  insertedBattery:
-    empty: 0
-    charge: 0
-  customGrabTooltip: 
-  propBody: {fileID: 0}
-  propColliders: []
-  originalScale: {x: 0, y: 0, z: 0}
-  wasOwnerLastFrame: 0
-  mainObjectRenderer: {fileID: 0}
-  scrapPersistedThroughRounds: 0
-  heldByPlayerOnServer: 0
-  radarIcon: {fileID: 0}
-  reachedFloorTarget: 0
-  grabbableToEnemies: 1
-  hasBeenHeld: 0
+  _itemObjectContent:
+    _implementer: {fileID: 0}
+  _scanNode:
+    _implementer: {fileID: 8046841047658342051}
 --- !u!82 &7072228889244143065
 AudioSource:
   m_ObjectHideFlags: 0
@@ -350,6 +319,14 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!33 &5647627378347968567
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3462096859365274220}
+  m_Mesh: {fileID: 0}
 --- !u!1 &5876139366858800119
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,7 +337,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8046841047658342051}
   - component: {fileID: 5627275608931631961}
-  - component: {fileID: 5920361915863155284}
+  - component: {fileID: 7702101421543815256}
   m_Layer: 22
   m_Name: ScanNode
   m_TagString: Untagged
@@ -404,7 +381,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5920361915863155284
+--- !u!114 &7702101421543815256
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -413,14 +390,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5876139366858800119}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c36d0a92cbb1f26a39169ef0eae393a, type: 3}
+  m_Script: {fileID: 1681019755, guid: 4ffeeb1a62503f17fb0d8cf4bc2fd0fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxRange: 13
   minRange: 1
-  requiresLineOfSight: 1
+  requiesLineOfSight: 1
   headerText: Test Scrap
-  subText: 'Value: '
-  scrapValue: 0
-  creatureScanID: -1
-  nodeType: 2

@@ -1,12 +1,19 @@
+using System;
 using System.Collections.Generic;
+using ContentLib.Core;
+using ContentLib.Core.Model;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
-namespace ContentLib.Core;
+namespace ContentLib.Items;
 
 public class ItemCreator
 {
-
-    
+    int StandardCreatureScanID = -1;
+    int StandardNodeType = 2;
+    string StandardSubText = "Value: ";
+    bool StandardGrabbable = true;
+    bool StandardRequiresLineOfSight = true;
     public Item createItem(IItemContentExample itemContent)
     {
         Item item = ScriptableObject.CreateInstance<Item>();
@@ -29,7 +36,7 @@ public class ItemCreator
         item.highestSalePercentage = itemContent.GetHighestSalePercentage();
         item.maxValue = itemContent.GetMaxValue();
         item.minValue = itemContent.GetMinValue();
-        item.spawnPrefab = itemContent.GetSpawnPrefab();
+        item.spawnPrefab = CreateItemPrefab(itemContent, item);
         item.requiresBattery = itemContent.GetRequiresBattery();
         item.batteryUsage = itemContent.GetBatteryUsage();
         item.automaticallySetUsingPower  = itemContent.GetAutomaticallySetUsingPower();
@@ -77,4 +84,43 @@ public class ItemCreator
         return groups;
         
     }
+
+    GameObject CreateItemPrefab(IItemContentExample itemContent, Item item)
+    {
+        IItemPrefab prefab = itemContent.GetSpawnPrefab();
+        IScanNode scanNode = prefab.GetScanNode();
+        IObjectContent objectContent = prefab.GetContent();
+        GameObject prefabObject = prefab.GetPrefabObject;
+        prefabObject.layer = LayerMask.NameToLayer("Props");
+        prefabObject.tag = "PhysicsProp";
+        PhysicsProp physicsProp = prefabObject.AddComponent<PhysicsProp>();
+        physicsProp.itemProperties = item;
+        GameObject scanNodeObject = scanNode.GetScanNodeObject();
+        ScanNodeProperties scanNodeProperties = scanNodeObject.AddComponent<ScanNodeProperties>();
+       
+        FormatPhysicsProp(physicsProp, objectContent);
+        FormatScanNodeProperties(scanNodeProperties, scanNode);
+
+        return prefabObject;
+    }
+
+
+
+    void FormatPhysicsProp(PhysicsProp physicsProp, IObjectContent objectContent)
+    {
+        physicsProp.grabbable = StandardGrabbable;
+        physicsProp.grabbableToEnemies = objectContent.GetGrabbableToEnemies();
+    }
+    void FormatScanNodeProperties(ScanNodeProperties scanNodeProperties, IScanNode scanNode)
+    {
+        scanNodeProperties.nodeType = StandardNodeType;
+        scanNodeProperties.subText = StandardSubText;
+        scanNodeProperties.creatureScanID = StandardCreatureScanID;
+        scanNodeProperties.requiresLineOfSight = StandardRequiresLineOfSight;
+        
+        scanNodeProperties.headerText = scanNode.GetHeaderText();
+        scanNodeProperties.minRange = scanNode.GetMinRange();
+        scanNodeProperties.maxRange = scanNode.GetMaxRange();
+    }
+
 }

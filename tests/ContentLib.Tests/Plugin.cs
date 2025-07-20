@@ -1,4 +1,5 @@
-﻿using BepInEx;
+﻿#if !UNITY_EDITOR_ASSEMBLY
+using BepInEx;
 using BepInEx.Logging;
 using ContentLib.Core;
 
@@ -20,3 +21,4 @@ public partial class TestsPlugin : BaseUnityPlugin
         Log.LogInfo($"Plugin {Name} is loaded!");
     }
 }
+#endif

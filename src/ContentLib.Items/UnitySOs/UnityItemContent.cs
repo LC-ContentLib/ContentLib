@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using ContentLib.Core;
 using UnityEngine;
 
-namespace ContentLib.Items.UnityEditor;
+namespace ContentLib.Items.UnitySOs;
 
 /// <summary>
 /// A <see cref="ScriptableObject"/> representation of <see cref="ItemContent"/>.
